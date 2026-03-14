@@ -1,15 +1,14 @@
 /* ============================================================
    SOMETHING BLUE PRODUCTIONS — GLOBAL DESIGN SYSTEM
-   something-blue-productions.com
    ============================================================ */
 
 /* ─── FONT DECLARATIONS ─── */
 
 @font-face {
   font-family: 'Stay Humble';
-  src: url('./fonts/StayHumble.woff2') format('woff2'),
-       url('./fonts/StayHumble.woff') format('woff'),
-       url('./fonts/StayHumble.ttf') format('truetype');
+  src: url('./fonts/Stay_Humble.woff2') format('woff2'),
+       url('./fonts/Stay_Humble.woff') format('woff'),
+       url('./fonts/Stay_Humble.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -94,27 +93,22 @@
 
 /* ─── DESIGN TOKENS ─── */
 :root {
+  --indigo-dye:      #1B3A5C;
+  --baby-blue:       #A8CAEC;
+  --burnt-sienna:    #C8572A;
+  --midnight-ocean:  #0D1B2A;
+  --dutch-white:     #E8DDB5;
+  --eggshell:        #F5F0E8;
+  --indigo-light:    #2A5280;
+  --indigo-muted:    #3D6080;
+  --baby-blue-dark:  #7AAED8;
+  --sienna-light:    #D4704A;
+  --cream:           #FAF8F2;
+  --stone:           #DDD5C0;
+  --taupe:           #9E9282;
+  --charcoal:        #2C2820;
+  --soft-black:      #1A1410;
 
-  /* BRAND COLOURS */
-  --indigo-dye:      #1B3A5C;   /* Primary — nav, headings, dark CTAs */
-  --baby-blue:       #A8CAEC;   /* Soft accent, highlights, dividers */
-  --burnt-sienna:    #C8572A;   /* Warm accent — use sparingly */
-  --midnight-ocean:  #0D1B2A;   /* Footer, dark sections */
-  --dutch-white:     #E8DDB5;   /* Warm background sections */
-  --eggshell:        #F5F0E8;   /* Page background */
-
-  /* EXTENDED PALETTE — derived from brand */
-  --indigo-light:    #2A5280;   /* Hover state for indigo */
-  --indigo-muted:    #3D6080;   /* Secondary text on dark */
-  --baby-blue-dark:  #7AAED8;   /* Stronger blue accent */
-  --sienna-light:    #D4704A;   /* Hover state for sienna */
-  --cream:           #FAF8F2;   /* Lightest background */
-  --stone:           #DDD5C0;   /* Borders, dividers */
-  --taupe:           #9E9282;   /* Muted text, labels */
-  --charcoal:        #2C2820;   /* Body text */
-  --soft-black:      #1A1410;   /* Deep dark */
-
-  /* SEMANTIC TOKENS */
   --color-bg:            var(--eggshell);
   --color-bg-warm:       var(--dutch-white);
   --color-bg-dark:       var(--midnight-ocean);
@@ -127,79 +121,53 @@
   --color-border:        var(--stone);
   --color-border-dark:   rgba(168, 202, 236, 0.15);
 
-  /* TYPOGRAPHY */
   --font-display:  'Stay Humble', cursive;
   --font-heading:  'Carose', system-ui, sans-serif;
   --font-body:     'Inter', system-ui, sans-serif;
 
-  /* TYPE SCALE */
-  --text-xs:    0.68rem;   /* 10.9px — labels, eyebrows */
-  --text-sm:    0.8rem;    /* 12.8px — captions, small UI */
-  --text-base:  1rem;      /* 16px   — body */
-  --text-lg:    1.15rem;   /* 18.4px — large body */
-  --text-xl:    1.4rem;    /* 22.4px — small headings */
-  --text-2xl:   1.75rem;   /* 28px   — section headings */
-  --text-3xl:   2.25rem;   /* 36px   — page headings */
-  --text-4xl:   3rem;      /* 48px   — hero sub */
-  --text-5xl:   4rem;      /* 64px   — hero */
-  --text-6xl:   5.5rem;    /* 88px   — display */
+  --text-xs:    0.68rem;
+  --text-sm:    0.8rem;
+  --text-base:  1rem;
+  --text-lg:    1.15rem;
+  --text-xl:    1.4rem;
+  --text-2xl:   1.75rem;
+  --text-3xl:   2.25rem;
+  --text-4xl:   3rem;
+  --text-5xl:   4rem;
+  --text-6xl:   5.5rem;
 
-  /* FLUID TYPE — clamp versions for responsive headings */
   --text-hero:        clamp(3rem, 7vw, 5.5rem);
   --text-display:     clamp(2.2rem, 4.5vw, 3.5rem);
   --text-section:     clamp(1.8rem, 3vw, 2.5rem);
   --text-card:        clamp(1.2rem, 2vw, 1.6rem);
 
-  /* SPACING */
-  --space-1:    0.25rem;
-  --space-2:    0.5rem;
-  --space-3:    0.75rem;
-  --space-4:    1rem;
-  --space-5:    1.25rem;
-  --space-6:    1.5rem;
-  --space-8:    2rem;
-  --space-10:   2.5rem;
-  --space-12:   3rem;
-  --space-16:   4rem;
-  --space-20:   5rem;
-  --space-24:   6rem;
-  --space-32:   8rem;
-
-  /* FLUID SPACING */
   --section-pad:   clamp(4rem, 8vw, 7rem);
   --gutter:        clamp(1.5rem, 4vw, 3rem);
   --gutter-sm:     clamp(1rem, 2vw, 1.5rem);
 
-  /* BORDERS & RADIUS */
   --radius-none:   0px;
   --radius-sm:     2px;
   --radius-md:     4px;
   --radius-lg:     8px;
   --radius-full:   9999px;
-  --border-thin:   1px solid var(--color-border);
-  --border-dark:   1px solid var(--color-border-dark);
 
-  /* SHADOWS */
   --shadow-sm:   0 1px 3px rgba(13, 27, 42, 0.08);
   --shadow-md:   0 4px 16px rgba(13, 27, 42, 0.12);
   --shadow-lg:   0 8px 32px rgba(13, 27, 42, 0.16);
   --shadow-xl:   0 16px 64px rgba(13, 27, 42, 0.2);
 
-  /* TRANSITIONS */
   --ease-out:      cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-in-out:   cubic-bezier(0.4, 0, 0.2, 1);
   --duration-fast: 0.2s;
   --duration-base: 0.3s;
   --duration-slow: 0.6s;
 
-  /* LETTER SPACING */
-  --tracking-tight:  -0.01em;
-  --tracking-normal:  0em;
-  --tracking-wide:    0.08em;
-  --tracking-wider:   0.15em;
-  --tracking-widest:  0.22em;
+  --tracking-tight:   -0.01em;
+  --tracking-normal:   0em;
+  --tracking-wide:     0.08em;
+  --tracking-wider:    0.15em;
+  --tracking-widest:   0.22em;
 
-  /* Z-INDEX */
   --z-base:     1;
   --z-raised:   10;
   --z-nav:      100;
@@ -207,7 +175,7 @@
   --z-modal:    300;
 }
 
-/* ─── BASE RESET & DEFAULTS ─── */
+/* ─── BASE RESET ─── */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -218,6 +186,8 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 body {
@@ -227,9 +197,10 @@ body {
   font-weight: 300;
   font-size: 16px;
   line-height: 1.7;
+  overflow-x: hidden;
+  max-width: 100%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow-x: hidden;
 }
 
 img, video {
@@ -252,20 +223,10 @@ button {
 
 /* ─── TYPOGRAPHY UTILITIES ─── */
 
-.font-display {
-  font-family: var(--font-display);
-  font-weight: 400;
-}
+.font-display  { font-family: var(--font-display); font-weight: 400; }
+.font-heading  { font-family: var(--font-heading); }
+.font-body     { font-family: var(--font-body); }
 
-.font-heading {
-  font-family: var(--font-heading);
-}
-
-.font-body {
-  font-family: var(--font-body);
-}
-
-/* Eyebrow labels — Carose, spaced caps */
 .eyebrow {
   font-family: var(--font-heading);
   font-size: var(--text-xs);
@@ -284,7 +245,6 @@ button {
   color: var(--baby-blue);
 }
 
-/* Display headings — Stay Humble script */
 .heading-display {
   font-family: var(--font-display);
   font-weight: 400;
@@ -292,7 +252,6 @@ button {
   color: var(--color-text);
 }
 
-/* Section headings — Carose */
 .heading-section {
   font-family: var(--font-heading);
   font-weight: 300;
@@ -354,7 +313,7 @@ button {
   padding-right: var(--gutter);
 }
 
-/* ─── BUTTON COMPONENTS ─── */
+/* ─── BUTTONS ─── */
 
 .btn {
   display: inline-flex;
@@ -426,7 +385,6 @@ button {
   transform: translateY(-1px);
 }
 
-/* Text link with animated underline */
 .link-arrow {
   display: inline-flex;
   align-items: center;
@@ -450,12 +408,6 @@ button {
 }
 .link-arrow:hover .link-arrow-line { width: 40px; }
 
-.link-arrow-light {
-  color: var(--eggshell);
-  opacity: 0.75;
-}
-.link-arrow-light:hover { opacity: 1; }
-
 /* ─── SCROLL REVEAL ─── */
 
 .reveal {
@@ -463,12 +415,10 @@ button {
   transform: translateY(22px);
   transition: opacity 0.75s var(--ease-out), transform 0.75s var(--ease-out);
 }
-
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
-
 .reveal-delay-1 { transition-delay: 0.1s; }
 .reveal-delay-2 { transition-delay: 0.2s; }
 .reveal-delay-3 { transition-delay: 0.3s; }
@@ -490,28 +440,15 @@ button {
 
 /* ─── DIVIDERS ─── */
 
-.divider {
-  width: 40px;
-  height: 1px;
-  background: var(--stone);
-}
-
-.divider-brand {
-  width: 40px;
-  height: 1px;
-  background: var(--baby-blue);
-}
-
-.divider-center {
-  margin-left: auto;
-  margin-right: auto;
-}
+.divider       { width: 40px; height: 1px; background: var(--stone); }
+.divider-brand { width: 40px; height: 1px; background: var(--baby-blue); }
+.divider-center { margin-left: auto; margin-right: auto; }
 
 /* ─── SCROLLBAR ─── */
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: var(--eggshell); }
-::-webkit-scrollbar-thumb { background: var(--stone); border-radius: 3px; }
+::-webkit-scrollbar         { width: 6px; height: 6px; }
+::-webkit-scrollbar-track   { background: var(--eggshell); }
+::-webkit-scrollbar-thumb   { background: var(--stone); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--taupe); }
 
 /* ─── SELECTION ─── */
