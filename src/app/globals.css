@@ -6,9 +6,9 @@
 
 @font-face {
   font-family: 'Stay Humble';
-  src: url('./fonts/Stay_Humble.woff2') format('woff2'),
-       url('./fonts/Stay_Humble.woff') format('woff'),
-       url('./fonts/Stay_Humble.ttf') format('truetype');
+  src: url('./fonts/StayHumble.woff2') format('woff2'),
+     url('./fonts/StayHumble.woff') format('woff'),
+     url('./fonts/StayHumble.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
