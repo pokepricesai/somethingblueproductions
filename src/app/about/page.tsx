@@ -1,0 +1,261 @@
+import Link from "next/link";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About | Something Blue Productions · Cambridge Wedding & Family Photographer",
+  description: "Something Blue Productions is a photography and video studio based in Cambridgeshire. We shoot weddings, families, newborn and maternity — honestly, and without fuss.",
+};
+
+export default function AboutPage() {
+  return (
+    <>
+      <style>{`
+        .a-pad { padding: 3rem 1.5rem; }
+        .a-hero-content { padding: 8rem 1.5rem 4rem; }
+        .a-intro-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; }
+        .a-values-grid { display: grid; grid-template-columns: 1fr; gap: 2px; }
+        .a-bts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+        .a-services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+        .a-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
+        .a-cta-buttons a { text-align: center; }
+
+        @media (min-width: 640px) {
+          .a-pad { padding: 3.5rem 2.5rem; }
+          .a-hero-content { padding: 10rem 2.5rem 5rem; }
+          .a-values-grid { grid-template-columns: 1fr 1fr; }
+          .a-bts-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        @media (min-width: 900px) {
+          .a-pad { padding: 4rem 4rem; }
+          .a-hero-content { padding: 10rem 4rem 5rem; }
+          .a-intro-grid { grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+          .a-values-grid { grid-template-columns: repeat(4, 1fr); }
+          .a-services-grid { grid-template-columns: repeat(4, 1fr); }
+          .a-cta-buttons { flex-direction: row; justify-content: center; }
+          .a-cta-buttons a { text-align: left; }
+        }
+      `}</style>
+
+      {/* ─── HERO ─── */}
+      <section style={{ backgroundColor: '#0d1b2a', position: 'relative', overflow: 'hidden' }}>
+        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#1b3a5c', display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: 0.5 }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.3)', textAlign: 'center' }}>about-photographer.jpg</span>
+        </div>
+        <div className="a-hero-content" style={{ position: 'relative', zIndex: 1, maxWidth: '700px' }}>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>
+            About Something Blue
+          </p>
+          <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4rem)', lineHeight: 1.1, color: '#E8DDB5', textTransform: 'none', marginBottom: '1.5rem' }}>
+            Photography and video for the moments that{' '}
+            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)' }}>matter most.</span>
+          </h1>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.95rem', lineHeight: 1.8, color: 'rgba(245,240,232,0.6)', maxWidth: '500px' }}>
+            Something Blue Productions is a photography and video studio based in Cambridgeshire. We shoot weddings, families, newborn and maternity — and selected commercial work for local businesses and performers.
+          </p>
+        </div>
+      </section>
+
+      {/* ─── MAIN INTRO ─── */}
+      <section className="a-pad" style={{ backgroundColor: '#F5F0E8' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div className="a-intro-grid">
+
+            {/* Photo */}
+            <div>
+              <div style={{ aspectRatio: '3/4', backgroundColor: '#4a6070', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '2px' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.25)', textAlign: 'center' }}>about-photographer.jpg</span>
+              </div>
+              <div style={{ aspectRatio: '16/9', backgroundColor: '#3a5060', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.25)', textAlign: 'center' }}>about-behind-scenes-01.jpg</span>
+              </div>
+            </div>
+
+            {/* Text */}
+            <div style={{ paddingTop: '0.5rem' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>Who we are</p>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', lineHeight: 1.9, color: '#2C2820', textTransform: 'none', marginBottom: '1.5rem' }}>
+                Something Blue Productions was founded on a simple idea: that the best photographs happen when people stop thinking about being photographed.
+              </p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1.2rem' }}>
+                We work quietly. We don&apos;t direct. We don&apos;t force smiles or manufacture moments. We show up, we pay attention, and we wait for things to happen naturally — because they always do.
+              </p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1.2rem' }}>
+                We&apos;re based in Cambridgeshire and have two studio spaces — one in Papworth Everard and one in Waterbeach, near Cambridge. We shoot weddings across the UK, families and newborns locally, and selected commercial work for businesses and performers who need photography that actually works.
+              </p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550' }}>
+                We&apos;ve been doing this since 2020. The work has grown steadily, and the approach hasn&apos;t changed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── VALUES ─── */}
+      <section className="a-pad" style={{ backgroundColor: '#E8DDB5' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '2.5rem' }}>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>How we work</p>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>What matters to us</h2>
+          </div>
+          <div className="a-values-grid" style={{ gap: '2px' }}>
+            {[
+              {
+                title: 'Honesty over performance',
+                desc: "We don't manufacture emotion or engineer moments. We look for what's already there — and there's always something there.",
+              },
+              {
+                title: 'Unhurried work',
+                desc: "We never rush a session. If something needs more time, we take more time. The images are worth it and you deserve the space.",
+              },
+              {
+                title: 'Real communication',
+                desc: "We reply quickly, we're direct about what we can and can't do, and we make sure there are no surprises. Before or after.",
+              },
+              {
+                title: 'Work that lasts',
+                desc: "We edit for longevity — not for trends. The images we make should look as good in twenty years as they do today.",
+              },
+            ].map((v) => (
+              <div key={v.title} style={{ padding: '2rem 1.5rem', backgroundColor: '#E8DDB5' }}>
+                <div style={{ width: '24px', height: '1px', backgroundColor: '#1B3A5C', marginBottom: '1.2rem' }} />
+                <h3 style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.92rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.7rem' }}>{v.title}</h3>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#5c5550', lineHeight: 1.75 }}>{v.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── BEHIND THE SCENES ─── */}
+      <section className="a-pad" style={{ backgroundColor: '#F5F0E8' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '2rem' }}>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>Behind the lens</p>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>On location and in studio</h2>
+          </div>
+          <div className="a-bts-grid" style={{ marginBottom: '2rem' }}>
+            {[
+              { color: '#4a6070', label: 'about-behind-scenes-01.jpg' },
+              { color: '#3a5060', label: 'about-behind-scenes-02.jpg' },
+              { color: '#506070', label: 'about-behind-scenes-03.jpg' },
+            ].map((img, i) => (
+              <div key={i} style={{ aspectRatio: '4/3', backgroundColor: img.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.25)', textAlign: 'center', padding: '0 0.5rem' }}>{img.label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── STUDIOS ─── */}
+      <section className="a-pad" style={{ backgroundColor: '#0d1b2a' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '2.5rem' }}>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>Our spaces</p>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none' }}>Two studios in Cambridgeshire</h2>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2px' }}>
+            {[
+              {
+                name: 'Papworth Everard Studio',
+                location: 'Cambridgeshire · CB23',
+                desc: 'Our main studio space. Warm, airy, and accessible from Cambridge, Huntingdon and the A14. The go-to for newborn, family and maternity sessions.',
+                href: '/studio/papworth-everard',
+              },
+              {
+                name: 'Waterbeach Studio',
+                location: 'Near Cambridge · CB25',
+                desc: 'Minutes from Cambridge city centre via the A10. Perfect for Cambridge-based families, professionals needing headshots, and local brand work.',
+                href: '/studio/waterbeach',
+              },
+            ].map((studio) => (
+              <div key={studio.name} style={{ padding: '2rem', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.08)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '0.8rem' }}>
+                  <div>
+                    <h3 style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.3rem' }}>{studio.name}</h3>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC' }}>{studio.location}</p>
+                  </div>
+                  <Link href={studio.href} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid rgba(158,146,130,0.3)', paddingBottom: '2px', whiteSpace: 'nowrap' }}>
+                    View studio →
+                  </Link>
+                </div>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.5)', lineHeight: 1.75 }}>{studio.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── WHAT WE SHOOT ─── */}
+      <section className="a-pad" style={{ backgroundColor: '#F5F0E8' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '2.5rem' }}>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>What we do</p>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Our services</h2>
+          </div>
+          <div className="a-services-grid" style={{ gap: '2px' }}>
+            {[
+              { title: 'Weddings', sub: 'Photography & videography', href: '/weddings', color: '#5c3d30' },
+              { title: 'Families', sub: 'Natural lifestyle sessions', href: '/families', color: '#3a4828' },
+              { title: 'Newborn', sub: 'Gentle studio sessions', href: '/newborn', color: '#4a3830' },
+              { title: 'Maternity', sub: 'Studio & outdoor', href: '/maternity', color: '#4a3c50' },
+              { title: 'Studio Sessions', sub: 'Papworth & Waterbeach', href: '/studio', color: '#1b3a5c' },
+              { title: 'Commercial', sub: 'Brand, headshots & performance', href: '/commercial', color: '#2c2820' },
+              { title: 'Packages', sub: 'Investment & pricing', href: '/packages', color: '#3a3020' },
+              { title: 'Enquire', sub: 'Get in touch', href: '/enquire', color: '#1B3A5C' },
+            ].map((s) => (
+              <Link key={s.title} href={s.href} style={{ position: 'relative', aspectRatio: '1/1', backgroundColor: s.color, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '1.2rem', textDecoration: 'none', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 60%)' }} />
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <h3 style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.88rem', color: '#ffffff', textTransform: 'none', marginBottom: '0.2rem' }}>{s.title}</h3>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.55)' }}>{s.sub}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── TESTIMONIAL ─── */}
+      <section className="a-pad" style={{ backgroundColor: '#E8DDB5' }}>
+        <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
+          <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: '4rem', color: '#DDD5C0', lineHeight: 0.8, display: 'block', marginBottom: '1.5rem' }}>&ldquo;</span>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)', lineHeight: 1.85, color: '#2C2820', fontStyle: 'italic', marginBottom: '2rem' }}>
+            Completely unobtrusive on the day — we genuinely forgot there was a photographer there. The results are beyond anything we hoped for. We&apos;ve recommended Something Blue to everyone who&apos;s asked.
+          </p>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.2rem' }}>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#2C2820', fontWeight: 500 }}>Priya &amp; James</p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9E9282' }}>Wedding · Ely</p>
+          </div>
+          <div style={{ marginTop: '2rem' }}>
+            <Link href="/testimonials" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px' }}>
+              Read more testimonials →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CTA ─── */}
+      <section className="a-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
+        <div style={{ maxWidth: '520px', margin: '0 auto' }}>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Work with us</p>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
+            Ready to get in touch?
+          </h2>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.45)', lineHeight: 1.8, marginBottom: '2rem' }}>
+            Tell us what you&apos;re looking for. We read every message personally and come back to you within 24 hours — usually much sooner.
+          </p>
+          <div className="a-cta-buttons">
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              Get in touch
+            </Link>
+            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              See the work first
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
