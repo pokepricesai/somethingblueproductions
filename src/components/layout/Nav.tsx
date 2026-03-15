@@ -14,7 +14,7 @@ const navLinks = [
       { label: 'Maternity Photography', href: '/maternity' },
     ],
   },
-  { label: 'Studio', href: '/studio' },
+  { label: 'Our Studios', href: '/studio' },
   {
     label: 'Commercial',
     href: '/commercial',
