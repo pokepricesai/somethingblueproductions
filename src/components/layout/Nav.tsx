@@ -15,7 +15,15 @@ const navLinks = [
     ],
   },
   { label: 'Studio', href: '/studio' },
-  { label: 'Commercial', href: '/commercial' },
+  {
+    label: 'Commercial',
+    href: '/commercial',
+    dropdown: [
+      { label: 'Brand & Business', href: '/commercial/brand' },
+      { label: 'Performance & Show', href: '/commercial/performance' },
+      { label: 'Headshots', href: '/commercial/headshots' },
+    ],
+  },
   { label: 'Journal', href: '/journal' },
 ];
 
@@ -72,7 +80,7 @@ export default function Nav() {
           opacity: 0;
           pointer-events: none;
           transition: opacity 0.2s ease, transform 0.2s ease;
-          min-width: 230px;
+          min-width: 220px;
           background: #FAF8F2;
           border: 1px solid #DDD5C0;
           padding: 0.4rem 0;
@@ -243,7 +251,7 @@ export default function Nav() {
               ) : (
                 <Link href={link.href} onClick={() => setMenuOpen(false)}
                   style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(1.8rem, 5vw, 2.5rem)', color: '#F5F0E8', textDecoration: 'none', display: 'block', padding: '0.3rem 0' }}>
-                  {link.href === '/weddings' ? link.label : link.label}
+                  {link.label}
                 </Link>
               )}
             </div>
