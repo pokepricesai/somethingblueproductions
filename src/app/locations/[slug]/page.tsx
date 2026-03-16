@@ -1,0 +1,192 @@
+import Link from "next/link";
+import type { Metadata } from "next";
+import { createClient } from '@supabase/supabase-js';
+import { notFound } from 'next/navigation';
+
+const supabase = createClient(
+  'https://knwyfoqmlwbxtfhvkbmc.supabase.co',
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y'
+);
+
+const serviceColors: Record<string, string> = {
+  family: '#3a4828',
+  newborn: '#4a3830',
+  wedding: '#5c3d30',
+  commercial: '#2c2820',
+};
+
+const serviceLabels: Record<string, string> = {
+  family: 'Family Photography',
+  newborn: 'Newborn Photography',
+  wedding: 'Wedding Photography',
+  commercial: 'Commercial Photography',
+};
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const { data: location } = await supabase.from('locations').select('*').eq('slug', slug).single();
+  if (!location) return { title: 'Location not found' };
+  return {
+    title: `Photography in ${location.name} | Something Blue Productions`,
+    description: `Wedding, family, newborn and commercial photography in ${location.name}, ${location.county}. Something Blue Productions — based in Cambridgeshire.`,
+  };
+}
+
+export default async function LocationPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+
+  const { data: location } = await supabase
+    .from('locations')
+    .select('*')
+    .eq('slug', slug)
+    .single();
+
+  if (!location) notFound();
+
+  const { data: pages } = await supabase
+    .from('location_pages')
+    .select('*')
+    .eq('location_slug', slug)
+    .eq('published', true);
+
+  const { data: allLocations } = await supabase
+    .from('locations')
+    .select('name, slug')
+    .neq('slug', slug)
+    .order('name')
+    .limit(8);
+
+  return (
+    <>
+      <style>{`
+        .lp-pad { padding: 3rem 1.5rem; }
+        .lp-hero { padding: 8rem 1.5rem 4rem; }
+        .lp-services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+        .lp-nearby-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+        .lp-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
+        .lp-cta-buttons a { text-align: center; }
+
+        @media (min-width: 640px) {
+          .lp-pad { padding: 3.5rem 2.5rem; }
+          .lp-hero { padding: 10rem 2.5rem 4rem; }
+          .lp-nearby-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+
+        @media (min-width: 900px) {
+          .lp-pad { padding: 4rem 4rem; }
+          .lp-hero { padding: 10rem 4rem 5rem; }
+          .lp-services-grid { grid-template-columns: repeat(4, 1fr); }
+          .lp-cta-buttons { flex-direction: row; justify-content: center; }
+          .lp-cta-buttons a { text-align: left; }
+        }
+      `}</style>
+
+      {/* ─── HERO ─── */}
+      <section style={{ backgroundColor: '#0d1b2a' }}>
+        <div className="lp-hero" style={{ maxWidth: '700px' }}>
+          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '1.2rem', flexWrap: 'wrap' }}>
+            <Link href="/locations" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.6)', textDecoration: 'none' }}>← Locations</Link>
+            <span style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: 'rgba(168,202,236,0.3)', display: 'inline-block' }} />
+            <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#A8CAEC' }}>{location.county}</span>
+          </div>
+          <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4rem)', lineHeight: 1.1, color: '#E8DDB5', textTransform: 'none', marginBottom: '1.2rem' }}>
+            Photography in{' '}
+            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)' }}>{location.name}.</span>
+          </h1>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.95rem', lineHeight: 1.8, color: 'rgba(245,240,232,0.55)', maxWidth: '500px' }}>
+            {location.character}. Something Blue Productions covers {location.name} for weddings, family, newborn and commercial photography.
+          </p>
+        </div>
+      </section>
+
+      {/* ─── LOCATION IMAGE ─── */}
+      <div style={{ width: '100%', aspectRatio: '16/6', maxHeight: '400px', overflow: 'hidden', backgroundColor: '#1b3a5c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>location-{location.slug}.jpg</span>
+      </div>
+
+      {/* ─── INTRO ─── */}
+      <section className="lp-pad" style={{ backgroundColor: '#F5F0E8' }}>
+        <div style={{ maxWidth: '720px', margin: '0 auto' }}>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>About this area</p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', lineHeight: 1.9, color: '#2C2820', textTransform: 'none', marginBottom: '1.2rem' }}>
+            {location.character}.
+          </p>
+          {location.shoot_spots && (
+            <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1rem' }}>
+              <strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.75rem', color: '#2C2820', letterSpacing: '0.05em' }}>Great shoot locations: </strong>
+              {location.shoot_spots}
+            </p>
+          )}
+          {location.nearest_studio && (
+            <div style={{ marginTop: '1.5rem', padding: '1.2rem 1.5rem', backgroundColor: '#E8DDB5', borderLeft: '3px solid #1B3A5C' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', color: '#1B3A5C', textTransform: 'none' }}>
+                Our {location.nearest_studio} studio is {location.distance_miles} {location.distance_miles === 1 ? 'mile' : 'miles'} away — ideal for newborn, family and maternity sessions whatever the weather.
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ─── SERVICE PAGES ─── */}
+      <section className="lp-pad" style={{ backgroundColor: '#E8DDB5' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ marginBottom: '2.5rem' }}>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>Services in {location.name}</p>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>What we offer here</h2>
+          </div>
+          <div className="lp-services-grid">
+            {(pages || []).map((page) => (
+              <Link key={page.slug} href={`/${page.slug}`} style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: serviceColors[page.service] || '#2c2820', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '1.5rem', textDecoration: 'none', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
+                <div style={{ position: 'relative', zIndex: 1 }}>
+                  <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.5vw, 1.1rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.3rem' }}>{serviceLabels[page.service]}</h3>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.6)' }}>in {location.name}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── NEARBY LOCATIONS ─── */}
+      {allLocations && allLocations.length > 0 && (
+        <section className="lp-pad" style={{ backgroundColor: '#F5F0E8' }}>
+          <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+            <div style={{ marginBottom: '2rem' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>Also available</p>
+              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Nearby areas we cover</h2>
+            </div>
+            <div className="lp-nearby-grid">
+              {allLocations.map((loc) => (
+                <Link key={loc.slug} href={`/locations/${loc.slug}`} style={{ padding: '1.2rem', backgroundColor: '#FAF8F2', border: '1px solid #DDD5C0', textDecoration: 'none', display: 'block' }}>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.88rem', color: '#1B3A5C', textTransform: 'none' }}>{loc.name}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ─── CTA ─── */}
+      <section className="lp-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
+        <div style={{ maxWidth: '520px', margin: '0 auto' }}>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Book a session in {location.name}</p>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
+            Let&apos;s work together
+          </h2>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.45)', lineHeight: 1.8, marginBottom: '2rem' }}>
+            Tell us what you&apos;re looking for and we&apos;ll come back to you within 24 hours.
+          </p>
+          <div className="lp-cta-buttons">
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              Start your enquiry
+            </Link>
+            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              See the work
+            </Link>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
