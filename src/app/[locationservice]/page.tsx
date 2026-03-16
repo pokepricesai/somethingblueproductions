@@ -15,12 +15,21 @@ const serviceColors: Record<string, string> = {
   commercial: '#2c2820',
 };
 
+const serviceLabels: Record<string, string> = {
+  family: 'Family Photography',
+  newborn: 'Newborn Photography',
+  wedding: 'Wedding Photography',
+  commercial: 'Commercial Photography',
+};
+
 const serviceLinks: Record<string, string> = {
   family: '/families',
   newborn: '/newborn',
   wedding: '/weddings',
   commercial: '/commercial',
 };
+
+type FAQ = { q: string; a: string };
 
 export async function generateMetadata({ params }: { params: Promise<{ locationservice: string }> }): Promise<Metadata> {
   const { locationservice } = await params;
@@ -56,7 +65,6 @@ export default async function LocationServicePage({ params }: { params: Promise<
 
   if (!location) notFound();
 
-  // Related service+location pages for same location
   const { data: relatedPages } = await supabase
     .from('location_pages')
     .select('slug, service')
@@ -64,7 +72,6 @@ export default async function LocationServicePage({ params }: { params: Promise<
     .neq('slug', locationservice)
     .eq('published', true);
 
-  // Same service in nearby locations
   const { data: nearbyPages } = await supabase
     .from('location_pages')
     .select('slug, location_slug')
@@ -73,26 +80,31 @@ export default async function LocationServicePage({ params }: { params: Promise<
     .eq('published', true)
     .limit(4);
 
-  const { data: nearbyLocations } = nearbyPages ? await supabase
-    .from('locations')
-    .select('name, slug')
-    .in('slug', nearbyPages.map(p => p.location_slug)) : { data: [] };
+  const nearbySlugs = (nearbyPages || []).map((p: { location_slug: string }) => p.location_slug);
 
-  let faqs: { q: string; a: string }[] = [];
+  const { data: nearbyLocations } = nearbySlugs.length > 0
+    ? await supabase.from('locations').select('name, slug').in('slug', nearbySlugs)
+    : { data: [] };
+
+  let faqs: FAQ[] = [];
   try {
-    faqs = typeof page.faqs === 'string' ? JSON.parse(page.faqs) : page.faqs || [];
+    const raw = page.faqs;
+    faqs = typeof raw === 'string' ? JSON.parse(raw) : (Array.isArray(raw) ? raw : []);
   } catch {
     faqs = [];
   }
 
-  const serviceLabel = {
-    family: 'Family Photography',
-    newborn: 'Newborn Photography',
-    wedding: 'Wedding Photography',
-    commercial: 'Commercial Photography',
-  }[page.service] || 'Photography';
+  const serviceLabel = serviceLabels[page.service as string] || 'Photography';
+  const heroColor = serviceColors[page.service as string] || '#2c2820';
+  const serviceLink = serviceLinks[page.service as string] || '/';
 
-  const heroColor = serviceColors[page.service] || '#2c2820';
+  const bodyParagraphs: string[] = typeof page.body === 'string'
+    ? page.body.split('\n\n').filter((p: string) => p.trim().length > 0)
+    : [];
+
+  const shootSpots: string[] = location.shoot_spots
+    ? location.shoot_spots.split(',').map((s: string) => s.trim()).filter(Boolean)
+    : [];
 
   return (
     <>
@@ -135,7 +147,7 @@ export default async function LocationServicePage({ params }: { params: Promise<
               {location.name}
             </Link>
             <span style={{ color: 'rgba(245,240,232,0.3)', fontSize: '0.7rem' }}>·</span>
-            <Link href={serviceLinks[page.service] || '/'} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', textDecoration: 'none' }}>
+            <Link href={serviceLink} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', textDecoration: 'none' }}>
               {serviceLabel}
             </Link>
           </div>
@@ -160,7 +172,7 @@ export default async function LocationServicePage({ params }: { params: Promise<
             <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.8)' }}>
               Our {location.nearest_studio} studio is just {location.distance_miles} {location.distance_miles === 1 ? 'mile' : 'miles'} away — perfect for indoor sessions whatever the weather.
             </span>
-            <Link href={`/studio/${location.nearest_studio.toLowerCase().replace(' ', '-')}`} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)', paddingBottom: '1px', whiteSpace: 'nowrap', marginLeft: 'auto' }}>
+            <Link href={`/studio/${location.nearest_studio.toLowerCase().replace(/ /g, '-')}`} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)', paddingBottom: '1px', whiteSpace: 'nowrap', marginLeft: 'auto' }}>
               View studio →
             </Link>
           </div>
@@ -170,7 +182,7 @@ export default async function LocationServicePage({ params }: { params: Promise<
       {/* ─── BODY CONTENT ─── */}
       <section className="lsp-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
-          {page.body.split('\n\n').filter(Boolean).map((para: string, i: number) => (
+          {bodyParagraphs.map((para, i) => (
             <p key={i} style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#2C2820', marginBottom: '1.5rem' }}>
               {para}
             </p>
@@ -179,16 +191,16 @@ export default async function LocationServicePage({ params }: { params: Promise<
       </section>
 
       {/* ─── SHOOT SPOTS ─── */}
-      {location.shoot_spots && (
+      {shootSpots.length > 0 && (
         <section className="lsp-pad" style={{ backgroundColor: '#E8DDB5' }}>
           <div style={{ maxWidth: '900px', margin: '0 auto' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>
               Great locations in {location.name}
             </p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {location.shoot_spots.split(',').map((spot: string) => (
+              {shootSpots.map((spot) => (
                 <span key={spot} style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#2C2820', backgroundColor: '#FAF8F2', border: '1px solid #DDD5C0', padding: '0.5rem 1rem' }}>
-                  {spot.trim()}
+                  {spot}
                 </span>
               ))}
             </div>
@@ -227,11 +239,12 @@ export default async function LocationServicePage({ params }: { params: Promise<
               <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none' }}>Other services we offer here</h2>
             </div>
             <div className="lsp-related-grid">
-              {relatedPages.map((rel) => {
-                const label = { family: 'Family Photography', newborn: 'Newborn Photography', wedding: 'Wedding Photography', commercial: 'Commercial Photography' }[rel.service] || rel.service;
+              {relatedPages.map((rel: { slug: string; service: string }) => {
+                const relLabel = serviceLabels[rel.service] || rel.service;
+                const relColor = serviceColors[rel.service] || '#2c2820';
                 return (
-                  <Link key={rel.slug} href={`/${rel.slug}`} style={{ padding: '1.8rem', backgroundColor: serviceColors[rel.service] || '#2c2820', textDecoration: 'none', display: 'block' }}>
-                    <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '0.92rem', color: '#ffffff', textTransform: 'none', marginBottom: '0.3rem' }}>{label}</h3>
+                  <Link key={rel.slug} href={`/${rel.slug}`} style={{ padding: '1.8rem', backgroundColor: relColor, textDecoration: 'none', display: 'block' }}>
+                    <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '0.92rem', color: '#ffffff', textTransform: 'none', marginBottom: '0.3rem' }}>{relLabel}</h3>
                     <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.55)' }}>in {location.name}</p>
                   </Link>
                 );
@@ -250,8 +263,8 @@ export default async function LocationServicePage({ params }: { params: Promise<
               <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>{serviceLabel} near {location.name}</h2>
             </div>
             <div className="lsp-nearby-grid">
-              {nearbyLocations.map((loc) => {
-                const nearbySlug = nearbyPages?.find(p => p.location_slug === loc.slug)?.slug;
+              {(nearbyLocations as { name: string; slug: string }[]).map((loc) => {
+                const nearbySlug = (nearbyPages || []).find((p: { location_slug: string; slug: string }) => p.location_slug === loc.slug)?.slug;
                 return (
                   <Link key={loc.slug} href={nearbySlug ? `/${nearbySlug}` : `/locations/${loc.slug}`} style={{ padding: '1.2rem', backgroundColor: '#FAF8F2', border: '1px solid #DDD5C0', textDecoration: 'none', display: 'block' }}>
                     <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.88rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.2rem' }}>{loc.name}</p>
@@ -280,7 +293,7 @@ export default async function LocationServicePage({ params }: { params: Promise<
             <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
               Start your enquiry
             </Link>
-            <Link href={serviceLinks[page.service] || '/services'} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+            <Link href={serviceLink} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
               About {serviceLabel}
             </Link>
           </div>
