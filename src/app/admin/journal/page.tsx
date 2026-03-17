@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
 const supabaseUrl = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y';
+
+const CATEGORIES = ['Weddings', 'Families', 'Newborn', 'Maternity', 'Studio', 'Commercial', 'Locations'];
 
 type Post = {
   id: number;
@@ -14,9 +16,8 @@ type Post = {
   published: boolean;
   published_at: string;
   excerpt: string;
+  image_url: string | null;
 };
-
-const CATEGORIES = ['Weddings', 'Families', 'Newborn', 'Maternity', 'Studio', 'Commercial', 'Locations'];
 
 export default function AdminJournalPage() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -27,10 +28,10 @@ export default function AdminJournalPage() {
   const [lastGenerated, setLastGenerated] = useState<Post | null>(null);
   const [error, setError] = useState('');
   const [mode, setMode] = useState<'auto' | 'custom'>('auto');
+  const [uploadingId, setUploadingId] = useState<number | null>(null);
+  const fileInputRefs = useRef<Record<number, HTMLInputElement | null>>({});
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  useEffect(() => { fetchPosts(); }, []);
 
   async function fetchPosts() {
     setLoading(true);
@@ -50,7 +51,6 @@ export default function AdminJournalPage() {
       const body = mode === 'custom'
         ? { brief: customBrief, category: customCategory, publish: true }
         : { publish: true };
-
       const res = await fetch('/api/generate-post', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -64,6 +64,52 @@ export default function AdminJournalPage() {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setGenerating(false);
+    }
+  }
+
+  async function uploadImage(post: Post, file: File) {
+    setUploadingId(post.id);
+    try {
+      const ext = file.name.split('.').pop();
+      const filename = `${post.slug}-${Date.now()}.${ext}`;
+
+      // Upload to Supabase storage
+      const uploadRes = await fetch(
+        `${supabaseUrl}/storage/v1/object/journal-images/${filename}`,
+        {
+          method: 'POST',
+          headers: {
+            'apikey': supabaseKey,
+            'Authorization': `Bearer ${supabaseKey}`,
+            'Content-Type': file.type,
+            'x-upsert': 'true',
+          },
+          body: file,
+        }
+      );
+
+      if (!uploadRes.ok) throw new Error('Upload failed');
+
+      const imageUrl = `${supabaseUrl}/storage/v1/object/public/journal-images/${filename}`;
+
+      // Save URL to post
+      const updateRes = await fetch(`${supabaseUrl}/rest/v1/posts?id=eq.${post.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
+          'Prefer': 'return=minimal',
+        },
+        body: JSON.stringify({ image_url: imageUrl }),
+      });
+
+      if (!updateRes.ok) throw new Error('Failed to save image URL');
+      await fetchPosts();
+    } catch (err) {
+      alert(err instanceof Error ? err.message : 'Upload failed');
+    } finally {
+      setUploadingId(null);
     }
   }
 
@@ -102,10 +148,13 @@ export default function AdminJournalPage() {
         .admin-btn-primary { background: #1B3A5C; color: #F5F0E8; }
         .admin-btn-primary:hover { background: #0d1b2a; }
         .admin-btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
-        .admin-btn-danger { background: transparent; color: #C8572A; border: 1px solid #C8572A; }
+        .admin-btn-danger { background: transparent; color: #C8572A; border: 1px solid #C8572A; padding: 0.4rem 0.8rem; font-size: 0.6rem; }
         .admin-btn-danger:hover { background: #C8572A; color: white; }
-        .admin-btn-ghost { background: transparent; color: #1B3A5C; border: 1px solid #DDD5C0; }
+        .admin-btn-ghost { background: transparent; color: #1B3A5C; border: 1px solid #DDD5C0; padding: 0.4rem 0.8rem; font-size: 0.6rem; }
         .admin-btn-ghost:hover { border-color: #1B3A5C; }
+        .admin-btn-upload { background: transparent; color: #9E9282; border: 1px solid #DDD5C0; padding: 0.4rem 0.8rem; font-size: 0.6rem; cursor: pointer; }
+        .admin-btn-upload:hover { border-color: #1B3A5C; color: #1B3A5C; }
+        .admin-btn-upload.has-image { border-color: #2C7A4B; color: #2C7A4B; }
         .admin-input {
           width: 100%; padding: 0.75rem 1rem;
           font-family: 'Inter', sans-serif; font-size: 0.88rem;
@@ -120,9 +169,18 @@ export default function AdminJournalPage() {
         }
         .post-row {
           display: flex; align-items: center; gap: 1rem;
-          padding: 1.2rem 1.5rem; background: #FAF8F2;
+          padding: 1rem 1.5rem; background: #FAF8F2;
           border: 1px solid #DDD5C0; margin-bottom: 2px;
           flex-wrap: wrap;
+        }
+        .post-thumb {
+          width: 56px; height: 42px; flex-shrink: 0;
+          object-fit: cover; border: 1px solid #DDD5C0;
+        }
+        .post-thumb-placeholder {
+          width: 56px; height: 42px; flex-shrink: 0;
+          background: #DDD5C0; border: 1px solid #DDD5C0;
+          display: flex; align-items: center; justify-content: center;
         }
         .mode-tab {
           font-family: 'Carose', sans-serif; font-size: 0.62rem;
@@ -134,8 +192,9 @@ export default function AdminJournalPage() {
         .mode-tab.active { background: #1B3A5C; color: #F5F0E8; border-color: #1B3A5C; }
       `}</style>
 
-      {/* Header */}
       <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+
+        {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', flexWrap: 'wrap', gap: '1rem' }}>
           <div>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.3rem' }}>Admin</p>
@@ -174,7 +233,7 @@ export default function AdminJournalPage() {
 
           {mode === 'auto' && (
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#9E9282', lineHeight: 1.65, marginBottom: '1.2rem' }}>
-              Claude will automatically select a topic from the content calendar — prioritising topics not yet covered. The post will be generated, saved to Supabase, and published instantly.
+              Claude will automatically select a topic from the content calendar. The post will be generated, saved to Supabase, and published instantly.
             </p>
           )}
 
@@ -205,7 +264,7 @@ export default function AdminJournalPage() {
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282' }}>
               All posts ({posts.length})
             </p>
-            <button className="admin-btn admin-btn-ghost" onClick={fetchPosts} style={{ padding: '0.4rem 1rem' }}>
+            <button className="admin-btn admin-btn-ghost" onClick={fetchPosts} style={{ padding: '0.4rem 1rem', fontSize: '0.62rem' }}>
               Refresh
             </button>
           </div>
@@ -215,29 +274,68 @@ export default function AdminJournalPage() {
           ) : (
             posts.map(post => (
               <div key={post.id} className="post-row">
-                <div style={{ flex: 1, minWidth: '200px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.3rem' }}>
-                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: post.published ? '#2C7A4B' : '#9E9282', border: `1px solid ${post.published ? '#2C7A4B' : '#DDD5C0'}`, padding: '0.15rem 0.5rem' }}>
+
+                {/* Thumbnail */}
+                {post.image_url ? (
+                  <img src={post.image_url} alt="" className="post-thumb" />
+                ) : (
+                  <div className="post-thumb-placeholder">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9E9282" strokeWidth="1.5">
+                      <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/>
+                    </svg>
+                  </div>
+                )}
+
+                {/* Post info */}
+                <div style={{ flex: 1, minWidth: '180px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.25rem' }}>
+                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: post.published ? '#2C7A4B' : '#9E9282', border: `1px solid ${post.published ? '#2C7A4B' : '#DDD5C0'}`, padding: '0.12rem 0.45rem' }}>
                       {post.published ? 'Live' : 'Draft'}
                     </span>
-                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9E9282' }}>{post.category}</span>
+                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9E9282' }}>{post.category}</span>
                   </div>
-                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.88rem', color: '#2C2820', textTransform: 'none', marginBottom: '0.2rem' }}>{post.title}</p>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: '#9E9282' }}>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.85rem', color: '#2C2820', textTransform: 'none', marginBottom: '0.15rem', lineHeight: 1.3 }}>{post.title}</p>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: '#9E9282' }}>
                     {new Date(post.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                   </p>
                 </div>
-                <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0 }}>
+
+                {/* Actions */}
+                <div style={{ display: 'flex', gap: '0.5rem', flexShrink: 0, flexWrap: 'wrap', alignItems: 'center' }}>
+
+                  {/* Hidden file input */}
+                  <input
+                    type="file"
+                    accept="image/*"
+                    style={{ display: 'none' }}
+                    ref={el => { fileInputRefs.current[post.id] = el; }}
+                    onChange={e => {
+                      const file = e.target.files?.[0];
+                      if (file) uploadImage(post, file);
+                      e.target.value = '';
+                    }}
+                  />
+
+                  {/* Upload button */}
+                  <button
+                    className={`admin-btn admin-btn-upload ${post.image_url ? 'has-image' : ''}`}
+                    onClick={() => fileInputRefs.current[post.id]?.click()}
+                    disabled={uploadingId === post.id}
+                    title={post.image_url ? 'Replace image' : 'Upload image'}
+                  >
+                    {uploadingId === post.id ? 'Uploading...' : post.image_url ? '✓ Image' : '+ Image'}
+                  </button>
+
                   <Link href={`/journal/${post.slug}`} target="_blank"
                     style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1B3A5C', textDecoration: 'none', border: '1px solid #DDD5C0', padding: '0.4rem 0.8rem' }}>
                     View
                   </Link>
-                  <button className="admin-btn admin-btn-ghost" style={{ padding: '0.4rem 0.8rem', fontSize: '0.6rem' }}
-                    onClick={() => togglePublished(post)}>
+
+                  <button className="admin-btn admin-btn-ghost" onClick={() => togglePublished(post)}>
                     {post.published ? 'Unpublish' : 'Publish'}
                   </button>
-                  <button className="admin-btn admin-btn-danger" style={{ padding: '0.4rem 0.8rem', fontSize: '0.6rem' }}
-                    onClick={() => deletePost(post)}>
+
+                  <button className="admin-btn admin-btn-danger" onClick={() => deletePost(post)}>
                     Delete
                   </button>
                 </div>

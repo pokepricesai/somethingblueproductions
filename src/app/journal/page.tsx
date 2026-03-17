@@ -28,6 +28,7 @@ type Post = {
   published_at: string;
   image_url: string | null;
   image_tag: string | null;
+  body: string | null;
 };
 
 async function getPosts(): Promise<Post[]> {
@@ -50,9 +51,34 @@ function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
 }
 
-function readTime(body: string): string {
+function readTime(body: string | null): string {
   const words = (body || '').split(' ').length;
   return `${Math.max(3, Math.ceil(words / 200))} min read`;
+}
+
+function PostImage({ post, aspectRatio, featured = false }: { post: Post; aspectRatio: string; featured?: boolean }) {
+  const color = categoryColors[post.category] || '#2c2820';
+  return (
+    <div style={{ aspectRatio, overflow: 'hidden', marginBottom: featured ? '1.2rem' : '1rem' }}>
+      {post.image_url ? (
+        <img
+          src={post.image_url}
+          alt={post.title}
+          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)', display: 'block' }}
+          className="post-img-inner"
+        />
+      ) : (
+        <div
+          className="post-img-inner"
+          style={{ width: '100%', height: '100%', backgroundColor: color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+        >
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center', padding: '0 1rem' }}>
+            {post.image_tag ? `${post.image_tag}-hero.jpg` : 'journal-hero.jpg'}
+          </span>
+        </div>
+      )}
+    </div>
+  );
 }
 
 export default async function JournalPage() {
@@ -69,9 +95,7 @@ export default async function JournalPage() {
         .j-grid { display: grid; grid-template-columns: 1fr; gap: 3rem; }
         .j-featured-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
         .j-post-link { text-decoration: none; display: block; }
-        .j-post-img { overflow: hidden; margin-bottom: 1.2rem; }
-        .j-post-img-inner { width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .j-post-link:hover .j-post-img-inner { transform: scale(1.04); }
+        .j-post-link:hover .post-img-inner { transform: scale(1.04); }
         .j-post-title { transition: color 0.2s; }
         .j-post-link:hover .j-post-title { color: #1B3A5C !important; }
         .j-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
@@ -114,27 +138,27 @@ export default async function JournalPage() {
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>Latest post</p>
             <div className="j-featured-grid">
               <Link href={`/journal/${featured.slug}`} className="j-post-link">
-                <div className="j-post-img" style={{ aspectRatio: '16/10' }}>
-                  <div className="j-post-img-inner" style={{ width: '100%', height: '100%', backgroundColor: categoryColors[featured.category] || '#2c2820', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.25)', textAlign: 'center' }}>
-                      {featured.image_tag ? `${featured.image_tag}-hero.jpg` : 'journal-hero.jpg'}
-                    </span>
-                  </div>
-                </div>
+                <PostImage post={featured} aspectRatio="16/10" featured />
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.6rem' }}>{featured.category}</p>
                 <h2 className="j-post-title" style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2vw, 1.6rem)', color: '#2C2820', lineHeight: 1.3, textTransform: 'none', marginBottom: '0.8rem' }}>{featured.title}</h2>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', color: '#9E9282', lineHeight: 1.7, marginBottom: '1rem' }}>{featured.excerpt}</p>
                 <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                   <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: '#9E9282' }}>{formatDate(featured.published_at)}</span>
                   <span style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: '#DDD5C0', display: 'inline-block' }} />
-                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: '#9E9282' }}>{readTime(featured.excerpt)}</span>
+                  <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: '#9E9282' }}>{readTime(featured.body)}</span>
                 </div>
               </Link>
 
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 {secondary.map(post => (
                   <Link key={post.slug} href={`/journal/${post.slug}`} className="j-post-link" style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-                    <div style={{ width: '90px', flexShrink: 0, aspectRatio: '1/1', backgroundColor: categoryColors[post.category] || '#2c2820', overflow: 'hidden' }} />
+                    <div style={{ width: '90px', flexShrink: 0, aspectRatio: '1/1', overflow: 'hidden' }}>
+                      {post.image_url ? (
+                        <img src={post.image_url} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      ) : (
+                        <div style={{ width: '100%', height: '100%', backgroundColor: categoryColors[post.category] || '#2c2820' }} />
+                      )}
+                    </div>
                     <div>
                       <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.3rem' }}>{post.category}</p>
                       <h3 className="j-post-title" style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '0.88rem', color: '#2C2820', lineHeight: 1.4, textTransform: 'none', marginBottom: '0.3rem' }}>{post.title}</h3>
@@ -159,20 +183,14 @@ export default async function JournalPage() {
             <div className="j-grid">
               {rest.map(post => (
                 <Link key={post.slug} href={`/journal/${post.slug}`} className="j-post-link">
-                  <div className="j-post-img" style={{ aspectRatio: '3/2' }}>
-                    <div className="j-post-img-inner" style={{ width: '100%', height: '100%', backgroundColor: categoryColors[post.category] || '#2c2820', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center', padding: '0 1rem' }}>
-                        {post.image_tag ? `${post.image_tag}-hero.jpg` : 'journal-hero.jpg'}
-                      </span>
-                    </div>
-                  </div>
+                  <PostImage post={post} aspectRatio="3/2" />
                   <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>{post.category}</p>
                   <h3 className="j-post-title" style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '0.95rem', color: '#2C2820', lineHeight: 1.4, textTransform: 'none', marginBottom: '0.5rem' }}>{post.title}</h3>
                   <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#5c5550', lineHeight: 1.65, marginBottom: '0.8rem' }}>{post.excerpt}</p>
                   <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
                     <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: '#9E9282' }}>{formatDate(post.published_at)}</span>
                     <span style={{ width: '3px', height: '3px', borderRadius: '50%', backgroundColor: '#DDD5C0', display: 'inline-block' }} />
-                    <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: '#9E9282' }}>{readTime(post.excerpt)}</span>
+                    <span style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: '#9E9282' }}>{readTime(post.body)}</span>
                   </div>
                 </Link>
               ))}
