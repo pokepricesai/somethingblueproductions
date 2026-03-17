@@ -57,6 +57,8 @@ export default function Nav() {
       <style>{`
         .nav-dropdown-wrap {
           position: relative;
+          display: flex;
+          align-items: center;
         }
         .nav-dropdown-wrap::after {
           content: '';
@@ -113,6 +115,32 @@ export default function Nav() {
           background: #FAF8F2;
           clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
         }
+        .nav-logo {
+          height: 36px;
+          width: auto;
+          display: block;
+          transition: opacity 0.3s;
+        }
+        .nav-logo:hover { opacity: 0.75; }
+        .nav-logo-top {
+          filter: brightness(0) invert(1);
+        }
+        .nav-logo-scrolled {
+          filter: none;
+        }
+        .nav-chevron {
+          display: inline-block;
+          width: 0;
+          height: 0;
+          border-left: 3.5px solid transparent;
+          border-right: 3.5px solid transparent;
+          border-top: 4px solid currentColor;
+          opacity: 0.6;
+          margin-left: 4px;
+          flex-shrink: 0;
+          position: relative;
+          top: 1px;
+        }
       `}</style>
 
       {/* ─── MAIN NAV ─── */}
@@ -127,15 +155,12 @@ export default function Nav() {
       }}>
 
         {/* Logo */}
-        <Link href="/" style={{
-          fontFamily: "'Stay Humble', cursive",
-          fontSize: '1.3rem',
-          color: scrolled ? '#1B3A5C' : '#ffffff',
-          textDecoration: 'none',
-          letterSpacing: '0.05em',
-          transition: 'color 0.3s',
-        }}>
-          Something Blue
+        <Link href="/" style={{ textDecoration: 'none', display: 'block', lineHeight: 0 }}>
+          <img
+            src="/logo.png"
+            alt="Something Blue Productions"
+            className={`nav-logo ${scrolled ? 'nav-logo-scrolled' : 'nav-logo-top'}`}
+          />
         </Link>
 
         {/* Desktop links */}
@@ -148,10 +173,10 @@ export default function Nav() {
                     fontFamily: "'Carose', sans-serif",
                     fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase',
                     color: textColor, textDecoration: 'none',
-                    display: 'inline-flex', alignItems: 'center', gap: '0.35rem',
+                    display: 'inline-flex', alignItems: 'center',
                   }}>
                     {link.label}
-                    <span style={{ fontSize: '0.45rem', opacity: 0.55 }}>▾</span>
+                    <span className="nav-chevron" style={{ borderTopColor: textColor }} />
                   </Link>
                   <div className="nav-dropdown">
                     {link.dropdown.map((item) => (
@@ -164,6 +189,7 @@ export default function Nav() {
                   fontFamily: "'Carose', sans-serif",
                   fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase',
                   color: textColor, textDecoration: 'none',
+                  display: 'inline-flex', alignItems: 'center',
                 }}
                   onMouseEnter={e => (e.currentTarget.style.opacity = '0.55')}
                   onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
@@ -178,6 +204,7 @@ export default function Nav() {
               color: scrolled ? '#1B3A5C' : '#ffffff', textDecoration: 'none',
               border: scrolled ? '1px solid #1B3A5C' : '1px solid rgba(255,255,255,0.5)',
               padding: '0.55rem 1.3rem', transition: 'all 0.3s',
+              display: 'inline-flex', alignItems: 'center',
             }}
               onMouseEnter={e => {
                 e.currentTarget.style.backgroundColor = scrolled ? '#1B3A5C' : 'rgba(255,255,255,0.1)';
@@ -230,11 +257,14 @@ export default function Nav() {
                   >
                     {link.label}
                     <span style={{
-                      fontSize: '1rem', opacity: 0.5,
-                      display: 'inline-block',
+                      display: 'inline-block', width: 0, height: 0,
+                      borderLeft: '5px solid transparent',
+                      borderRight: '5px solid transparent',
+                      borderTop: '6px solid rgba(245,240,232,0.5)',
                       transition: 'transform 0.2s',
                       transform: mobileExpandedItem === link.label ? 'rotate(180deg)' : 'none',
-                    }}>▾</span>
+                      flexShrink: 0,
+                    }} />
                   </button>
                   {mobileExpandedItem === link.label && (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: '0.6rem', marginBottom: '0.6rem' }}>
