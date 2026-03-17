@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Beautiful, natural wedding photography and videography across Cambridge, Cambridgeshire and beyond. Honest, unposed, and made to last.",
 };
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
 export default function WeddingsPage() {
   return (
     <>
@@ -20,13 +22,15 @@ export default function WeddingsPage() {
         .w-strip-header { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
         .w-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
         .w-cta-buttons a { text-align: center; }
+        .zoom-card { overflow: hidden; }
+        .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .zoom-card:hover .zoom-img { transform: scale(1.025); }
 
         @media (min-width: 640px) {
           .w-pad { padding: 3.5rem 2.5rem; }
           .w-testimonials-grid { grid-template-columns: 1fr 1fr; }
           .w-packages-grid { grid-template-columns: 1fr 1fr; }
         }
-
         @media (min-width: 900px) {
           .w-pad { padding: 4rem 4rem; }
           .w-services-grid { grid-template-columns: 1fr 1fr; }
@@ -44,16 +48,14 @@ export default function WeddingsPage() {
       {/* ─── HERO ─── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#5c3d30', minHeight: '90svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#5c3d30', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.15)', textAlign: 'center' }}>Wedding Hero Image</span>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>weddings-hero.jpg</span>
         </div>
+        <img src={`${STORAGE}/weddings-hero.jpg`} alt="Wedding photography Cambridge" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
         <div className="w-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>
-            Wedding Photography &amp; Video
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Wedding Photography &amp; Video</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Your day, honestly{' '}
-            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>captured.</span>
+            Your day, honestly{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>captured.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '420px' }}>
             Natural, unposed wedding photography and film across Cambridge and Cambridgeshire. We follow your day as it happens — no awkward line-ups, no forced smiles.
@@ -80,28 +82,26 @@ export default function WeddingsPage() {
       {/* ─── PHOTOGRAPHY / VIDEO SPLIT ─── */}
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="w-services-grid" style={{ maxWidth: '1300px', margin: '0 auto' }}>
-          <Link href="/weddings/photography" style={{ position: 'relative', display: 'block', aspectRatio: '4/3', backgroundColor: '#5c3d30', overflow: 'hidden', textDecoration: 'none' }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>Still images</p>
-              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>Wedding Photography</h2>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '320px' }}>Full day coverage, edited gallery, and a collection of images that genuinely feel like your day.</p>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.55)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ width: '18px', height: '1px', backgroundColor: 'currentColor', display: 'inline-block' }} />See more
-              </span>
-            </div>
-          </Link>
-          <Link href="/weddings/videography" style={{ position: 'relative', display: 'block', aspectRatio: '4/3', backgroundColor: '#3d2820', overflow: 'hidden', textDecoration: 'none' }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>Film</p>
-              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>Wedding Videography</h2>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '320px' }}>A short film of your day — the voices, the music, the moments that a photograph alone can&apos;t hold.</p>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.55)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                <span style={{ width: '18px', height: '1px', backgroundColor: 'currentColor', display: 'inline-block' }} />See more
-              </span>
-            </div>
-          </Link>
+          {[
+            { href: '/enquire', color: '#5c3d30', img: 'weddings-photography-card.jpg', label: 'Still images', title: 'Wedding Photography', desc: 'Full day coverage, edited gallery, and a collection of images that genuinely feel like your day.' },
+            { href: '/enquire', color: '#3d2820', img: 'weddings-videography-card.jpg', label: 'Film', title: 'Wedding Videography', desc: "A short film of your day — the voices, the music, the moments that a photograph alone can't hold." },
+          ].map((card) => (
+            <Link key={card.title} href={card.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '4/3', backgroundColor: card.color, textDecoration: 'none' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{card.img}</span>
+              </div>
+              <img src={`${STORAGE}/${card.img}`} alt={card.title} className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)', zIndex: 2 }} />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem', zIndex: 3 }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>{card.label}</p>
+                <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>{card.title}</h2>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '320px' }}>{card.desc}</p>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.55)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <span style={{ width: '18px', height: '1px', backgroundColor: 'currentColor', display: 'inline-block' }} />See more
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
@@ -112,17 +112,22 @@ export default function WeddingsPage() {
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>Selected weddings</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Recent work</h2>
           </div>
-          <Link href="/weddings/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all weddings</Link>
+          <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all weddings</Link>
         </div>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
           {[
-            { w: '200px', aspect: '2/3', color: '#8a6848' },
-            { w: '320px', aspect: '3/2', color: '#a08070' },
-            { w: '200px', aspect: '2/3', color: '#7a5848' },
-            { w: '260px', aspect: '4/3', color: '#906858' },
-            { w: '200px', aspect: '2/3', color: '#8a7060' },
+            { w: '200px', aspect: '2/3', color: '#8a6848', img: 'weddings-portfolio-01.jpg' },
+            { w: '320px', aspect: '3/2', color: '#a08070', img: 'weddings-portfolio-02.jpg' },
+            { w: '200px', aspect: '2/3', color: '#7a5848', img: 'weddings-portfolio-03.jpg' },
+            { w: '260px', aspect: '4/3', color: '#906858', img: 'weddings-portfolio-04.jpg' },
+            { w: '200px', aspect: '2/3', color: '#8a7060', img: 'weddings-portfolio-05.jpg' },
           ].map((item, i) => (
-            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color }} />
+            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
+              </div>
+              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+            </div>
           ))}
         </div>
       </section>
@@ -159,7 +164,7 @@ export default function WeddingsPage() {
           </div>
           <div className="w-testimonials-grid">
             {[
-              { quote: "We didn't want posed wedding photos and we couldn't be happier. Every single image feels like a real moment — not a performance. We've looked at them a hundred times.", name: 'Sarah & Tom', detail: 'Cambridge · Summer wedding' },
+              { quote: "We didn't want posed wedding photos and we couldn't be happier. Every single image feels like a real moment — not a performance.", name: 'Sarah & Tom', detail: 'Cambridge · Summer wedding' },
               { quote: "Completely unobtrusive on the day — we genuinely forgot there was a photographer there. The results are beyond anything we hoped for.", name: 'Priya & James', detail: 'Ely · Autumn wedding' },
             ].map((t, i) => (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
@@ -250,7 +255,7 @@ export default function WeddingsPage() {
             <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
               Enquire now
             </Link>
-            <Link href="/weddings/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
               See wedding portfolio
             </Link>
           </div>

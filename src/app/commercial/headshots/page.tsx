@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Creative headshots for actors, performers, models and creatives in Cambridge and Cambridgeshire. Personal, characterful portraits — not corporate.",
 };
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
 export default function HeadshotsPage() {
   return (
     <>
@@ -24,7 +26,6 @@ export default function HeadshotsPage() {
           .h-process-grid { grid-template-columns: 1fr 1fr; }
           .h-packages-grid { grid-template-columns: 1fr 1fr; }
         }
-
         @media (min-width: 900px) {
           .h-pad { padding: 4rem 4rem; }
           .h-hero-content { padding: 0 4rem 5rem; }
@@ -37,19 +38,17 @@ export default function HeadshotsPage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* HERO */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#2a2030', minHeight: '80svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#2a2030', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.15)', textAlign: 'center' }}>commercial-headshot-01.jpg</span>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>commercial-headshots-hero.jpg</span>
         </div>
+        <img src={`${STORAGE}/commercial-headshots-hero.jpg`} alt="Creative headshots Cambridge" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
         <div className="h-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>
-            Creative Headshots · Cambridge
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Creative Headshots · Cambridge</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Headshots that look like{' '}
-            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>you.</span>
+            Headshots that look like{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>you.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '440px' }}>
             For actors, performers, models and creatives. Not corporate, not stiff — personal, characterful portraits that show who you are and get you noticed.
@@ -60,7 +59,7 @@ export default function HeadshotsPage() {
         </div>
       </section>
 
-      {/* ─── INTRO ─── */}
+      {/* INTRO */}
       <section className="h-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="h-intro-grid">
@@ -76,14 +75,17 @@ export default function HeadshotsPage() {
                 Studio or location. Multiple looks if needed. Fast turnaround available for performers with casting calls or auditions coming up.
               </p>
             </div>
-            <div style={{ aspectRatio: '3/4', backgroundColor: '#2a2030', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>commercial-headshot-01.jpg</span>
+            <div style={{ aspectRatio: '3/4', backgroundColor: '#2a2030', overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>commercial-headshots-intro.jpg</span>
+              </div>
+              <img src={`${STORAGE}/commercial-headshots-intro.jpg`} alt="Creative headshot" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── WHO THIS IS FOR ─── */}
+      {/* WHO THIS IS FOR */}
       <section className="h-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -107,25 +109,28 @@ export default function HeadshotsPage() {
         </div>
       </section>
 
-      {/* ─── GALLERY STRIP ─── */}
+      {/* GALLERY STRIP */}
       <section style={{ padding: '3rem 0', backgroundColor: '#F5F0E8' }}>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
           {[
-            { w: '200px', aspect: '3/4', color: '#2a2030' },
-            { w: '200px', aspect: '3/4', color: '#302830' },
-            { w: '200px', aspect: '3/4', color: '#281828' },
-            { w: '320px', aspect: '4/3', color: '#1b2a3a' },
-            { w: '200px', aspect: '3/4', color: '#2a2838' },
-            { w: '200px', aspect: '3/4', color: '#282030' },
+            { w: '200px', aspect: '3/4', color: '#2a2030', img: 'commercial-headshots-portfolio-01.jpg' },
+            { w: '200px', aspect: '3/4', color: '#302830', img: 'commercial-headshots-portfolio-02.jpg' },
+            { w: '200px', aspect: '3/4', color: '#281828', img: 'commercial-headshots-portfolio-03.jpg' },
+            { w: '320px', aspect: '4/3', color: '#1b2a3a', img: 'commercial-headshots-portfolio-04.jpg' },
+            { w: '200px', aspect: '3/4', color: '#2a2838', img: 'commercial-headshots-portfolio-05.jpg' },
+            { w: '200px', aspect: '3/4', color: '#282030', img: 'commercial-headshots-portfolio-06.jpg' },
           ].map((item, i) => (
-            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>commercial-headshot-0{i + 1}.jpg</span>
+            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
+              </div>
+              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>
       </section>
 
-      {/* ─── PACKAGES ─── */}
+      {/* PACKAGES */}
       <section className="h-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -140,7 +145,7 @@ export default function HeadshotsPage() {
             ].map((pkg) => (
               <div key={pkg.name} style={{ padding: '2rem 1.8rem', backgroundColor: pkg.highlight ? '#1B3A5C' : 'rgba(255,255,255,0.04)', border: pkg.highlight ? 'none' : '1px solid rgba(168,202,236,0.1)' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: pkg.highlight ? '#A8CAEC' : '#9E9282', marginBottom: '0.3rem' }}>{pkg.name}</p>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.5rem', color: pkg.highlight ? '#E8DDB5' : '#E8DDB5', textTransform: 'none', marginBottom: '1.2rem' }}>{pkg.price}</p>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.5rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '1.2rem' }}>{pkg.price}</p>
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.45rem', marginBottom: '1.8rem' }}>
                   {pkg.includes.map((item) => (
                     <li key={item} style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.6)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -161,7 +166,7 @@ export default function HeadshotsPage() {
         </div>
       </section>
 
-      {/* ─── PROCESS ─── */}
+      {/* PROCESS */}
       <section className="h-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -184,23 +189,17 @@ export default function HeadshotsPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* CTA */}
       <section className="h-pad" style={{ backgroundColor: '#2a2030', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.4)', marginBottom: '1rem' }}>Book your session</p>
-          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
-            Ready for new headshots?
-          </h2>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Ready for new headshots?</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.4)', lineHeight: 1.8, marginBottom: '2rem' }}>
             Tell us what you need the images for and we&apos;ll put together the right session for you. Rush turnaround available if you have something coming up.
           </p>
           <div className="h-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#2a2030', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Book now
-            </Link>
-            <Link href="/commercial" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.2)', color: 'rgba(245,240,232,0.55)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              All commercial services
-            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#2a2030', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Book now</Link>
+            <Link href="/commercial" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.2)', color: 'rgba(245,240,232,0.55)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>All commercial services</Link>
           </div>
         </div>
       </section>

@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Our professional photography studio in Waterbeach, minutes from Cambridge city centre. Newborn, family, maternity, headshots and brand photography. Easy access via A10.",
 };
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
 export default function WaterbeachStudioPage() {
   return (
     <>
@@ -13,7 +15,6 @@ export default function WaterbeachStudioPage() {
         .wb-pad { padding: 3rem 1.5rem; }
         .wb-hero-content { padding: 0 1.5rem 6rem; }
         .wb-intro-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-        .wb-images-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
         .wb-sessions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
         .wb-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
         .wb-cta-buttons a { text-align: center; }
@@ -21,31 +22,27 @@ export default function WaterbeachStudioPage() {
         @media (min-width: 640px) {
           .wb-pad { padding: 3.5rem 2.5rem; }
         }
-
         @media (min-width: 900px) {
           .wb-pad { padding: 4rem 4rem; }
           .wb-hero-content { padding: 0 4rem 5rem; }
           .wb-intro-grid { grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-          .wb-images-grid { grid-template-columns: repeat(3, 1fr); }
           .wb-sessions-grid { grid-template-columns: repeat(3, 1fr); }
           .wb-cta-buttons { flex-direction: row; justify-content: center; }
           .wb-cta-buttons a { text-align: left; }
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* HERO */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#162d4a', minHeight: '75svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#162d4a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>studio-waterbeach-hero.jpg</span>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>studio-waterbeach-hero.jpg</span>
         </div>
+        <img src={`${STORAGE}/studio-waterbeach-hero.jpg`} alt="Waterbeach photography studio" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
         <div className="wb-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>
-            Studio · Waterbeach · CB25
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Studio · Waterbeach · CB25</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Waterbeach{' '}
-            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>Studio.</span>
+            Waterbeach{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>Studio.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '440px' }}>
             Minutes from Cambridge city centre. A warm, professional studio space for newborn, family, maternity, headshots and brand photography — accessible via the A10 and close to the city.
@@ -56,7 +53,7 @@ export default function WaterbeachStudioPage() {
         </div>
       </section>
 
-      {/* ─── INTRO ─── */}
+      {/* INTRO */}
       <section className="wb-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="wb-intro-grid">
@@ -73,18 +70,20 @@ export default function WaterbeachStudioPage() {
               </p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <div style={{ aspectRatio: '4/3', backgroundColor: '#162d4a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>studio-waterbeach-room-01.jpg</span>
-              </div>
-              <div style={{ aspectRatio: '4/3', backgroundColor: '#1b3a5c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>studio-waterbeach-room-02.jpg</span>
-              </div>
+              {['studio-waterbeach-room-01.jpg', 'studio-waterbeach-room-02.jpg'].map((img) => (
+                <div key={img} style={{ aspectRatio: '4/3', backgroundColor: '#162d4a', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{img}</span>
+                  </div>
+                  <img src={`${STORAGE}/${img}`} alt="Studio interior" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── FEATURES ─── */}
+      {/* FEATURES */}
       <section className="wb-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem' }}>
@@ -110,7 +109,7 @@ export default function WaterbeachStudioPage() {
         </div>
       </section>
 
-      {/* ─── LOCATION ─── */}
+      {/* LOCATION */}
       <section className="wb-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem' }}>
@@ -120,7 +119,7 @@ export default function WaterbeachStudioPage() {
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', color: '#5c5550', lineHeight: 1.8, marginBottom: '1.2rem' }}>
                 Waterbeach is just north of Cambridge, easily reached from the city and surrounding towns.
               </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {[
                   { from: 'Cambridge city centre', time: '10 minutes via A10' },
                   { from: 'Ely', time: '20 minutes via A10' },
@@ -136,14 +135,17 @@ export default function WaterbeachStudioPage() {
                 ))}
               </div>
             </div>
-            <div style={{ aspectRatio: '16/9', backgroundColor: '#a8b8c8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(27,58,92,0.4)', textAlign: 'center' }}>studio-waterbeach-location.jpg<br/>or Google Maps embed</span>
+            <div style={{ aspectRatio: '16/9', backgroundColor: '#a8b8c8', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(27,58,92,0.4)', textAlign: 'center' }}>studio-waterbeach-location.jpg</span>
+              </div>
+              <img src={`${STORAGE}/studio-waterbeach-location.jpg`} alt="Waterbeach location" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── SESSION TYPES ─── */}
+      {/* SESSION TYPES */}
       <section className="wb-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -155,7 +157,7 @@ export default function WaterbeachStudioPage() {
               { title: 'Newborn Photography', desc: 'Warm, baby-led newborn sessions close to Cambridge.', href: '/newborn' },
               { title: 'Family Photography', desc: 'Indoor family sessions — ideal for Cambridge-based families.', href: '/families' },
               { title: 'Maternity Photography', desc: 'Private, comfortable maternity portraits near the city.', href: '/maternity' },
-              { title: 'Headshots', desc: 'Professional headshots — convenient for Cambridge professionals.', href: '/enquire' },
+              { title: 'Headshots', desc: 'Professional headshots — convenient for Cambridge professionals.', href: '/commercial/headshots' },
               { title: 'Brand Photography', desc: 'Clean, professional brand and product photography.', href: '/commercial/brand' },
               { title: 'Mini Sessions', desc: 'Seasonal shorter sessions at a reduced rate.', href: '/enquire' },
             ].map((s) => (
@@ -168,23 +170,17 @@ export default function WaterbeachStudioPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* CTA */}
       <section className="wb-pad" style={{ backgroundColor: '#F5F0E8', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Book the Waterbeach studio</p>
-          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
-            Ready to book your session?
-          </h2>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Ready to book your session?</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#9E9282', lineHeight: 1.8, marginBottom: '2rem' }}>
             Tell us what type of session you&apos;re looking for and we&apos;ll come back to you with availability at our Waterbeach studio.
           </p>
           <div className="wb-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Enquire now
-            </Link>
-            <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              See Papworth studio
-            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire now</Link>
+            <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>See Papworth studio</Link>
           </div>
         </div>
       </section>

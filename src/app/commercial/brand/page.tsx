@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Product photography, brand visuals and small business content photography across Cambridge and Cambridgeshire. Professional images that represent your business properly.",
 };
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
 export default function BrandPage() {
   return (
     <>
@@ -22,7 +24,6 @@ export default function BrandPage() {
           .b-pad { padding: 3.5rem 2.5rem; }
           .b-process-grid { grid-template-columns: 1fr 1fr; }
         }
-
         @media (min-width: 900px) {
           .b-pad { padding: 4rem 4rem; }
           .b-hero-content { padding: 0 4rem 5rem; }
@@ -34,19 +35,17 @@ export default function BrandPage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* HERO */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#3a3020', minHeight: '80svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#3a3020', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.15)', textAlign: 'center' }}>commercial-brand-01.jpg</span>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>commercial-brand-hero.jpg</span>
         </div>
+        <img src={`${STORAGE}/commercial-brand-hero.jpg`} alt="Brand photography Cambridge" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
         <div className="b-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>
-            Brand & Business Photography · Cambridge
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Brand & Business Photography · Cambridge</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Images that represent your{' '}
-            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>business properly.</span>
+            Images that represent your{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>business properly.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '440px' }}>
             Product photography, brand visuals and small business content. Professional quality without the agency price tag or the corporate feel.
@@ -57,7 +56,7 @@ export default function BrandPage() {
         </div>
       </section>
 
-      {/* ─── INTRO ─── */}
+      {/* INTRO */}
       <section className="b-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="b-intro-grid">
@@ -70,14 +69,17 @@ export default function BrandPage() {
                 We work with product businesses, service businesses, hospitality, retail, creative studios, and anyone who needs consistent, professional images for their website, social media, or marketing. We can also use both studio spaces for product and brand work.
               </p>
             </div>
-            <div style={{ aspectRatio: '4/3', backgroundColor: '#3a3020', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>commercial-small-biz-01.jpg</span>
+            <div style={{ aspectRatio: '4/3', backgroundColor: '#3a3020', overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>commercial-brand-intro.jpg</span>
+              </div>
+              <img src={`${STORAGE}/commercial-brand-intro.jpg`} alt="Brand photography" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── WHAT WE SHOOT ─── */}
+      {/* WHAT WE SHOOT */}
       <section className="b-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -86,12 +88,12 @@ export default function BrandPage() {
           </div>
           <div className="b-services-grid">
             {[
-              { title: 'Product Photography', desc: 'Clean, consistent product images for e-commerce, websites and print. Studio or location-based.', color: '#3a3020' },
-              { title: 'Brand & Lifestyle', desc: 'Images that show your brand in context — how you work, what you make, who you are.', color: '#302818' },
-              { title: 'Social Media Content', desc: 'A library of images shot in a consistent style, ready to use across your social channels.', color: '#3a2818' },
-              { title: 'Team & People', desc: 'Individual and team portraits for websites, LinkedIn and marketing materials.', color: '#282820' },
-              { title: 'Studio Hire', desc: 'Use our Papworth Everard or Waterbeach studios for your own brand shoot.', color: '#202830' },
-              { title: 'Bespoke Projects', desc: "Have something specific in mind? Tell us what you need — if we can do it, we will.", color: '#283028' },
+              { title: 'Product Photography', desc: 'Clean, consistent product images for e-commerce, websites and print. Studio or location-based.' },
+              { title: 'Brand & Lifestyle', desc: 'Images that show your brand in context — how you work, what you make, who you are.' },
+              { title: 'Social Media Content', desc: 'A library of images shot in a consistent style, ready to use across your social channels.' },
+              { title: 'Team & People', desc: 'Individual and team portraits for websites, LinkedIn and marketing materials.' },
+              { title: 'Studio Hire', desc: 'Use our Papworth Everard or Waterbeach studios for your own brand shoot.' },
+              { title: 'Bespoke Projects', desc: "Have something specific in mind? Tell us what you need — if we can do it, we will." },
             ].map((s) => (
               <div key={s.title} style={{ padding: '2rem 1.5rem', backgroundColor: '#E8DDB5' }}>
                 <div style={{ width: '20px', height: '1px', backgroundColor: '#1B3A5C', marginBottom: '1rem' }} />
@@ -103,7 +105,7 @@ export default function BrandPage() {
         </div>
       </section>
 
-      {/* ─── PROCESS ─── */}
+      {/* PROCESS */}
       <section className="b-pad" style={{ backgroundColor: '#2c2820' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -126,23 +128,17 @@ export default function BrandPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* CTA */}
       <section className="b-pad" style={{ backgroundColor: '#F5F0E8', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Start a project</p>
-          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
-            Tell us about your business
-          </h2>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Tell us about your business</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#9E9282', lineHeight: 1.8, marginBottom: '2rem' }}>
             A brief description of what you do and what you need is enough to start. We&apos;ll come back to you with a clear, honest quote.
           </p>
           <div className="b-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Get a quote
-            </Link>
-            <Link href="/commercial" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              All commercial services
-            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Get a quote</Link>
+            <Link href="/commercial" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>All commercial services</Link>
           </div>
         </div>
       </section>

@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Our warm, professional photography studio in Papworth Everard, Cambridgeshire. Newborn, family, maternity, headshots and brand photography. Easy access from Cambridge, Huntingdon and the A14.",
 };
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
 export default function PapworthStudioPage() {
   return (
     <>
@@ -13,39 +15,37 @@ export default function PapworthStudioPage() {
         .pe-pad { padding: 3rem 1.5rem; }
         .pe-hero-content { padding: 0 1.5rem 6rem; }
         .pe-intro-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
-        .pe-images-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
         .pe-sessions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
         .pe-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
         .pe-cta-buttons a { text-align: center; }
+        .zoom-card { overflow: hidden; }
+        .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .zoom-card:hover .zoom-img { transform: scale(1.025); }
 
         @media (min-width: 640px) {
           .pe-pad { padding: 3.5rem 2.5rem; }
         }
-
         @media (min-width: 900px) {
           .pe-pad { padding: 4rem 4rem; }
           .pe-hero-content { padding: 0 4rem 5rem; }
           .pe-intro-grid { grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
-          .pe-images-grid { grid-template-columns: repeat(3, 1fr); }
           .pe-sessions-grid { grid-template-columns: repeat(3, 1fr); }
           .pe-cta-buttons { flex-direction: row; justify-content: center; }
           .pe-cta-buttons a { text-align: left; }
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* HERO */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#1b3a5c', minHeight: '75svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#1b3a5c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>studio-papworth-hero.jpg</span>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>studio-papworth-hero.jpg</span>
         </div>
+        <img src={`${STORAGE}/studio-papworth-hero.jpg`} alt="Papworth Everard photography studio" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
         <div className="pe-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>
-            Studio · Papworth Everard · CB23
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Studio · Papworth Everard · CB23</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Papworth Everard{' '}
-            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>Studio.</span>
+            Papworth Everard{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>Studio.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '440px' }}>
             Our main studio in Cambridgeshire. Warm, airy, and set up for newborn, family and maternity sessions. Accessible from Cambridge, Huntingdon and the A14 corridor.
@@ -56,7 +56,7 @@ export default function PapworthStudioPage() {
         </div>
       </section>
 
-      {/* ─── INTRO ─── */}
+      {/* INTRO */}
       <section className="pe-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="pe-intro-grid">
@@ -73,18 +73,20 @@ export default function PapworthStudioPage() {
               </p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <div style={{ aspectRatio: '4/3', backgroundColor: '#1b3a5c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>studio-papworth-room-01.jpg</span>
-              </div>
-              <div style={{ aspectRatio: '4/3', backgroundColor: '#162d4a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>studio-papworth-room-02.jpg</span>
-              </div>
+              {['studio-papworth-room-01.jpg', 'studio-papworth-room-02.jpg'].map((img) => (
+                <div key={img} style={{ aspectRatio: '4/3', backgroundColor: '#1b3a5c', position: 'relative', overflow: 'hidden' }}>
+                  <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{img}</span>
+                  </div>
+                  <img src={`${STORAGE}/${img}`} alt="Studio interior" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── FEATURES ─── */}
+      {/* FEATURES */}
       <section className="pe-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem' }}>
@@ -110,7 +112,7 @@ export default function PapworthStudioPage() {
         </div>
       </section>
 
-      {/* ─── LOCATION ─── */}
+      {/* LOCATION */}
       <section className="pe-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2rem' }}>
@@ -136,14 +138,17 @@ export default function PapworthStudioPage() {
                 ))}
               </div>
             </div>
-            <div style={{ aspectRatio: '16/9', backgroundColor: '#a8b8c8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(27,58,92,0.4)', textAlign: 'center' }}>studio-papworth-location.jpg<br/>or Google Maps embed</span>
+            <div style={{ aspectRatio: '16/9', backgroundColor: '#a8b8c8', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(27,58,92,0.4)', textAlign: 'center' }}>studio-papworth-location.jpg</span>
+              </div>
+              <img src={`${STORAGE}/studio-papworth-location.jpg`} alt="Papworth Everard location" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── SESSION TYPES ─── */}
+      {/* SESSION TYPES */}
       <section className="pe-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -155,7 +160,7 @@ export default function PapworthStudioPage() {
               { title: 'Newborn Photography', desc: 'Baby-led sessions in our warm studio. Most popular use of this space.', href: '/newborn' },
               { title: 'Family Photography', desc: 'Beautiful indoor family sessions. Great for winter and younger children.', href: '/families' },
               { title: 'Maternity Photography', desc: 'Elegant maternity portraits in a private, comfortable space.', href: '/maternity' },
-              { title: 'Headshots', desc: 'Professional headshots for individuals and small teams.', href: '/enquire' },
+              { title: 'Headshots', desc: 'Professional headshots for individuals and small teams.', href: '/commercial/headshots' },
               { title: 'Brand Photography', desc: 'Product and brand photography for local businesses.', href: '/commercial/brand' },
               { title: 'Mini Sessions', desc: 'Seasonal shorter sessions at a reduced rate.', href: '/enquire' },
             ].map((s) => (
@@ -168,23 +173,17 @@ export default function PapworthStudioPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* CTA */}
       <section className="pe-pad" style={{ backgroundColor: '#F5F0E8', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Book the Papworth studio</p>
-          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
-            Ready to book your session?
-          </h2>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Ready to book your session?</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#9E9282', lineHeight: 1.8, marginBottom: '2rem' }}>
             Tell us what type of session you&apos;re looking for and we&apos;ll come back to you with availability at our Papworth Everard studio.
           </p>
           <div className="pe-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Enquire now
-            </Link>
-            <Link href="/studio/waterbeach" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              See Waterbeach studio
-            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire now</Link>
+            <Link href="/studio/waterbeach" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>See Waterbeach studio</Link>
           </div>
         </div>
       </section>

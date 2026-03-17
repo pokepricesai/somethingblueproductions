@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Two warm, professional photography studios in Papworth Everard and Waterbeach. Newborn, family, maternity, headshots and brand photography — indoors, whatever the weather.",
 };
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
 export default function StudioPage() {
   return (
     <>
@@ -20,6 +22,9 @@ export default function StudioPage() {
         .s-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
         .s-cta-buttons a { text-align: center; }
         .s-strip-header { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+        .zoom-card { overflow: hidden; }
+        .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .zoom-card:hover .zoom-img { transform: scale(1.025); }
 
         @media (min-width: 640px) {
           .s-pad { padding: 3.5rem 2.5rem; }
@@ -27,7 +32,6 @@ export default function StudioPage() {
           .s-testimonials-grid { grid-template-columns: 1fr 1fr; }
           .s-sessions-grid { grid-template-columns: repeat(3, 1fr); }
         }
-
         @media (min-width: 900px) {
           .s-pad { padding: 4rem 4rem; }
           .s-hero-content { padding: 0 4rem 5rem; }
@@ -40,19 +44,17 @@ export default function StudioPage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* HERO */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#1b3a5c', minHeight: '80svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#1b3a5c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>studio-sessions-hero.jpg</span>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>studio-hero.jpg</span>
         </div>
+        <img src={`${STORAGE}/studio-hero.jpg`} alt="Studio photography Cambridge" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
         <div className="s-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>
-            Studio Photography · Cambridgeshire
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Studio Photography · Cambridgeshire</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Two studios.{' '}
-            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>One county.</span>
+            Two studios.{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>One county.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '440px' }}>
             Warm, professional studio spaces in Papworth Everard and Waterbeach. Newborn, family, maternity, headshots and brand photography — indoors, whatever the weather.
@@ -63,7 +65,7 @@ export default function StudioPage() {
         </div>
       </section>
 
-      {/* ─── INTRO ─── */}
+      {/* INTRO */}
       <section className="s-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto', textAlign: 'center' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>Why studio?</p>
@@ -76,81 +78,63 @@ export default function StudioPage() {
         </div>
       </section>
 
-      {/* ─── TWO STUDIOS ─── */}
+      {/* TWO STUDIOS */}
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="s-studios-grid" style={{ maxWidth: '1300px', margin: '0 auto' }}>
-
-          {/* Papworth */}
-          <div style={{ backgroundColor: '#0d1b2a', overflow: 'hidden' }}>
-            <div style={{ aspectRatio: '4/3', backgroundColor: '#1b3a5c', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>studio-papworth-interior-01.jpg</span>
-            </div>
-            <div style={{ padding: '2rem' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Studio One</p>
-              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.7rem' }}>Papworth Everard</h2>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.55)', lineHeight: 1.75, marginBottom: '1.2rem' }}>
-                Our main studio space in Cambridgeshire. Warm, airy, and set up for newborn, family and maternity sessions. Accessible from Cambridge, Huntingdon and the A14 corridor.
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                {['Heated for newborn sessions', 'Natural and artificial lighting', 'Parking directly outside', 'Accessible from A14 and Cambridge', 'Props and backdrops provided'].map((f) => (
-                  <div key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                    <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#A8CAEC', flexShrink: 0, display: 'inline-block' }} />
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'rgba(245,240,232,0.55)' }}>{f}</p>
-                  </div>
-                ))}
+          {[
+            { tag: 'Studio One', name: 'Papworth Everard', desc: 'Our main studio space in Cambridgeshire. Warm, airy, and set up for newborn, family and maternity sessions. Accessible from Cambridge, Huntingdon and the A14 corridor.', href: '/studio/papworth-everard', color: '#1b3a5c', img: 'studio-papworth-interior-01.jpg', features: ['Heated for newborn sessions', 'Natural and artificial lighting', 'Parking directly outside', 'Accessible from A14 and Cambridge', 'Props and backdrops provided'] },
+            { tag: 'Studio Two', name: 'Waterbeach', desc: 'Minutes from Cambridge city centre and the A10. Perfect for families based in or around Cambridge, and for headshot and commercial sessions close to the city.', href: '/studio/waterbeach', color: '#162d4a', img: 'studio-waterbeach-interior-01.jpg', features: ['Minutes from Cambridge city centre', 'Natural and artificial lighting', 'Easy A10 access', 'Suitable for all session types', 'Props and backdrops provided'] },
+          ].map((studio) => (
+            <div key={studio.name} style={{ backgroundColor: '#0d1b2a', overflow: 'hidden' }}>
+              <div style={{ aspectRatio: '4/3', backgroundColor: studio.color, position: 'relative', overflow: 'hidden' }}>
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{studio.img}</span>
+                </div>
+                <img src={`${STORAGE}/${studio.img}`} alt={studio.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
               </div>
-              <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)', paddingBottom: '2px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                About this studio →
-              </Link>
-            </div>
-          </div>
-
-          {/* Waterbeach */}
-          <div style={{ backgroundColor: '#0d1b2a', overflow: 'hidden' }}>
-            <div style={{ aspectRatio: '4/3', backgroundColor: '#162d4a', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>studio-waterbeach-interior-01.jpg</span>
-            </div>
-            <div style={{ padding: '2rem' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Studio Two</p>
-              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.7rem' }}>Waterbeach</h2>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.55)', lineHeight: 1.75, marginBottom: '1.2rem' }}>
-                Minutes from Cambridge city centre and the A10. Perfect for families based in or around Cambridge, and for headshot and commercial sessions close to the city.
-              </p>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                {['Minutes from Cambridge city centre', 'Natural and artificial lighting', 'Easy A10 access', 'Suitable for all session types', 'Props and backdrops provided'].map((f) => (
-                  <div key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                    <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#A8CAEC', flexShrink: 0, display: 'inline-block' }} />
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'rgba(245,240,232,0.55)' }}>{f}</p>
-                  </div>
-                ))}
+              <div style={{ padding: '2rem' }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>{studio.tag}</p>
+                <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.7rem' }}>{studio.name}</h2>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.55)', lineHeight: 1.75, marginBottom: '1.2rem' }}>{studio.desc}</p>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                  {studio.features.map((f) => (
+                    <div key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                      <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#A8CAEC', flexShrink: 0, display: 'inline-block' }} />
+                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'rgba(245,240,232,0.55)' }}>{f}</p>
+                    </div>
+                  ))}
+                </div>
+                <Link href={studio.href} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)', paddingBottom: '2px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                  About this studio →
+                </Link>
               </div>
-              <Link href="/studio/waterbeach" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)', paddingBottom: '2px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                About this studio →
-              </Link>
             </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* ─── SESSION TYPES ─── */}
+      {/* SESSION TYPES */}
       <section className="s-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>What we offer</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Studio session types</h2>
           </div>
-          <div className="s-sessions-grid" style={{ marginBottom: '0' }}>
+          <div className="s-sessions-grid">
             {[
-              { title: 'Newborn', desc: 'Baby-led sessions in our warm, calm studio. The most popular use of our studio spaces.', href: '/newborn', color: '#c8b8a0' },
-              { title: 'Family', desc: 'Indoor family sessions with beautiful controlled light. Great for winter and younger children.', href: '/families', color: '#a0b0a0' },
-              { title: 'Maternity', desc: 'Elegant maternity portraits. Studio light flatters beautifully and sessions are private and comfortable.', href: '/maternity', color: '#b0a8b8' },
-              { title: 'Headshots', desc: 'Professional headshots for individuals and teams. Clean, modern results in a relaxed environment.', href: '/enquire', color: '#a8b8c8' },
-              { title: 'Brand & Small Business', desc: 'Product, brand and business photography. Consistent, commercial-quality results.', href: '/commercial/brand', color: '#b8a898' },
-              { title: 'Mini Sessions', desc: 'Shorter, seasonal sessions at a reduced rate. Perfect for quick updates or gifts.', href: '/enquire', color: '#c0b8a8' },
+              { title: 'Newborn', desc: 'Baby-led sessions in our warm, calm studio. The most popular use of our studio spaces.', href: '/newborn', color: '#c8b8a0', img: 'studio-session-newborn.jpg' },
+              { title: 'Family', desc: 'Indoor family sessions with beautiful controlled light. Great for winter and younger children.', href: '/families', color: '#a0b0a0', img: 'studio-session-family.jpg' },
+              { title: 'Maternity', desc: 'Elegant maternity portraits. Studio light flatters beautifully and sessions are private and comfortable.', href: '/maternity', color: '#b0a8b8', img: 'studio-session-maternity.jpg' },
+              { title: 'Headshots', desc: 'Professional headshots for individuals and teams. Clean, modern results in a relaxed environment.', href: '/commercial/headshots', color: '#a8b8c8', img: 'studio-session-headshots.jpg' },
+              { title: 'Brand & Small Business', desc: 'Product, brand and business photography. Consistent, commercial-quality results.', href: '/commercial/brand', color: '#b8a898', img: 'studio-session-brand.jpg' },
+              { title: 'Mini Sessions', desc: 'Shorter, seasonal sessions at a reduced rate. Perfect for quick updates or gifts.', href: '/enquire', color: '#c0b8a8', img: 'studio-session-mini.jpg' },
             ].map((session) => (
-              <Link key={session.title} href={session.href} style={{ textDecoration: 'none', display: 'block' }}>
-                <div style={{ aspectRatio: '3/2', backgroundColor: session.color, marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.35)', textAlign: 'center' }}>{session.title}</span>
+              <Link key={session.title} href={session.href} className="zoom-card" style={{ textDecoration: 'none', display: 'block' }}>
+                <div style={{ aspectRatio: '3/2', backgroundColor: session.color, marginBottom: '1rem', position: 'relative' }}>
+                  <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{session.img}</span>
+                  </div>
+                  <img src={`${STORAGE}/${session.img}`} alt={session.title} className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
                 </div>
                 <h3 style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.88rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.4rem' }}>{session.title}</h3>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#5c5550', lineHeight: 1.65 }}>{session.desc}</p>
@@ -160,7 +144,7 @@ export default function StudioPage() {
         </div>
       </section>
 
-      {/* ─── GALLERY STRIP ─── */}
+      {/* GALLERY STRIP */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="s-strip-header" style={{ marginBottom: '1.5rem', padding: '0 1.5rem' }}>
           <div>
@@ -171,19 +155,24 @@ export default function StudioPage() {
         </div>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
           {[
-            { w: '180px', aspect: '3/4', color: '#c8b0a0' },
-            { w: '280px', aspect: '4/3', color: '#a8b8c8' },
-            { w: '180px', aspect: '3/4', color: '#b0a8b8' },
-            { w: '280px', aspect: '4/3', color: '#c0b8a8' },
-            { w: '180px', aspect: '3/4', color: '#a0b0a0' },
-            { w: '280px', aspect: '4/3', color: '#b8a898' },
+            { w: '180px', aspect: '3/4', color: '#c8b0a0', img: 'studio-portfolio-01.jpg' },
+            { w: '280px', aspect: '4/3', color: '#a8b8c8', img: 'studio-portfolio-02.jpg' },
+            { w: '180px', aspect: '3/4', color: '#b0a8b8', img: 'studio-portfolio-03.jpg' },
+            { w: '280px', aspect: '4/3', color: '#c0b8a8', img: 'studio-portfolio-04.jpg' },
+            { w: '180px', aspect: '3/4', color: '#a0b0a0', img: 'studio-portfolio-05.jpg' },
+            { w: '280px', aspect: '4/3', color: '#b8a898', img: 'studio-portfolio-06.jpg' },
           ].map((item, i) => (
-            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color }} />
+            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
+              </div>
+              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+            </div>
           ))}
         </div>
       </section>
 
-      {/* ─── FEATURES ─── */}
+      {/* FEATURES */}
       <section className="s-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -207,7 +196,7 @@ export default function StudioPage() {
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS ─── */}
+      {/* TESTIMONIALS */}
       <section className="s-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
@@ -232,7 +221,7 @@ export default function StudioPage() {
         </div>
       </section>
 
-      {/* ─── FAQs ─── */}
+      {/* FAQs */}
       <section className="s-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div className="s-faqs">
           <div style={{ marginBottom: '2.5rem' }}>
@@ -257,23 +246,17 @@ export default function StudioPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* CTA */}
       <section className="s-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Book a studio session</p>
-          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
-            Ready to book your studio session?
-          </h2>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Ready to book your studio session?</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.45)', lineHeight: 1.8, marginBottom: '2rem' }}>
             Tell us what type of session you&apos;re looking for and which studio location works best for you. We&apos;ll come back to you quickly with availability.
           </p>
           <div className="s-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Enquire now
-            </Link>
-            <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              View Papworth studio
-            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire now</Link>
+            <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>View Papworth studio</Link>
           </div>
         </div>
       </section>

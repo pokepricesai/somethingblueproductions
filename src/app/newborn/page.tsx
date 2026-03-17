@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Gentle, unhurried newborn photography at our studios in Papworth Everard and Waterbeach, or in your home. Baby-led sessions in a calm, warm environment.",
 };
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
 export default function NewbornPage() {
   return (
     <>
@@ -14,7 +16,6 @@ export default function NewbornPage() {
         .n-hero-content { padding: 0 1.5rem 6rem; }
         .n-intro-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
         .n-options-grid { display: grid; grid-template-columns: 1fr; gap: 2px; }
-        .n-gallery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
         .n-process-grid { display: grid; grid-template-columns: 1fr; gap: 2px; }
         .n-testimonials-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
         .n-packages-grid { display: grid; grid-template-columns: 1fr; gap: 2px; }
@@ -22,21 +23,21 @@ export default function NewbornPage() {
         .n-strip-header { display: flex; flex-direction: column; gap: 0.5rem; align-items: flex-start; }
         .n-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
         .n-cta-buttons a { text-align: center; }
+        .zoom-card { overflow: hidden; }
+        .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .zoom-card:hover .zoom-img { transform: scale(1.025); }
 
         @media (min-width: 640px) {
           .n-pad { padding: 3.5rem 2.5rem; }
           .n-options-grid { grid-template-columns: 1fr 1fr; }
           .n-testimonials-grid { grid-template-columns: 1fr 1fr; }
           .n-packages-grid { grid-template-columns: 1fr 1fr; }
-          .n-gallery-grid { grid-template-columns: repeat(3, 1fr); }
         }
-
         @media (min-width: 900px) {
           .n-pad { padding: 4rem 4rem; }
           .n-hero-content { padding: 0 4rem 5rem; }
           .n-intro-grid { grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
           .n-options-grid { grid-template-columns: repeat(3, 1fr); }
-          .n-gallery-grid { grid-template-columns: repeat(6, 1fr); }
           .n-process-grid { grid-template-columns: repeat(4, 1fr); }
           .n-testimonials-grid { grid-template-columns: 1fr 1fr; }
           .n-packages-grid { grid-template-columns: repeat(3, 1fr); }
@@ -47,19 +48,17 @@ export default function NewbornPage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* HERO */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#4a3830', minHeight: '90svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.15) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.65) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#4a3830', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.15)', textAlign: 'center' }}>newborn-hero.jpg</span>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>newborn-hero.jpg</span>
         </div>
+        <img src={`${STORAGE}/newborn-hero.jpg`} alt="Newborn photography Cambridgeshire" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
         <div className="n-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>
-            Newborn Photography · Cambridgeshire
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Newborn Photography · Cambridgeshire</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            The very{' '}
-            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>first days.</span>
+            The very{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>first days.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '420px' }}>
             Gentle, unhurried newborn sessions in our warm studios or in your home. Baby-led, calm, and completely at your pace. No rushing, no rigid poses — just your new family, documented with care.
@@ -70,7 +69,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* ─── INTRO ─── */}
+      {/* INTRO */}
       <section className="n-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="n-intro-grid">
@@ -86,19 +85,22 @@ export default function NewbornPage() {
                 We also capture parent and sibling portraits during every session — these are often the images families treasure most.
               </p>
             </div>
-            <div style={{ aspectRatio: '3/4', backgroundColor: '#c8b8a0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', textAlign: 'center' }}>newborn-gallery-01.jpg</span>
+            <div style={{ aspectRatio: '3/4', backgroundColor: '#c8b8a0', overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>newborn-intro.jpg</span>
+              </div>
+              <img src={`${STORAGE}/newborn-intro.jpg`} alt="Newborn session" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'relative', zIndex: 1 }} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── TRUST SIGNALS ─── */}
+      {/* TRUST SIGNALS */}
       <section className="n-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2px' }}>
             {[
-              { title: 'Baby-led timing', desc: 'Sessions follow your baby\'s lead entirely. Feeds, nappy changes, settling — all built in naturally.' },
+              { title: 'Baby-led timing', desc: "Sessions follow your baby's lead entirely. Feeds, nappy changes, settling — all built in naturally." },
               { title: 'Heated studios', desc: 'Both studios are kept warm throughout. Your baby will be comfortable from the moment you arrive.' },
               { title: 'Best within 14 days', desc: 'Newborn sessions work best in the first two weeks. We recommend booking during pregnancy to secure your date.' },
               { title: 'No rigid poses', desc: 'We create natural, gentle images. Nothing forced, nothing uncomfortable. Safety is always our first priority.' },
@@ -113,7 +115,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* ─── SESSION OPTIONS ─── */}
+      {/* SESSION OPTIONS */}
       <section className="n-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -122,37 +124,22 @@ export default function NewbornPage() {
           </div>
           <div className="n-options-grid" style={{ marginBottom: '1rem' }}>
             {[
-              {
-                title: 'Papworth Everard Studio',
-                sub: 'Cambridgeshire · CB23',
-                desc: 'Our warm, airy studio space near Cambridge. Accessible from Huntingdon, the A14 corridor, and Cambridge city. The most popular option for newborn sessions.',
-                href: '/studio/papworth-everard',
-                color: '#1b3a5c',
-              },
-              {
-                title: 'Waterbeach Studio',
-                sub: 'Near Cambridge · CB25',
-                desc: 'Minutes from Cambridge city centre. Ideal for families based in Cambridge or the A10 corridor. Same warm, calm environment as our Papworth studio.',
-                href: '/studio/waterbeach',
-                color: '#162d4a',
-              },
-              {
-                title: 'Your Home',
-                sub: 'Cambridgeshire & surrounding areas',
-                desc: 'Prefer to stay at home? We can come to you. Home sessions have a beautiful natural feel — your own light, your own surroundings. Available within Cambridgeshire.',
-                href: '/enquire',
-                color: '#4a3830',
-              },
+              { title: 'Papworth Everard Studio', sub: 'Cambridgeshire · CB23', desc: 'Our warm, airy studio space near Cambridge. Accessible from Huntingdon, the A14 corridor, and Cambridge city. The most popular option for newborn sessions.', href: '/studio/papworth-everard', color: '#1b3a5c', img: 'studio-papworth-hero.jpg' },
+              { title: 'Waterbeach Studio', sub: 'Near Cambridge · CB25', desc: 'Minutes from Cambridge city centre. Ideal for families based in Cambridge or the A10 corridor. Same warm, calm environment as our Papworth studio.', href: '/studio/waterbeach', color: '#162d4a', img: 'studio-waterbeach-hero.jpg' },
+              { title: 'Your Home', sub: 'Cambridgeshire & surrounding areas', desc: 'Prefer to stay at home? We can come to you. Home sessions have a beautiful natural feel — your own light, your own surroundings. Available within Cambridgeshire.', href: '/enquire', color: '#4a3830', img: 'newborn-home-card.jpg' },
             ].map((opt) => (
-              <Link key={opt.href} href={opt.href} style={{ position: 'relative', display: 'block', aspectRatio: '4/3', backgroundColor: opt.color, overflow: 'hidden', textDecoration: 'none' }}>
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 55%)' }} />
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem' }}>
+              <Link key={opt.title} href={opt.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '4/3', backgroundColor: opt.color, textDecoration: 'none' }}>
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
+                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{opt.img}</span>
+                </div>
+                <img src={`${STORAGE}/${opt.img}`} alt={opt.title} className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 55%)', zIndex: 2 }} />
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem', zIndex: 3 }}>
                   <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.7)', marginBottom: '0.3rem' }}>{opt.sub}</p>
                   <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1rem, 2vw, 1.4rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.6rem' }}>{opt.title}</h3>
                   <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: 'rgba(245,240,232,0.6)', lineHeight: 1.65, marginBottom: '0.8rem' }}>{opt.desc}</p>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ width: '16px', height: '1px', backgroundColor: 'currentColor', display: 'inline-block' }} />
-                    Find out more
+                    <span style={{ width: '16px', height: '1px', backgroundColor: 'currentColor', display: 'inline-block' }} />Find out more
                   </span>
                 </div>
               </Link>
@@ -161,32 +148,35 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* ─── GALLERY STRIP ─── */}
+      {/* GALLERY STRIP */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="n-strip-header" style={{ marginBottom: '1.5rem', padding: '0 1.5rem' }}>
           <div>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>Recent sessions</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Newborn work</h2>
           </div>
-          <Link href="/newborn-maternity/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all newborn sessions</Link>
+          <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all newborn sessions</Link>
         </div>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
           {[
-            { w: '180px', aspect: '3/4', color: '#c8b0a0', label: 'newborn-gallery-01.jpg' },
-            { w: '180px', aspect: '3/4', color: '#b8a898', label: 'newborn-gallery-02.jpg' },
-            { w: '280px', aspect: '4/3', color: '#d0c0b0', label: 'newborn-gallery-03.jpg' },
-            { w: '180px', aspect: '3/4', color: '#c0b0a8', label: 'newborn-gallery-04.jpg' },
-            { w: '280px', aspect: '4/3', color: '#b8c0b8', label: 'newborn-gallery-05.jpg' },
-            { w: '180px', aspect: '3/4', color: '#c8b8b0', label: 'newborn-gallery-06.jpg' },
+            { w: '180px', aspect: '3/4', color: '#c8b0a0', img: 'newborn-portfolio-01.jpg' },
+            { w: '180px', aspect: '3/4', color: '#b8a898', img: 'newborn-portfolio-02.jpg' },
+            { w: '280px', aspect: '4/3', color: '#d0c0b0', img: 'newborn-portfolio-03.jpg' },
+            { w: '180px', aspect: '3/4', color: '#c0b0a8', img: 'newborn-portfolio-04.jpg' },
+            { w: '280px', aspect: '4/3', color: '#b8c0b8', img: 'newborn-portfolio-05.jpg' },
+            { w: '180px', aspect: '3/4', color: '#c8b8b0', img: 'newborn-portfolio-06.jpg' },
           ].map((item, i) => (
-            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(74,56,48,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.label}</span>
+            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
+              </div>
+              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>
       </section>
 
-      {/* ─── WHAT TO EXPECT ─── */}
+      {/* WHAT TO EXPECT */}
       <section className="n-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -210,7 +200,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS ─── */}
+      {/* TESTIMONIALS */}
       <section className="n-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
@@ -235,7 +225,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* ─── PACKAGES ─── */}
+      {/* PACKAGES */}
       <section className="n-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -271,7 +261,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* ─── FAQs ─── */}
+      {/* FAQs */}
       <section className="n-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div className="n-faqs">
           <div style={{ marginBottom: '2.5rem' }}>
@@ -297,12 +287,15 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* ─── MATERNITY CROSSLINK ─── */}
+      {/* MATERNITY CROSSLINK */}
       <section className="n-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr', gap: '2rem', alignItems: 'center' }}>
-          <div style={{ aspectRatio: '16/7', backgroundColor: '#4a3830', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>maternity-hero.jpg</span>
-          </div>
+          <Link href="/maternity" className="zoom-card" style={{ display: 'block', aspectRatio: '16/7', backgroundColor: '#4a3830', textDecoration: 'none', position: 'relative' }}>
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>maternity-hero.jpg</span>
+            </div>
+            <img src={`${STORAGE}/maternity-hero.jpg`} alt="Maternity photography" className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+          </Link>
           <div>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>Also available</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.8rem' }}>Maternity Photography</h2>
@@ -316,23 +309,17 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* CTA */}
       <section className="n-pad" style={{ backgroundColor: '#F5F0E8', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Book your session</p>
-          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
-            Ready to secure your date?
-          </h2>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Ready to secure your date?</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#9E9282', lineHeight: 1.8, marginBottom: '2rem' }}>
             We recommend booking during pregnancy. Send us a message with your due date and preferred studio location and we&apos;ll provisionally hold a date for you.
           </p>
           <div className="n-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Enquire now
-            </Link>
-            <Link href="/newborn-maternity/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              See newborn portfolio
-            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire now</Link>
+            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>See newborn portfolio</Link>
           </div>
         </div>
       </section>

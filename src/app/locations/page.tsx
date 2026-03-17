@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "Wedding, family, newborn and commercial photography across Cambridgeshire and surrounding areas. Based in Cambridge with studios in Papworth Everard and Waterbeach.",
 };
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
 const supabase = createClient(
   'https://knwyfoqmlwbxtfhvkbmc.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y'
@@ -29,6 +31,9 @@ export default async function LocationsPage() {
         .loc-cta-buttons a { text-align: center; }
         .loc-card { text-decoration: none; display: block; padding: 1.8rem; background: #FAF8F2; border: 1px solid #DDD5C0; transition: border-color 0.2s; }
         .loc-card:hover { border-color: #1B3A5C; }
+        .zoom-card { overflow: hidden; }
+        .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .zoom-card:hover .zoom-img { transform: scale(1.025); }
 
         @media (min-width: 640px) {
           .loc-pad { padding: 3.5rem 2.5rem; }
@@ -36,7 +41,6 @@ export default async function LocationsPage() {
           .loc-grid { grid-template-columns: repeat(3, 1fr); }
           .loc-services-grid { grid-template-columns: repeat(4, 1fr); }
         }
-
         @media (min-width: 900px) {
           .loc-pad { padding: 4rem 4rem; }
           .loc-hero { padding: 10rem 4rem 5rem; }
@@ -46,12 +50,10 @@ export default async function LocationsPage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* HERO */}
       <section style={{ backgroundColor: '#0d1b2a' }}>
         <div className="loc-hero" style={{ maxWidth: '700px' }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>
-            Where we work
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Where we work</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4rem)', lineHeight: 1.1, color: '#E8DDB5', textTransform: 'none', marginBottom: '1.2rem' }}>
             Photography across{' '}
             <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)' }}>Cambridgeshire.</span>
@@ -62,7 +64,7 @@ export default async function LocationsPage() {
         </div>
       </section>
 
-      {/* ─── LOCATIONS GRID ─── */}
+      {/* LOCATIONS GRID */}
       <section className="loc-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -86,7 +88,7 @@ export default async function LocationsPage() {
         </div>
       </section>
 
-      {/* ─── SERVICES BY LOCATION ─── */}
+      {/* SERVICES BY LOCATION */}
       <section className="loc-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -95,14 +97,18 @@ export default async function LocationsPage() {
           </div>
           <div className="loc-services-grid">
             {[
-              { title: 'Family Photographer', href: '/families', color: '#3a4828', desc: 'Natural, relaxed family sessions outdoors or in studio' },
-              { title: 'Newborn Photographer', href: '/newborn', color: '#4a3830', desc: 'Gentle studio newborn sessions in Papworth or Waterbeach' },
-              { title: 'Wedding Photographer', href: '/weddings', color: '#5c3d30', desc: 'Natural wedding photography and videography' },
-              { title: 'Commercial Photographer', href: '/commercial', color: '#2c2820', desc: 'Brand, performance and headshot photography' },
+              { title: 'Family Photographer', href: '/families', color: '#3a4828', img: 'services-families.jpg', desc: 'Natural, relaxed family sessions outdoors or in studio' },
+              { title: 'Newborn Photographer', href: '/newborn', color: '#4a3830', img: 'services-newborn.jpg', desc: 'Gentle studio newborn sessions in Papworth or Waterbeach' },
+              { title: 'Wedding Photographer', href: '/weddings', color: '#5c3d30', img: 'services-weddings.jpg', desc: 'Natural wedding photography and videography' },
+              { title: 'Commercial Photographer', href: '/commercial', color: '#2c2820', img: 'commercial-brand-card.jpg', desc: 'Brand, performance and headshot photography' },
             ].map((s) => (
-              <Link key={s.href} href={s.href} style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: s.color, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '1.5rem', textDecoration: 'none', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)' }} />
-                <div style={{ position: 'relative', zIndex: 1 }}>
+              <Link key={s.href} href={s.href} className="zoom-card" style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: s.color, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '1.5rem', textDecoration: 'none' }}>
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
+                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{s.img}</span>
+                </div>
+                <img src={`${STORAGE}/${s.img}`} alt={s.title} className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)', zIndex: 2 }} />
+                <div style={{ position: 'relative', zIndex: 3 }}>
                   <h3 style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.88rem', color: '#ffffff', textTransform: 'none', marginBottom: '0.3rem' }}>{s.title}</h3>
                   <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.6)' }}>{s.desc}</p>
                 </div>
@@ -112,7 +118,7 @@ export default async function LocationsPage() {
         </div>
       </section>
 
-      {/* ─── STUDIOS ─── */}
+      {/* STUDIOS */}
       <section className="loc-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -130,30 +136,24 @@ export default async function LocationsPage() {
                   <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>{studio.location}</p>
                   <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.5)' }}>{studio.desc}</p>
                 </div>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid rgba(158,146,130,0.3)', paddingBottom: '2px', whiteSpace: 'nowrap' }}>View studio →</span>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', borderBottom: '1px solid rgba(158,146,130,0.3)', paddingBottom: '2px', whiteSpace: 'nowrap' }}>View studio →</span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* CTA */}
       <section className="loc-pad" style={{ backgroundColor: '#F5F0E8', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Get in touch</p>
-          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
-            Not sure if we cover your area?
-          </h2>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Not sure if we cover your area?</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#9E9282', lineHeight: 1.8, marginBottom: '2rem' }}>
             Just ask. We travel widely and are always happy to discuss locations beyond our listed areas.
           </p>
           <div className="loc-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Get in touch
-            </Link>
-            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              See the work
-            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Get in touch</Link>
+            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>See the work</Link>
           </div>
         </div>
       </section>

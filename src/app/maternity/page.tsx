@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Beautiful, elegant maternity photography at our studios in Papworth Everard and Waterbeach, or outdoors across Cambridgeshire. Book between 28–36 weeks for the best results.",
 };
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
 export default function MaternityPage() {
   return (
     <>
@@ -21,6 +23,9 @@ export default function MaternityPage() {
         .m-faqs { max-width: 100%; }
         .m-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
         .m-cta-buttons a { text-align: center; }
+        .zoom-card { overflow: hidden; }
+        .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .zoom-card:hover .zoom-img { transform: scale(1.025); }
 
         @media (min-width: 640px) {
           .m-pad { padding: 3.5rem 2.5rem; }
@@ -28,7 +33,6 @@ export default function MaternityPage() {
           .m-testimonials-grid { grid-template-columns: 1fr 1fr; }
           .m-packages-grid { grid-template-columns: 1fr 1fr; }
         }
-
         @media (min-width: 900px) {
           .m-pad { padding: 4rem 4rem; }
           .m-hero-content { padding: 0 4rem 5rem; }
@@ -42,19 +46,17 @@ export default function MaternityPage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* HERO */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#4a3c50', minHeight: '90svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.15) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.65) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#4a3c50', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.15)', textAlign: 'center' }}>maternity-hero.jpg</span>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>maternity-hero.jpg</span>
         </div>
+        <img src={`${STORAGE}/maternity-hero.jpg`} alt="Maternity photography Cambridgeshire" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
         <div className="m-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>
-            Maternity Photography · Cambridgeshire
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Maternity Photography · Cambridgeshire</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Before they{' '}
-            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>arrive.</span>
+            Before they{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>arrive.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '420px' }}>
             Elegant, unhurried maternity photography in studio or outdoors. A document of this chapter — beautiful, personal, and entirely yours.
@@ -65,7 +67,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* ─── INTRO ─── */}
+      {/* INTRO */}
       <section className="m-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="m-intro-grid">
@@ -81,70 +83,67 @@ export default function MaternityPage() {
                 Partners and children are always welcome. Some of the most beautiful maternity images we&apos;ve made have involved the whole family.
               </p>
             </div>
-            <div style={{ aspectRatio: '3/4', backgroundColor: '#c0a8b0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', textAlign: 'center' }}>maternity-gallery-01.jpg</span>
+            <div style={{ aspectRatio: '3/4', backgroundColor: '#c0a8b0', overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>maternity-intro.jpg</span>
+              </div>
+              <img src={`${STORAGE}/maternity-intro.jpg`} alt="Maternity session" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'relative', zIndex: 1 }} />
             </div>
           </div>
         </div>
       </section>
 
-      {/* ─── STUDIO / OUTDOOR SPLIT ─── */}
+      {/* STUDIO / OUTDOOR SPLIT */}
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="m-split-grid" style={{ maxWidth: '1300px', margin: '0 auto' }}>
-          <div style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: '#1b3a5c', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>maternity-gallery-01.jpg</span>
+          {[
+            { color: '#1b3a5c', img: 'maternity-studio-card.jpg', label: 'Studio', title: 'Studio Maternity', desc: 'Beautiful controlled light, warm temperature, and complete privacy. Our studios in Papworth Everard and Waterbeach are set up specifically to flatter and celebrate.' },
+            { color: '#3a4828', img: 'maternity-outdoor-card.jpg', label: 'Outdoors', title: 'Outdoor Maternity', desc: 'Cambridgeshire has beautiful natural settings for maternity sessions — meadows, woodland, riverside. Golden hour outdoor sessions have a warmth that\'s hard to replicate indoors.' },
+          ].map((card) => (
+            <div key={card.title} style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: card.color, overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{card.img}</span>
+              </div>
+              <img src={`${STORAGE}/${card.img}`} alt={card.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)', zIndex: 2 }} />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem', zIndex: 3 }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>{card.label}</p>
+                <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>{card.title}</h2>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, maxWidth: '320px' }}>{card.desc}</p>
+              </div>
             </div>
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>Studio</p>
-              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>Studio Maternity</h2>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, maxWidth: '320px' }}>
-                Beautiful controlled light, warm temperature, and complete privacy. Our studios in Papworth Everard and Waterbeach are set up specifically to flatter and celebrate.
-              </p>
-            </div>
-          </div>
-          <div style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: '#3a4828', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>maternity-gallery-02.jpg</span>
-            </div>
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>Outdoors</p>
-              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>Outdoor Maternity</h2>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, maxWidth: '320px' }}>
-                Cambridgeshire has beautiful natural settings for maternity sessions — meadows, woodland, riverside. Golden hour outdoor sessions have a warmth that&apos;s hard to replicate indoors.
-              </p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
-      {/* ─── GALLERY STRIP ─── */}
+      {/* GALLERY STRIP */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="m-gallery-strip-header" style={{ marginBottom: '1.5rem', padding: '0 1.5rem' }}>
           <div>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>Recent sessions</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Maternity work</h2>
           </div>
-          <Link href="/newborn-maternity/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all maternity sessions</Link>
+          <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all maternity sessions</Link>
         </div>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
           {[
-            { w: '200px', aspect: '3/4', color: '#c0a8b0', label: 'maternity-gallery-01.jpg' },
-            { w: '300px', aspect: '4/3', color: '#b0a8b8', label: 'maternity-gallery-02.jpg' },
-            { w: '200px', aspect: '3/4', color: '#c8b0b8', label: 'maternity-gallery-03.jpg' },
-            { w: '260px', aspect: '4/3', color: '#a8b0b8', label: 'maternity-gallery-04.jpg' },
-            { w: '200px', aspect: '3/4', color: '#b8a8b0', label: 'maternity-gallery-05.jpg' },
+            { w: '200px', aspect: '3/4', color: '#c0a8b0', img: 'maternity-portfolio-01.jpg' },
+            { w: '300px', aspect: '4/3', color: '#b0a8b8', img: 'maternity-portfolio-02.jpg' },
+            { w: '200px', aspect: '3/4', color: '#c8b0b8', img: 'maternity-portfolio-03.jpg' },
+            { w: '260px', aspect: '4/3', color: '#a8b0b8', img: 'maternity-portfolio-04.jpg' },
+            { w: '200px', aspect: '3/4', color: '#b8a8b0', img: 'maternity-portfolio-05.jpg' },
           ].map((item, i) => (
-            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(74,60,80,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.label}</span>
+            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
+              </div>
+              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>
       </section>
 
-      {/* ─── TIMING GUIDE ─── */}
+      {/* TIMING GUIDE */}
       <section className="m-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -171,7 +170,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* ─── WHAT TO EXPECT ─── */}
+      {/* WHAT TO EXPECT */}
       <section className="m-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -194,7 +193,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS ─── */}
+      {/* TESTIMONIALS */}
       <section className="m-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
@@ -219,7 +218,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* ─── PACKAGES ─── */}
+      {/* PACKAGES */}
       <section className="m-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -258,7 +257,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* ─── FAQs ─── */}
+      {/* FAQs */}
       <section className="m-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div className="m-faqs">
           <div style={{ marginBottom: '2.5rem' }}>
@@ -283,12 +282,15 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* ─── NEWBORN CROSSLINK ─── */}
+      {/* NEWBORN CROSSLINK */}
       <section className="m-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr', gap: '2rem', alignItems: 'center' }}>
-          <div style={{ aspectRatio: '16/7', backgroundColor: '#4a3830', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>newborn-hero.jpg</span>
-          </div>
+          <Link href="/newborn" className="zoom-card" style={{ display: 'block', aspectRatio: '16/7', backgroundColor: '#4a3830', textDecoration: 'none', position: 'relative' }}>
+            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>newborn-hero.jpg</span>
+            </div>
+            <img src={`${STORAGE}/newborn-hero.jpg`} alt="Newborn photography" className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+          </Link>
           <div>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>What comes next</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.8rem' }}>Newborn Photography</h2>
@@ -302,23 +304,17 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* CTA */}
       <section className="m-pad" style={{ backgroundColor: '#F5F0E8', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Book your session</p>
-          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
-            Let&apos;s document this chapter
-          </h2>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#2C2820', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Let&apos;s document this chapter</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#9E9282', lineHeight: 1.8, marginBottom: '2rem' }}>
             Tell us how many weeks you are, your preferred studio or outdoor, and whether you&apos;d like to include a partner or children. We&apos;ll come back to you quickly.
           </p>
           <div className="m-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Enquire now
-            </Link>
-            <Link href="/newborn-maternity/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              See maternity portfolio
-            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire now</Link>
+            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>See maternity portfolio</Link>
           </div>
         </div>
       </section>

@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: "Natural, relaxed family photography across Cambridge and Cambridgeshire. Outdoor lifestyle sessions and studio shoots. No stiff poses — just your family as they really are.",
 };
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
 export default function FamiliesPage() {
   return (
     <>
@@ -24,6 +26,9 @@ export default function FamiliesPage() {
         .f-intro-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; }
         .f-location-link { padding: 1.2rem; background-color: #F5F0E8; text-decoration: none; display: block; border-bottom: 2px solid #DDD5C0; transition: border-color 0.2s; }
         .f-location-link:hover { border-bottom-color: #1B3A5C; }
+        .zoom-card { overflow: hidden; }
+        .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .zoom-card:hover .zoom-img { transform: scale(1.025); }
 
         @media (min-width: 640px) {
           .f-pad { padding: 3.5rem 2.5rem; }
@@ -31,7 +36,6 @@ export default function FamiliesPage() {
           .f-packages-grid { grid-template-columns: 1fr 1fr; }
           .f-split-grid { grid-template-columns: 1fr 1fr; }
         }
-
         @media (min-width: 900px) {
           .f-pad { padding: 4rem 4rem; }
           .f-hero-content { padding: 0 4rem 5rem; }
@@ -50,16 +54,14 @@ export default function FamiliesPage() {
       {/* ─── HERO ─── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#3a4828', minHeight: '90svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.15) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.65) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#3a4828', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.15)', textAlign: 'center' }}>families-hero.jpg</span>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>families-hero.jpg</span>
         </div>
+        <img src={`${STORAGE}/families-hero.jpg`} alt="Family photography Cambridgeshire" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
         <div className="f-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>
-            Family Photography · Cambridge
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Family Photography · Cambridge</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Your family,{' '}
-            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>as you really are.</span>
+            Your family,{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>as you really are.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '420px' }}>
             Relaxed, natural family photography across Cambridgeshire. Outdoors in locations you love, or in our warm studio spaces. No awkward posing — just time together, beautifully documented.
@@ -83,8 +85,11 @@ export default function FamiliesPage() {
                 Kids run, parents chase. Babies stare at leaves. Teenagers pretend they don&apos;t want to be there and then end up laughing. That&apos;s the stuff worth keeping — and it&apos;s what we look for.
               </p>
             </div>
-            <div style={{ aspectRatio: '4/3', backgroundColor: '#a08870', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', textAlign: 'center' }}>families-outdoor-card.jpg</span>
+            <div style={{ aspectRatio: '4/3', backgroundColor: '#a08870', overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>families-intro.jpg</span>
+              </div>
+              <img src={`${STORAGE}/families-intro.jpg`} alt="Family outdoor session" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'relative', zIndex: 1 }} />
             </div>
           </div>
         </div>
@@ -93,28 +98,23 @@ export default function FamiliesPage() {
       {/* ─── OUTDOOR / STUDIO SPLIT ─── */}
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="f-split-grid" style={{ maxWidth: '1300px', margin: '0 auto' }}>
-          <div style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: '#3a4828', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%)' }} />
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>families-outdoor-card.jpg</span>
+          {[
+            { color: '#3a4828', img: 'families-outdoor-card.jpg', label: 'Outdoors', title: 'Outdoor Sessions', desc: 'Parks, meadows, riversides, woodland. We know the best locations across Cambridgeshire — or we can shoot somewhere that means something to you.' },
+            { color: '#1b3a5c', img: 'families-studio-card.jpg', label: 'Studio', title: 'Studio Sessions', desc: 'Our studios in Papworth Everard and Waterbeach offer beautiful controlled light, whatever the weather. Perfect for younger children and winter sessions.' },
+          ].map((card) => (
+            <div key={card.title} style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: card.color, overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{card.img}</span>
+              </div>
+              <img src={`${STORAGE}/${card.img}`} alt={card.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%)', zIndex: 2 }} />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem', zIndex: 3 }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>{card.label}</p>
+                <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>{card.title}</h2>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, maxWidth: '320px' }}>{card.desc}</p>
+              </div>
             </div>
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>Outdoors</p>
-              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>Outdoor Sessions</h2>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, maxWidth: '320px' }}>Parks, meadows, riversides, woodland. We know the best locations across Cambridgeshire — or we can shoot somewhere that means something to you.</p>
-            </div>
-          </div>
-          <div style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: '#1b3a5c', overflow: 'hidden' }}>
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%)' }} />
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>families-studio-card.jpg</span>
-            </div>
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>Studio</p>
-              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>Studio Sessions</h2>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, maxWidth: '320px' }}>Our studios in Papworth Everard and Waterbeach offer beautiful controlled light, whatever the weather. Perfect for younger children and winter sessions.</p>
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
@@ -125,18 +125,21 @@ export default function FamiliesPage() {
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>Recent sessions</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Family work</h2>
           </div>
-          <Link href="/families/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all family sessions</Link>
+          <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all family sessions</Link>
         </div>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
           {[
-            { w: '200px', aspect: '2/3', color: '#8a7060', label: 'families-portfolio-01.jpg' },
-            { w: '320px', aspect: '3/2', color: '#a09070', label: 'families-portfolio-02.jpg' },
-            { w: '200px', aspect: '2/3', color: '#7a8870', label: 'families-portfolio-03.jpg' },
-            { w: '260px', aspect: '4/3', color: '#909880', label: 'families-portfolio-04.jpg' },
-            { w: '200px', aspect: '2/3', color: '#887868', label: 'families-portfolio-05.jpg' },
+            { w: '200px', aspect: '2/3', color: '#8a7060', img: 'families-portfolio-01.jpg' },
+            { w: '320px', aspect: '3/2', color: '#a09070', img: 'families-portfolio-02.jpg' },
+            { w: '200px', aspect: '2/3', color: '#7a8870', img: 'families-portfolio-03.jpg' },
+            { w: '260px', aspect: '4/3', color: '#909880', img: 'families-portfolio-04.jpg' },
+            { w: '200px', aspect: '2/3', color: '#887868', img: 'families-portfolio-05.jpg' },
           ].map((item, i) => (
-            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', textAlign: 'center', padding: '0 0.5rem' }}>{item.label}</span>
+            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
+              </div>
+              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>
@@ -148,9 +151,7 @@ export default function FamiliesPage() {
           <div style={{ marginBottom: '2.5rem' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>Where we shoot</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none', marginBottom: '0.8rem' }}>Great spots across Cambridgeshire</h2>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', color: '#5c5550', lineHeight: 1.75, maxWidth: '600px' }}>
-              We know Cambridgeshire well. Here are some of our favourite locations for family sessions — though we&apos;re always happy to shoot somewhere that means something to you.
-            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', color: '#5c5550', lineHeight: 1.75, maxWidth: '600px' }}>We know Cambridgeshire well. Here are some of our favourite locations for family sessions — though we&apos;re always happy to shoot somewhere that means something to you.</p>
           </div>
           <div className="f-locations-grid">
             {[
@@ -253,9 +254,7 @@ export default function FamiliesPage() {
               </div>
             ))}
           </div>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', textAlign: 'center' }}>
-            All packages can be adapted. Studio or outdoor, siblings only, grandparents included — just tell us what you need.
-          </p>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', textAlign: 'center' }}>All packages can be adapted. Studio or outdoor, siblings only, grandparents included — just tell us what you need.</p>
         </div>
       </section>
 
@@ -288,19 +287,13 @@ export default function FamiliesPage() {
       <section className="f-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Ready to book?</p>
-          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
-            Let&apos;s plan your family session
-          </h2>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Let&apos;s plan your family session</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.45)', lineHeight: 1.8, marginBottom: '2rem' }}>
             Tell us your family size, the ages of your children, whether you&apos;re thinking indoor or outdoor, and roughly when you&apos;d like to shoot. We&apos;ll come back to you quickly.
           </p>
           <div className="f-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Enquire now
-            </Link>
-            <Link href="/families/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              See family portfolio
-            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire now</Link>
+            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>See family portfolio</Link>
           </div>
         </div>
       </section>

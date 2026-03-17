@@ -1,9 +1,26 @@
 import Link from "next/link";
 
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+
+function Img({ src, alt, zoom = false }: { src: string; alt: string; zoom?: boolean }) {
+  return (
+    <>
+      <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
+        <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: '0 1rem' }}>{src.split('/').pop()}</span>
+      </div>
+      <img
+        src={src}
+        alt={alt}
+        className={zoom ? 'zoom-img' : undefined}
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
+      />
+    </>
+  );
+}
+
 export default function Home() {
   return (
     <>
-      {/* ─── RESPONSIVE STYLES ─── */}
       <style>{`
         .home-section-pad { padding: 3rem 1.5rem; }
         .home-brand-statement { font-size: clamp(1rem, 1.5vw, 1.2rem); }
@@ -21,6 +38,15 @@ export default function Home() {
         .home-cta-buttons { flex-direction: column; }
         .home-cta-buttons a { text-align: center; }
         .home-portfolio-header { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+
+        /* Zoom on hover — only for linked cards */
+        .zoom-card { overflow: hidden; }
+        .zoom-img {
+          transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .zoom-card:hover .zoom-img {
+          transform: scale(1.025);
+        }
 
         @media (min-width: 640px) {
           .home-section-pad { padding: 3.5rem 2.5rem; }
@@ -49,21 +75,12 @@ export default function Home() {
 
       {/* ─── HERO ─── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#0d1b2a', minHeight: '100svh' }}>
-        <div style={{ position: 'absolute', inset: 0, zIndex: 1, backgroundImage: 'linear-gradient(to bottom, rgba(13,27,42,0.3) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.75) 100%)' }} />
-        <div style={{ position: 'absolute', inset: 0, backgroundColor: '#1b3a5c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>
-            Hero Image Goes Here<br />Full Viewport · Wedding or Family Portrait
-          </span>
-        </div>
-        <div className="home-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>
-            Photography &amp; Video · Cambridge
-          </p>
+        <div style={{ position: 'absolute', inset: 0, zIndex: 2, backgroundImage: 'linear-gradient(to bottom, rgba(13,27,42,0.3) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.75) 100%)' }} />
+        <Img src={`${STORAGE}/hero-main.jpg`} alt="Something Blue Productions" />
+        <div className="home-hero-content" style={{ position: 'relative', zIndex: 3 }}>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Photography &amp; Video · Cambridge</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, letterSpacing: '0.02em', color: '#ffffff', marginBottom: '1.2rem', maxWidth: '700px', textTransform: 'none' }}>
-            Made to be{' '}
-            <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>
-              remembered.
-            </span>
+            Made to be{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>remembered.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.7)', marginBottom: '2rem', maxWidth: '400px' }}>
             Wedding and family photography rooted in Cambridgeshire. Quiet, honest work from two studio spaces.
@@ -90,14 +107,15 @@ export default function Home() {
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="home-services-grid" style={{ maxWidth: '1400px', margin: '0 auto' }}>
           {[
-            { label: 'Photography & Video', title: 'Weddings', href: '/weddings', color: '#5c3d30' },
-            { label: 'Natural & Lifestyle', title: 'Families', href: '/families', color: '#3a4828' },
-            { label: 'Newborn & Maternity', title: 'Early Days', href: '/newborn', color: '#4a3830' },
-            { label: 'Papworth & Waterbeach', title: 'Studio Sessions', href: '/studio', color: '#1b3a5c' },
+            { label: 'Photography & Video', title: 'Weddings', href: '/weddings', color: '#5c3d30', img: 'services-weddings.jpg' },
+            { label: 'Natural & Lifestyle', title: 'Families', href: '/families', color: '#3a4828', img: 'services-families.jpg' },
+            { label: 'Newborn & Maternity', title: 'Early Days', href: '/newborn', color: '#4a3830', img: 'services-newborn.jpg' },
+            { label: 'Papworth & Waterbeach', title: 'Studio Sessions', href: '/studio', color: '#1b3a5c', img: 'services-studio.jpg' },
           ].map((service) => (
-            <Link key={service.href} href={service.href} className="home-service-card" style={{ position: 'relative', display: 'block', backgroundColor: service.color, overflow: 'hidden', textDecoration: 'none' }}>
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
-              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1rem 1.2rem' }}>
+            <Link key={service.href} href={service.href} className="home-service-card zoom-card" style={{ position: 'relative', display: 'block', backgroundColor: service.color, textDecoration: 'none' }}>
+              <Img src={`${STORAGE}/${service.img}`} alt={service.title} zoom />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)', zIndex: 2 }} />
+              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1rem 1.2rem', zIndex: 3 }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.3rem' }}>{service.label}</p>
                 <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(0.95rem, 1.4vw, 1.25rem)', color: '#ffffff', lineHeight: 1.2, marginBottom: '0.6rem', textTransform: 'none' }}>{service.title}</h2>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.45)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -109,7 +127,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* Commercial strip */}
         <Link href="/commercial" className="home-commercial-strip" style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '1400px', margin: '2px auto 0', backgroundColor: '#2C2820', padding: '1.4rem 1.5rem', textDecoration: 'none' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
             <span className="home-commercial-label" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282', whiteSpace: 'nowrap' }}>Also available</span>
@@ -133,15 +150,18 @@ export default function Home() {
         </div>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
           {[
-            { w: '180px', aspect: '2/3', color: '#8a6848', label: 'Wedding Portrait' },
-            { w: '280px', aspect: '3/2', color: '#a08870', label: 'Family Session' },
-            { w: '180px', aspect: '2/3', color: '#6a9090', label: 'Newborn Studio' },
-            { w: '230px', aspect: '4/3', color: '#b0a090', label: 'Maternity' },
-            { w: '180px', aspect: '2/3', color: '#8090a0', label: 'Wedding Detail' },
-            { w: '230px', aspect: '4/3', color: '#a09080', label: 'Family Outdoor' },
+            { w: '180px', aspect: '2/3', color: '#8a6848', img: 'portfolio-strip-01.jpg' },
+            { w: '280px', aspect: '3/2', color: '#a08870', img: 'portfolio-strip-02.jpg' },
+            { w: '180px', aspect: '2/3', color: '#6a9090', img: 'portfolio-strip-03.jpg' },
+            { w: '230px', aspect: '4/3', color: '#b0a090', img: 'portfolio-strip-04.jpg' },
+            { w: '180px', aspect: '2/3', color: '#8090a0', img: 'portfolio-strip-05.jpg' },
+            { w: '230px', aspect: '4/3', color: '#a09080', img: 'portfolio-strip-06.jpg' },
           ].map((item, i) => (
-            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', textAlign: 'center' }}>{item.label}</span>
+            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
+              </div>
+              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>
@@ -159,15 +179,15 @@ export default function Home() {
               A warm, controlled indoor space changes what&apos;s possible.
             </p>
           </div>
-
           <div className="home-studios-grid">
             {[
-              { tag: 'Studio · Cambridgeshire', name: 'Papworth Everard', desc: 'A warm, airy space ideal for newborn, family and maternity sessions. Accessible from Cambridge, Huntingdon and the A14 corridor.', href: '/studio/papworth-everard', color: '#1b3a5c' },
-              { tag: 'Studio · Near Cambridge', name: 'Waterbeach', desc: 'Minutes from Cambridge city centre and the A10. Perfect for families, mini sessions and selected commercial work.', href: '/studio/waterbeach', color: '#162d4a' },
+              { tag: 'Studio · Cambridgeshire', name: 'Papworth Everard', desc: 'A warm, airy space ideal for newborn, family and maternity sessions. Accessible from Cambridge, Huntingdon and the A14 corridor.', href: '/studio/papworth-everard', color: '#1b3a5c', img: 'studio-papworth-hero.jpg' },
+              { tag: 'Studio · Near Cambridge', name: 'Waterbeach', desc: 'Minutes from Cambridge city centre and the A10. Perfect for families, mini sessions and selected commercial work.', href: '/studio/waterbeach', color: '#162d4a', img: 'studio-waterbeach-hero.jpg' },
             ].map((studio) => (
-              <Link key={studio.href} href={studio.href} style={{ position: 'relative', display: 'block', aspectRatio: '16/9', backgroundColor: studio.color, overflow: 'hidden', textDecoration: 'none' }}>
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.92) 0%, rgba(13,27,42,0.3) 60%, transparent 100%)' }} />
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 1.8rem' }}>
+              <Link key={studio.href} href={studio.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '16/9', backgroundColor: studio.color, textDecoration: 'none' }}>
+                <Img src={`${STORAGE}/${studio.img}`} alt={studio.name} zoom />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.92) 0%, rgba(13,27,42,0.3) 60%, transparent 100%)', zIndex: 2 }} />
+                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 1.8rem', zIndex: 3 }}>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', display: 'block', marginBottom: '0.4rem' }}>{studio.tag}</span>
                   <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.1rem, 2vw, 1.6rem)', color: '#E8DDB5', lineHeight: 1.2, marginBottom: '0.5rem', textTransform: 'none' }}>{studio.name}</h3>
                   <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: 'rgba(245,240,232,0.5)', lineHeight: 1.65, maxWidth: '300px', marginBottom: '0.8rem' }}>{studio.desc}</p>
@@ -179,7 +199,6 @@ export default function Home() {
               </Link>
             ))}
           </div>
-
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginTop: '1.2rem' }}>
             {['Newborn sessions', 'Family shoots', 'Maternity', 'Mini sessions', 'Headshots', 'Brand photography', 'Indoor assured'].map((tag) => (
               <span key={tag} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9E9282', border: '1px solid rgba(168,202,236,0.2)', padding: '0.3rem 0.75rem' }}>{tag}</span>
@@ -250,12 +269,17 @@ export default function Home() {
           </div>
           <div className="home-journal-grid">
             {[
-              { href: '/journal/newborn-session', cat: 'Newborn', title: 'What to expect from your newborn photography session', excerpt: 'Everything you need to know before you come to the studio — timings, feeds, what to bring.', color: '#a08870' },
-              { href: '/journal/family-cambridge', cat: 'Families · Cambridge', title: 'The best places for family photography around Cambridge', excerpt: 'From the Backs to Wicken Fen — our honest guide to outdoor locations across Cambridgeshire.', color: '#7a9878' },
-              { href: '/journal/wedding-video', cat: 'Weddings', title: 'Is wedding videography worth it? Our honest answer', excerpt: "We're photographers and filmmakers. Here's what we actually think.", color: '#9088a8' },
+              { href: '/journal/what-to-expect-newborn-session', cat: 'Newborn', title: 'What to expect from your newborn photography session', excerpt: 'Everything you need to know before you come to the studio — timings, feeds, what to bring.', color: '#a08870', img: 'journal-hero-newborn-guide.jpg' },
+              { href: '/journal/best-places-family-photos-cambridge', cat: 'Families · Cambridge', title: 'The best places for family photography around Cambridge', excerpt: 'From the Backs to Wicken Fen — our honest guide to outdoor locations across Cambridgeshire.', color: '#7a9878', img: 'journal-hero-cambridge-locations.jpg' },
+              { href: '/journal/wedding-videography-worth-it', cat: 'Weddings', title: 'Is wedding videography worth it? Our honest answer', excerpt: "We're photographers and filmmakers. Here's what we actually think.", color: '#9088a8', img: 'journal-hero-wedding-video.jpg' },
             ].map((post) => (
-              <Link key={post.href} href={post.href} style={{ textDecoration: 'none', display: 'block' }}>
-                <div style={{ aspectRatio: '3/2', backgroundColor: post.color, marginBottom: '1rem' }} />
+              <Link key={post.href} href={post.href} className="zoom-card" style={{ textDecoration: 'none', display: 'block' }}>
+                <div style={{ aspectRatio: '3/2', backgroundColor: post.color, marginBottom: '1rem', position: 'relative' }}>
+                  <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textAlign: 'center' }}>{post.img}</span>
+                  </div>
+                  <img src={`${STORAGE}/${post.img}`} alt={post.title} className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                </div>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>{post.cat}</p>
                 <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '0.95rem', color: '#2C2820', lineHeight: 1.4, marginBottom: '0.5rem', textTransform: 'none' }}>{post.title}</h3>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#9E9282', lineHeight: 1.65 }}>{post.excerpt}</p>
