@@ -82,7 +82,7 @@ export default function PortfolioPage() {
       <style>{`
         .port-pad { padding: 3rem 1.5rem; }
         .port-hero { padding: 8rem 1.5rem 4rem; }
-        .port-grid { display: flex; flex-direction: column; gap: 2px; }
+        .port-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
         .port-item {
           position: relative;
           overflow: hidden;
@@ -95,7 +95,7 @@ export default function PortfolioPage() {
           inset: 0;
           transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .port-item:hover .port-item-inner { transform: scale(1.01); }
+        .port-item:hover .port-item-inner { transform: scale(1.025); }
         .port-item-label-bg {
           position: absolute; inset: 0; z-index: 2;
           background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
@@ -226,7 +226,7 @@ export default function PortfolioPage() {
               <div
                 key={item.id}
                 className="port-item"
-                style={{ aspectRatio: item.aspect, backgroundColor: item.color }}
+                style={{ aspectRatio: '1/1', backgroundColor: item.color }}
                 onClick={() => openLightbox(item, index)}
               >
                 <div className="port-item-inner">
@@ -234,7 +234,7 @@ export default function PortfolioPage() {
                     src={`${STORAGE}/${item.img}`}
                     alt={`${item.label} photography ${item.location}`}
                     fill
-                    sizes="100vw"
+                    sizes="(max-width: 640px) 50vw, (max-width: 900px) 33vw, 25vw"
                     style={{ objectFit: 'cover' }}
                   />
                 </div>
