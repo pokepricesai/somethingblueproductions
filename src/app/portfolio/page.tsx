@@ -82,7 +82,7 @@ export default function PortfolioPage() {
       <style>{`
         .port-pad { padding: 3rem 1.5rem; }
         .port-hero { padding: 8rem 1.5rem 4rem; }
-        .port-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+        .port-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
         .port-item {
           position: relative;
           overflow: hidden;
@@ -205,7 +205,7 @@ export default function PortfolioPage() {
 
       {/* PORTFOLIO GRID */}
       <section className="port-pad" style={{ backgroundColor: '#F5F0E8' }}>
-        <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '100%' }>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2.5rem' }}>
             {filters.map((f) => (
               <button
