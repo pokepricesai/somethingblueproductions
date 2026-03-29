@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import Image from "next/image";
 import { useState } from "react";
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -37,10 +38,35 @@ const filters = [
 
 export default function PortfolioPage() {
   const [activeFilter, setActiveFilter] = useState('all');
+  const [lightbox, setLightbox] = useState<{ src: string; label: string; location: string } | null>(null);
 
   const filtered = activeFilter === 'all'
     ? portfolioItems
     : portfolioItems.filter(item => item.category === activeFilter);
+
+  const openLightbox = (item: typeof portfolioItems[0]) => {
+    setLightbox({ src: `${STORAGE}/${item.img}`, label: item.label, location: item.location });
+  };
+
+  const closeLightbox = () => setLightbox(null);
+
+  const currentIndex = lightbox
+    ? filtered.findIndex(i => `${STORAGE}/${i.img}` === lightbox.src)
+    : -1;
+
+  const goNext = () => {
+    if (currentIndex < filtered.length - 1) {
+      const next = filtered[currentIndex + 1];
+      setLightbox({ src: `${STORAGE}/${next.img}`, label: next.label, location: next.location });
+    }
+  };
+
+  const goPrev = () => {
+    if (currentIndex > 0) {
+      const prev = filtered[currentIndex - 1];
+      setLightbox({ src: `${STORAGE}/${prev.img}`, label: prev.label, location: prev.location });
+    }
+  };
 
   return (
     <>
@@ -48,13 +74,18 @@ export default function PortfolioPage() {
         .port-pad { padding: 3rem 1.5rem; }
         .port-hero { padding: 8rem 1.5rem 4rem; }
         .port-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-        .port-item { position: relative; overflow: hidden; background: #2c2820; cursor: pointer; }
-        .port-item-img {
-          position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-          transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-          z-index: 1;
+        .port-item {
+          position: relative;
+          overflow: hidden;
+          cursor: pointer;
+          display: block;
         }
-        .port-item:hover .port-item-img { transform: scale(1.025); }
+        .port-item-inner {
+          position: absolute;
+          inset: 0;
+          transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        .port-item:hover .port-item-inner { transform: scale(1.025); }
         .port-item-label-bg {
           position: absolute; inset: 0; z-index: 2;
           background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
@@ -77,6 +108,14 @@ export default function PortfolioPage() {
         .port-filter-btn.active { background: #1B3A5C; border-color: #1B3A5C; color: #F5F0E8; }
         .port-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
         .port-cta-buttons a { text-align: center; }
+        .lightbox-btn {
+          background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+          color: white; width: 48px; height: 48px; display: flex; align-items: center;
+          justify-content: center; cursor: pointer; font-size: 1.2rem;
+          transition: background 0.2s; flex-shrink: 0;
+        }
+        .lightbox-btn:hover { background: rgba(255,255,255,0.2); }
+        .lightbox-btn:disabled { opacity: 0.2; cursor: default; }
 
         @media (min-width: 640px) {
           .port-pad { padding: 3.5rem 2.5rem; }
@@ -91,6 +130,54 @@ export default function PortfolioPage() {
           .port-cta-buttons a { text-align: left; }
         }
       `}</style>
+
+      {/* LIGHTBOX */}
+      {lightbox && (
+        <div
+          onClick={closeLightbox}
+          style={{
+            position: 'fixed', inset: 0, zIndex: 999,
+            backgroundColor: 'rgba(13,27,42,0.97)',
+            display: 'flex', flexDirection: 'column',
+            alignItems: 'center', justifyContent: 'center',
+          }}
+        >
+          {/* Close */}
+          <button
+            onClick={closeLightbox}
+            style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: 'rgba(245,240,232,0.6)', fontSize: '1.8rem', cursor: 'pointer', lineHeight: 1, padding: '0.5rem' }}
+          >
+            ×
+          </button>
+
+          {/* Image */}
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ position: 'relative', width: '90vw', height: '80vh', maxWidth: '1200px' }}
+          >
+            <Image
+              src={lightbox.src}
+              alt={lightbox.label}
+              fill
+              sizes="90vw"
+              style={{ objectFit: 'contain' }}
+            />
+          </div>
+
+          {/* Controls */}
+          <div
+            onClick={e => e.stopPropagation()}
+            style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1.5rem' }}
+          >
+            <button className="lightbox-btn" onClick={goPrev} disabled={currentIndex <= 0}>←</button>
+            <div style={{ textAlign: 'center' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.7)', marginBottom: '0.2rem' }}>{lightbox.label}</p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.4)' }}>{lightbox.location} · {currentIndex + 1} / {filtered.length}</p>
+            </div>
+            <button className="lightbox-btn" onClick={goNext} disabled={currentIndex >= filtered.length - 1}>→</button>
+          </div>
+        </div>
+      )}
 
       {/* HERO */}
       <section style={{ backgroundColor: '#0d1b2a' }}>
@@ -109,8 +196,6 @@ export default function PortfolioPage() {
       {/* PORTFOLIO GRID */}
       <section className="port-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1400px', margin: '0 auto' }}>
-
-          {/* Filters */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2.5rem' }}>
             {filters.map((f) => (
               <button
@@ -122,22 +207,27 @@ export default function PortfolioPage() {
               </button>
             ))}
           </div>
-
-          {/* Count */}
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', marginBottom: '1.5rem' }}>
             {filtered.length} {filtered.length === 1 ? 'image' : 'images'}
             {activeFilter !== 'all' ? ` · ${filters.find(f => f.key === activeFilter)?.label}` : ''}
           </p>
-
-          {/* Grid */}
           <div className="port-grid">
             {filtered.map((item) => (
-              <div key={item.id} className="port-item" style={{ aspectRatio: item.aspect }}>
-                {/* Filename placeholder behind image */}
-                <div style={{ position: 'absolute', inset: 0, backgroundColor: item.color, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
-                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 1rem' }}>{item.img}</span>
+              <div
+                key={item.id}
+                className="port-item"
+                style={{ aspectRatio: item.aspect, backgroundColor: item.color }}
+                onClick={() => openLightbox(item)}
+              >
+                <div className="port-item-inner">
+                  <Image
+                    src={`${STORAGE}/${item.img}`}
+                    alt={`${item.label} photography ${item.location}`}
+                    fill
+                    sizes="(max-width: 640px) 50vw, (max-width: 900px) 33vw, 25vw"
+                    style={{ objectFit: 'cover' }}
+                  />
                 </div>
-                <img src={`${STORAGE}/${item.img}`} alt={item.label} className="port-item-img" />
                 <div className="port-item-label-bg" />
                 <div className="port-item-label">
                   <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.75)', marginBottom: '0.2rem' }}>{item.label}</p>
