@@ -82,7 +82,7 @@ export default function PortfolioPage() {
       <style>{`
         .port-pad { padding: 3rem 1.5rem; }
         .port-hero { padding: 8rem 1.5rem 4rem; }
-        .port-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+        .port-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
         .port-item {
           position: relative;
           overflow: hidden;
@@ -234,7 +234,7 @@ export default function PortfolioPage() {
                     src={`${STORAGE}/${item.img}`}
                     alt={`${item.label} photography ${item.location}`}
                     fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 900px) 33vw, 25vw"
+                    sizes="(max-width: 640px) 33vw, (max-width: 900px) 25vw, 16vw"
                     style={{ objectFit: 'cover' }}
                   />
                 </div>
