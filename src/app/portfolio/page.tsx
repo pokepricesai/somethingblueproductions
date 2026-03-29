@@ -44,8 +44,15 @@ export default function PortfolioPage() {
     ? portfolioItems
     : portfolioItems.filter(item => item.category === activeFilter);
 
-  const openLightbox = (item: typeof portfolioItems[0]) => {
+  const preload = (src: string) => {
+    const img = new window.Image();
+    img.src = src;
+  };
+
+  const openLightbox = (item: typeof portfolioItems[0], index: number) => {
     setLightbox({ src: `${STORAGE}/${item.img}`, label: item.label, location: item.location });
+    if (filtered[index + 1]) preload(`${STORAGE}/${filtered[index + 1].img}`);
+    if (filtered[index - 1]) preload(`${STORAGE}/${filtered[index - 1].img}`);
   };
 
   const closeLightbox = () => setLightbox(null);
@@ -58,6 +65,7 @@ export default function PortfolioPage() {
     if (currentIndex < filtered.length - 1) {
       const next = filtered[currentIndex + 1];
       setLightbox({ src: `${STORAGE}/${next.img}`, label: next.label, location: next.location });
+      if (filtered[currentIndex + 2]) preload(`${STORAGE}/${filtered[currentIndex + 2].img}`);
     }
   };
 
@@ -65,6 +73,7 @@ export default function PortfolioPage() {
     if (currentIndex > 0) {
       const prev = filtered[currentIndex - 1];
       setLightbox({ src: `${STORAGE}/${prev.img}`, label: prev.label, location: prev.location });
+      if (filtered[currentIndex - 2]) preload(`${STORAGE}/${filtered[currentIndex - 2].img}`);
     }
   };
 
@@ -73,19 +82,20 @@ export default function PortfolioPage() {
       <style>{`
         .port-pad { padding: 3rem 1.5rem; }
         .port-hero { padding: 8rem 1.5rem 4rem; }
-        .port-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+        .port-grid { display: flex; flex-direction: column; gap: 2px; }
         .port-item {
           position: relative;
           overflow: hidden;
           cursor: pointer;
           display: block;
+          width: 100%;
         }
         .port-item-inner {
           position: absolute;
           inset: 0;
           transition: transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
-        .port-item:hover .port-item-inner { transform: scale(1.025); }
+        .port-item:hover .port-item-inner { transform: scale(1.01); }
         .port-item-label-bg {
           position: absolute; inset: 0; z-index: 2;
           background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
@@ -120,12 +130,12 @@ export default function PortfolioPage() {
         @media (min-width: 640px) {
           .port-pad { padding: 3.5rem 2.5rem; }
           .port-hero { padding: 10rem 2.5rem 4rem; }
-          .port-grid { grid-template-columns: repeat(3, 1fr); }
+        
         }
         @media (min-width: 900px) {
           .port-pad { padding: 4rem 4rem; }
           .port-hero { padding: 10rem 4rem 5rem; }
-          .port-grid { grid-template-columns: repeat(4, 1fr); }
+        
           .port-cta-buttons { flex-direction: row; justify-content: center; }
           .port-cta-buttons a { text-align: left; }
         }
@@ -212,19 +222,19 @@ export default function PortfolioPage() {
             {activeFilter !== 'all' ? ` · ${filters.find(f => f.key === activeFilter)?.label}` : ''}
           </p>
           <div className="port-grid">
-            {filtered.map((item) => (
+            {filtered.map((item, index) => (
               <div
                 key={item.id}
                 className="port-item"
                 style={{ aspectRatio: item.aspect, backgroundColor: item.color }}
-                onClick={() => openLightbox(item)}
+                onClick={() => openLightbox(item, index)}
               >
                 <div className="port-item-inner">
                   <Image
                     src={`${STORAGE}/${item.img}`}
                     alt={`${item.label} photography ${item.location}`}
                     fill
-                    sizes="(max-width: 640px) 50vw, (max-width: 900px) 33vw, 25vw"
+                    sizes="100vw"
                     style={{ objectFit: 'cover' }}
                   />
                 </div>
