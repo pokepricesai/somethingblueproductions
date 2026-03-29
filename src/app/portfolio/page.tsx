@@ -234,7 +234,8 @@ export default function PortfolioPage() {
                     src={`${STORAGE}/${item.img}`}
                     alt={`${item.label} photography ${item.location}`}
                     fill
-                    sizes="(max-width: 640px) 33vw, (max-width: 900px) 25vw, 16vw"
+                    sizes="(max-width: 640px) 33vw, (max-width: 900px) 25vw, 22vw"
+                    quality={85}
                     style={{ objectFit: 'cover' }}
                   />
                 </div>
