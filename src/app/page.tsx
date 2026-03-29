@@ -1,18 +1,22 @@
 import Link from "next/link";
+import Image from "next/image";
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
-function Img({ src, alt, zoom = false }: { src: string; alt: string; zoom?: boolean }) {
+function Img({ src, alt, zoom = false, priority = false }: { src: string; alt: string; zoom?: boolean; priority?: boolean }) {
   return (
     <>
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
         <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: '0 1rem' }}>{src.split('/').pop()}</span>
       </div>
-      <img
+      <Image
         src={src}
         alt={alt}
+        fill
+        sizes="100vw"
+        priority={priority}
         className={zoom ? 'zoom-img' : undefined}
-        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }}
+        style={{ objectFit: 'cover', zIndex: 1 }}
       />
     </>
   );
@@ -39,21 +43,15 @@ export default function Home() {
         .home-cta-buttons a { text-align: center; }
         .home-portfolio-header { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
 
-        /* Zoom on hover — only for linked cards */
         .zoom-card { overflow: hidden; }
-        .zoom-img {
-          transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-        .zoom-card:hover .zoom-img {
-          transform: scale(1.025);
-        }
+        .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; }
+        .zoom-card:hover .zoom-img { transform: scale(1.025) !important; }
 
         @media (min-width: 640px) {
           .home-section-pad { padding: 3.5rem 2.5rem; }
           .home-process-grid { grid-template-columns: 1fr 1fr; }
           .home-testimonials-grid { grid-template-columns: 1fr 1fr; }
         }
-
         @media (min-width: 900px) {
           .home-section-pad { padding: 4rem 4rem; }
           .home-services-grid { grid-template-columns: repeat(4, 1fr); }
@@ -76,7 +74,7 @@ export default function Home() {
       {/* ─── HERO ─── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#0d1b2a', minHeight: '100svh' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 2, backgroundImage: 'linear-gradient(to bottom, rgba(13,27,42,0.3) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.75) 100%)' }} />
-        <Img src={`${STORAGE}/hero-main.jpg`} alt="Something Blue Productions" />
+        <Img src={`${STORAGE}/hero-main.jpg`} alt="Something Blue Productions — wedding and family photography Cambridge" priority />
         <div className="home-hero-content" style={{ position: 'relative', zIndex: 3 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Photography &amp; Video · Cambridge</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, letterSpacing: '0.02em', color: '#ffffff', marginBottom: '1.2rem', maxWidth: '700px', textTransform: 'none' }}>
@@ -113,7 +111,7 @@ export default function Home() {
             { label: 'Papworth & Waterbeach', title: 'Studio Sessions', href: '/studio', color: '#1b3a5c', img: 'services-studio.jpg' },
           ].map((service) => (
             <Link key={service.href} href={service.href} className="home-service-card zoom-card" style={{ position: 'relative', display: 'block', backgroundColor: service.color, textDecoration: 'none' }}>
-              <Img src={`${STORAGE}/${service.img}`} alt={service.title} zoom />
+              <Img src={`${STORAGE}/${service.img}`} alt={`${service.title} photography Cambridgeshire`} zoom />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)', zIndex: 2 }} />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1rem 1.2rem', zIndex: 3 }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.3rem' }}>{service.label}</p>
@@ -150,18 +148,18 @@ export default function Home() {
         </div>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
           {[
-            { w: '180px', aspect: '2/3', color: '#8a6848', img: 'portfolio-strip-01.jpg' },
-            { w: '280px', aspect: '3/2', color: '#a08870', img: 'portfolio-strip-02.jpg' },
-            { w: '180px', aspect: '2/3', color: '#6a9090', img: 'portfolio-strip-03.jpg' },
-            { w: '230px', aspect: '4/3', color: '#b0a090', img: 'portfolio-strip-04.jpg' },
-            { w: '180px', aspect: '2/3', color: '#8090a0', img: 'portfolio-strip-05.jpg' },
-            { w: '230px', aspect: '4/3', color: '#a09080', img: 'portfolio-strip-06.jpg' },
+            { w: '180px', aspect: '2/3', color: '#8a6848', img: 'portfolio-strip-01.jpg', sizes: '180px' },
+            { w: '280px', aspect: '3/2', color: '#a08870', img: 'portfolio-strip-02.jpg', sizes: '280px' },
+            { w: '180px', aspect: '2/3', color: '#6a9090', img: 'portfolio-strip-03.jpg', sizes: '180px' },
+            { w: '230px', aspect: '4/3', color: '#b0a090', img: 'portfolio-strip-04.jpg', sizes: '230px' },
+            { w: '180px', aspect: '2/3', color: '#8090a0', img: 'portfolio-strip-05.jpg', sizes: '180px' },
+            { w: '230px', aspect: '4/3', color: '#a09080', img: 'portfolio-strip-06.jpg', sizes: '230px' },
           ].map((item, i) => (
             <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
               </div>
-              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${item.img}`} alt="Something Blue Productions portfolio" fill sizes={item.sizes} style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>
@@ -185,7 +183,7 @@ export default function Home() {
               { tag: 'Studio · Near Cambridge', name: 'Waterbeach', desc: 'Minutes from Cambridge city centre and the A10. Perfect for families, mini sessions and selected commercial work.', href: '/studio/waterbeach', color: '#162d4a', img: 'studio-waterbeach-hero.jpg' },
             ].map((studio) => (
               <Link key={studio.href} href={studio.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '16/9', backgroundColor: studio.color, textDecoration: 'none' }}>
-                <Img src={`${STORAGE}/${studio.img}`} alt={studio.name} zoom />
+                <Img src={`${STORAGE}/${studio.img}`} alt={`${studio.name} photography studio`} zoom />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.92) 0%, rgba(13,27,42,0.3) 60%, transparent 100%)', zIndex: 2 }} />
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 1.8rem', zIndex: 3 }}>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', display: 'block', marginBottom: '0.4rem' }}>{studio.tag}</span>
@@ -278,7 +276,7 @@ export default function Home() {
                   <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textAlign: 'center' }}>{post.img}</span>
                   </div>
-                  <img src={`${STORAGE}/${post.img}`} alt={post.title} className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                  <Image src={`${STORAGE}/${post.img}`} alt={post.title} fill sizes="(max-width: 900px) 100vw, 33vw" className="zoom-img" style={{ objectFit: 'cover', zIndex: 1 }} />
                 </div>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>{post.cat}</p>
                 <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '0.95rem', color: '#2C2820', lineHeight: 1.4, marginBottom: '0.5rem', textTransform: 'none' }}>{post.title}</h3>
