@@ -205,7 +205,7 @@ export default function PortfolioPage() {
 
       {/* PORTFOLIO GRID */}
       <section className="port-pad" style={{ backgroundColor: '#F5F0E8' }}>
-        <div style={{ maxWidth: '100%' }>
+        <div style={{ maxWidth: '100%' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2.5rem' }}>
             {filters.map((f) => (
               <button
