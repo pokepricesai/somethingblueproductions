@@ -77,7 +77,12 @@ function formatTime(time: string) {
   return `${displayHour}${m !== '00' ? ':' + m : ''}${ampm}`;
 }
 
-function formatDate(dateStr: string) {
+function toLocalDateStr(date: Date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
   return new Date(dateStr).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 }
 
@@ -125,13 +130,13 @@ export default function AdminBookingsPage() {
   useEffect(() => { fetchAll(); }, [fetchAll]);
 
   const getBookingsForDateAndTime = (date: Date, time: string) => {
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = toLocalDateStr(date);
     return bookings.filter(b => b.slot_date === dateStr && b.slot_time === time);
   };
 
   const getSlotsForDay = (date: Date) => {
     const dow = date.toLocaleDateString('en-GB', { weekday: 'long' }).toLowerCase();
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = toLocalDateStr(date);
     const recurringSlots = slots.filter(s => s.day_of_week === dow && !s.specific_date);
     const specificSlots = slots.filter(s => s.specific_date === dateStr);
     const specificTimes = specificSlots.map(s => s.slot_time);
@@ -209,29 +214,33 @@ export default function AdminBookingsPage() {
   }
 
   async function toggleSpecificSlot(date: Date, time: string) {
-    const dateStr = date.toISOString().split('T')[0];
+    const dateStr = toLocalDateStr(date);
     const dow = date.toLocaleDateString('en-GB', { weekday: 'long' }).toLowerCase();
+    
     // Check if there's already a specific override for this date+time
     const existing = slots.find(s => s.specific_date === dateStr && s.slot_time === time);
+    
     if (existing) {
-      // Toggle it
       const newValue = !existing.is_active;
-      await supabase.from('availability_slots').update({ is_active: newValue, is_blocked: !newValue }).eq('id', existing.id);
-      setSlots(prev => prev.map(s => s.id === existing.id ? { ...s, is_active: newValue, is_blocked: !newValue } : s));
-      setActionMsg(`${formatTime(time)} on ${dateStr} ${newValue ? 'unblocked' : 'blocked'}`);
+      await supabase
+        .from('availability_slots')
+        .update({ is_active: newValue, is_blocked: !newValue })
+        .eq('id', existing.id);
+      setActionMsg(`${formatTime(time)} on ${dateStr} ${newValue ? 'unblocked ✓' : 'blocked ✓'}`);
     } else {
-      // Create a specific block for just this date
-      const { data } = await supabase.from('availability_slots').insert({
+      await supabase.from('availability_slots').insert({
         day_of_week: dow,
         slot_time: time,
         specific_date: dateStr,
         is_active: false,
         is_blocked: true,
         blocked_reason: 'Manually blocked',
-      }).select().single();
-      if (data) setSlots(prev => [...prev, data]);
-      setActionMsg(`${formatTime(time)} on ${dateStr} blocked`);
+      });
+      setActionMsg(`${formatTime(time)} on ${dateStr} blocked ✓`);
     }
+    
+    // Always do a full refresh so the calendar reflects the change
+    await fetchAll();
     setTimeout(() => setActionMsg(''), 2500);
   }
 
@@ -259,7 +268,7 @@ export default function AdminBookingsPage() {
   });
 
   const weekRevenue = upcomingBookings
-    .filter(b => weekDays.some(d => d.toISOString().split('T')[0] === b.slot_date))
+    .filter(b => weekDays.some(d => toLocalDateStr(d) === b.slot_date))
     .reduce((sum, b) => sum + b.session_price, 0);
 
   return (
@@ -336,7 +345,7 @@ export default function AdminBookingsPage() {
             <>
               <div className="stat-grid">
                 {[
-                  { label: 'This week', value: upcomingBookings.filter(b => weekDays.some(d => d.toISOString().split('T')[0] === b.slot_date)).length, sub: 'bookings' },
+                  { label: 'This week', value: upcomingBookings.filter(b => weekDays.some(d => toLocalDateStr(d) === b.slot_date)).length, sub: 'bookings' },
                   { label: 'Week revenue', value: `£${weekRevenue}`, sub: 'confirmed' },
                   { label: 'Upcoming', value: upcomingBookings.length, sub: 'total sessions' },
                   { label: 'Vouchers', value: vouchers.filter(v => v.status === 'unused').length, sub: 'unredeemed' },
@@ -368,7 +377,7 @@ export default function AdminBookingsPage() {
                     </div>
                   ))}
                   {allTimes.map(time => (
-                    <>
+                    <div key={`row-${time}`} style={{ display: 'contents' }}>
                       <div key={`t-${time}`} className="cal-time">
                         <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', color: '#5c5550', fontWeight: 600 }}>{formatTime(time)}</p>
                       </div>
@@ -381,7 +390,7 @@ export default function AdminBookingsPage() {
                         const isPast = d < new Date(new Date().setHours(0,0,0,0));
                         return (
                           <div
-                            key={`${d.toISOString()}-${time}`}
+                            key={`${toLocalDateStr(d)}-${time}`}
                             className={`cal-cell ${isBlocked ? 'blocked' : isInactive ? 'inactive' : 'available'}`}
                             style={{
                               opacity: isPast ? 0.4 : 1,
@@ -404,7 +413,7 @@ export default function AdminBookingsPage() {
                           </div>
                         );
                       })}
-                    </>
+                    </div>
                   ))}
                 </div>
               </div>
