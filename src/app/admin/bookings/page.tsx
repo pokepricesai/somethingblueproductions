@@ -265,46 +265,46 @@ export default function AdminBookingsPage() {
   return (
     <>
       <style>{`
-        .adm { min-height: 100vh; background: #0d1b2a; font-family: 'Inter', sans-serif; padding-top: 80px; }
-        .adm-header { background: #0d1b2a; border-bottom: 1px solid rgba(168,202,236,0.1); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
-        .adm-tabs { display: flex; gap: 2px; padding: 1rem 2rem 0; overflow-x: auto; }
-        .adm-tab { font-family: 'Carose', sans-serif; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.6rem 1.2rem; background: transparent; border: 1px solid rgba(168,202,236,0.15); color: rgba(245,240,232,0.4); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-        .adm-tab.active { background: #1B3A5C; border-color: #1B3A5C; color: #E8DDB5; }
-        .adm-tab:hover:not(.active) { border-color: rgba(168,202,236,0.3); color: rgba(245,240,232,0.7); }
+        .adm { min-height: 100vh; background: #F5F0E8; font-family: 'Inter', sans-serif; padding-top: 80px; }
+        .adm-header { background: #fff; border-bottom: 1px solid #DDD5C0; padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .adm-tabs { display: flex; gap: 2px; padding: 1rem 2rem 0; overflow-x: auto; background: #F5F0E8; }
+        .adm-tab { font-family: 'Carose', sans-serif; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.6rem 1.2rem; background: transparent; border: 1px solid #DDD5C0; color: #9E9282; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
+        .adm-tab.active { background: #1B3A5C; border-color: #1B3A5C; color: #F5F0E8; }
+        .adm-tab:hover:not(.active) { border-color: #1B3A5C; color: #1B3A5C; }
         .adm-body { padding: 1.5rem 2rem 4rem; }
-        .adm-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(168,202,236,0.08); padding: 1.5rem; margin-bottom: 2px; }
+        .adm-card { background: #fff; border: 1px solid #DDD5C0; padding: 1.5rem; margin-bottom: 2px; }
         .adm-btn { font-family: 'Carose', sans-serif; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.5rem 1rem; border: none; cursor: pointer; transition: opacity 0.2s; }
-        .adm-btn-primary { background: #1B3A5C; color: #E8DDB5; }
-        .adm-btn-danger { background: #7f1d1d; color: #fca5a5; }
-        .adm-btn-ghost { background: rgba(168,202,236,0.08); color: #A8CAEC; border: 1px solid rgba(168,202,236,0.15); }
+        .adm-btn-primary { background: #1B3A5C; color: #F5F0E8; }
+        .adm-btn-danger { background: #991b1b; color: #fff; }
+        .adm-btn-ghost { background: #fff; color: #1B3A5C; border: 1px solid #DDD5C0; }
         .adm-btn:hover { opacity: 0.8; }
-        .adm-input { background: rgba(255,255,255,0.06); border: 1px solid rgba(168,202,236,0.15); color: #E8DDB5; padding: 0.6rem 0.85rem; font-family: 'Inter', sans-serif; font-size: 0.82rem; outline: none; width: 100%; box-sizing: border-box; }
-        .adm-input:focus { border-color: #A8CAEC; }
-        .adm-select { background: rgba(255,255,255,0.06); border: 1px solid rgba(168,202,236,0.15); color: #E8DDB5; padding: 0.6rem 0.85rem; font-family: 'Inter', sans-serif; font-size: 0.82rem; outline: none; cursor: pointer; }
-        .adm-label { font-family: 'Carose', sans-serif; font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: #A8CAEC; display: block; margin-bottom: 0.4rem; }
-        .cal-grid { display: grid; grid-template-columns: 60px repeat(7, 1fr); gap: 1px; background: rgba(168,202,236,0.06); }
-        .cal-header { background: #0d1b2a; padding: 0.75rem 0.5rem; text-align: center; }
-        .cal-time { background: #0d1b2a; padding: 0.5rem; display: flex; align-items: center; justify-content: flex-end; padding-right: 0.75rem; }
-        .cal-cell { background: rgba(255,255,255,0.02); padding: 0.35rem; min-height: 44px; position: relative; transition: background 0.15s; }
-        .cal-cell.blocked { background: rgba(127,29,29,0.15); }
-        .cal-cell.inactive { background: rgba(0,0,0,0.2); }
-        .cal-cell.available:hover { background: rgba(127,29,29,0.08); outline: 1px dashed rgba(252,165,165,0.3); }
-        .booking-chip { background: #1B3A5C; padding: 0.25rem 0.5rem; margin-bottom: 2px; cursor: pointer; }
+        .adm-input { background: #FAF8F2; border: 1px solid #DDD5C0; color: #2C2820; padding: 0.6rem 0.85rem; font-family: 'Inter', sans-serif; font-size: 0.82rem; outline: none; width: 100%; box-sizing: border-box; }
+        .adm-input:focus { border-color: #1B3A5C; }
+        .adm-select { background: #FAF8F2; border: 1px solid #DDD5C0; color: #2C2820; padding: 0.6rem 0.85rem; font-family: 'Inter', sans-serif; font-size: 0.82rem; outline: none; cursor: pointer; }
+        .adm-label { font-family: 'Carose', sans-serif; font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: #9E9282; display: block; margin-bottom: 0.4rem; }
+        .cal-grid { display: grid; grid-template-columns: 60px repeat(7, 1fr); gap: 1px; background: #DDD5C0; border: 1px solid #DDD5C0; }
+        .cal-header { background: #1B3A5C; padding: 0.75rem 0.5rem; text-align: center; }
+        .cal-time { background: #E8DDB5; padding: 0.5rem; display: flex; align-items: center; justify-content: flex-end; padding-right: 0.75rem; }
+        .cal-cell { background: #FAF8F2; padding: 0.35rem; min-height: 48px; position: relative; transition: background 0.15s; }
+        .cal-cell.blocked { background: #fee2e2; }
+        .cal-cell.inactive { background: #E8DDB5; }
+        .cal-cell.available:hover { background: #fef3c7; outline: 2px dashed #d97706; cursor: pointer; }
+        .booking-chip { background: #1B3A5C; padding: 0.3rem 0.6rem; margin-bottom: 2px; cursor: pointer; border-radius: 0; }
         .booking-chip:hover { opacity: 0.85; }
         .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-bottom: 1.5rem; }
-        .stat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(168,202,236,0.08); padding: 1.2rem 1.5rem; }
-        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 1rem; }
-        .modal { background: #0d2440; border: 1px solid rgba(168,202,236,0.15); padding: 2rem; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; }
+        .stat-card { background: #fff; border: 1px solid #DDD5C0; padding: 1.2rem 1.5rem; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 50; display: flex; align-items: center; justify-content: center; padding: 1rem; }
+        .modal { background: #fff; border: 1px solid #DDD5C0; padding: 2rem; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,0,0,0.15); }
         .badge { display: inline-block; font-family: 'Carose', sans-serif; font-size: 0.55rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.2rem 0.5rem; }
-        .badge-confirmed { background: rgba(34,197,94,0.15); color: #86efac; }
-        .badge-cancelled { background: rgba(239,68,68,0.15); color: #fca5a5; }
-        .badge-unused { background: rgba(168,202,236,0.15); color: #A8CAEC; }
-        .badge-used { background: rgba(34,197,94,0.15); color: #86efac; }
-        .badge-revoked { background: rgba(239,68,68,0.15); color: #fca5a5; }
-        .action-msg { position: fixed; bottom: 2rem; right: 2rem; background: #1B3A5C; color: #E8DDB5; padding: 0.75rem 1.5rem; font-family: 'Carose', sans-serif; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; z-index: 100; }
+        .badge-confirmed { background: #dcfce7; color: #166534; }
+        .badge-cancelled { background: #fee2e2; color: #991b1b; }
+        .badge-unused { background: #dbeafe; color: #1e40af; }
+        .badge-used { background: #dcfce7; color: #166534; }
+        .badge-revoked { background: #fee2e2; color: #991b1b; }
+        .action-msg { position: fixed; bottom: 2rem; right: 2rem; background: #1B3A5C; color: #F5F0E8; padding: 0.75rem 1.5rem; font-family: 'Carose', sans-serif; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.2); }
         .slot-btn { font-family: 'Carose', sans-serif; font-size: 0.65rem; letter-spacing: 0.1em; padding: 0.5rem 0.85rem; border: 1px solid; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.4rem; }
-        .slot-btn.active { background: #1B3A5C; border-color: #1B3A5C; color: #E8DDB5; }
-        .slot-btn.inactive { background: rgba(255,255,255,0.03); border-color: rgba(168,202,236,0.1); color: rgba(245,240,232,0.3); }
+        .slot-btn.active { background: #1B3A5C; border-color: #1B3A5C; color: #F5F0E8; }
+        .slot-btn.inactive { background: #F5F0E8; border-color: #DDD5C0; color: #9E9282; }
         .slot-btn:hover { opacity: 0.8; }
         @media (max-width: 900px) {
           .stat-grid { grid-template-columns: 1fr 1fr; }
@@ -316,10 +316,10 @@ export default function AdminBookingsPage() {
       <div className="adm">
         <div className="adm-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <a href="/admin" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.4)', textDecoration: 'none' }}>← Admin</a>
-            <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1rem', color: '#E8DDB5', textTransform: 'none' }}>Bookings & Calendar</h1>
+            <a href="/admin" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none' }}>← Admin</a>
+            <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1rem', color: '#1B3A5C', textTransform: 'none' }}>Bookings & Calendar</h1>
           </div>
-          <a href="/" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.4)', textDecoration: 'none' }}>← Site</a>
+          <a href="/" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none' }}>← Site</a>
         </div>
 
         <div className="adm-tabs">
@@ -329,7 +329,7 @@ export default function AdminBookingsPage() {
         </div>
 
         <div className="adm-body">
-          {loading && <p style={{ color: 'rgba(245,240,232,0.4)', fontSize: '0.82rem' }}>Loading...</p>}
+          {loading && <p style={{ color: '#9E9282', fontSize: '0.82rem' }}>Loading...</p>}
 
           {/* ── CALENDAR ── */}
           {!loading && tab === 'calendar' && (
@@ -343,15 +343,15 @@ export default function AdminBookingsPage() {
                 ].map(s => (
                   <div key={s.label} className="stat-card">
                     <p className="adm-label">{s.label}</p>
-                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.8rem', color: '#E8DDB5', fontWeight: 300 }}>{s.value}</p>
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.4)' }}>{s.sub}</p>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.8rem', color: '#1B3A5C', fontWeight: 300 }}>{s.value}</p>
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: '#9E9282' }}>{s.sub}</p>
                   </div>
                 ))}
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
                 <button className="adm-btn adm-btn-ghost" onClick={() => { const d = new Date(weekStart); d.setDate(d.getDate() - 7); setWeekStart(d); }}>← Prev</button>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A8CAEC' }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#1B3A5C' }}>
                   {weekStart.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} — {weekDays[6].toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </p>
                 <button className="adm-btn adm-btn-ghost" onClick={() => { const d = new Date(weekStart); d.setDate(d.getDate() + 7); setWeekStart(d); }}>Next →</button>
@@ -370,7 +370,7 @@ export default function AdminBookingsPage() {
                   {allTimes.map(time => (
                     <>
                       <div key={`t-${time}`} className="cal-time">
-                        <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', color: 'rgba(245,240,232,0.35)' }}>{formatTime(time)}</p>
+                        <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', color: '#5c5550', fontWeight: 600 }}>{formatTime(time)}</p>
                       </div>
                       {weekDays.map(d => {
                         const daySlots = getSlotsForDay(d);
@@ -395,12 +395,12 @@ export default function AdminBookingsPage() {
                           >
                             {dayBookings.map(b => (
                               <div key={b.id} className="booking-chip" style={{ background: SERVICE_COLOURS[b.service_type] || '#1B3A5C' }} onClick={() => setSelectedBooking(b)}>
-                                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(232,221,181,0.9)', lineHeight: 1.3 }}>{b.name.split(' ')[0]}</p>
-                                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: 'rgba(232,221,181,0.55)' }}>{b.service_type} · {b.session_duration}m</p>
+                                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: '#E8DDB5', lineHeight: 1.3 }}>{b.name.split(' ')[0]}</p>
+                                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: 'rgba(232,221,181,0.75)' }}>{b.service_type} · {b.session_duration}m</p>
                               </div>
                             ))}
-                            {isBlocked && !dayBookings.length && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: 'rgba(252,165,165,0.5)', padding: '0.2rem' }}>blocked</p>}
-                            {isInactive && !isBlocked && !dayBookings.length && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: 'rgba(245,240,232,0.1)', padding: '0.2rem' }}>—</p>}
+                            {isBlocked && !dayBookings.length && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: '#dc2626', padding: '0.2rem' }}>blocked</p>}
+                            {isInactive && !isBlocked && !dayBookings.length && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: '#9E9282', padding: '0.2rem' }}>—</p>}
                           </div>
                         );
                       })}
@@ -411,20 +411,20 @@ export default function AdminBookingsPage() {
 
               <div style={{ display: 'flex', gap: '1.5rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
                 {[
-                  { color: 'rgba(255,255,255,0.02)', label: 'Available — click to block' },
-                  { color: 'rgba(127,29,29,0.3)', label: 'Blocked — click to unblock' },
-                  { color: 'rgba(0,0,0,0.3)', label: 'Not available (recurring)' },
+                  { color: '#FAF8F2', label: 'Available — click to block (hover to see)' },
+                  { color: '#fee2e2', label: 'Blocked — click to unblock' },
+                  { color: '#E8DDB5', label: 'Not available (recurring default)' },
                   { color: '#1B3A5C', label: 'Has booking' },
                 ].map(l => (
                   <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                    <span style={{ width: '12px', height: '12px', background: l.color, display: 'inline-block', border: '1px solid rgba(168,202,236,0.1)', flexShrink: 0 }} />
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.68rem', color: 'rgba(245,240,232,0.35)' }}>{l.label}</p>
+                    <span style={{ width: '12px', height: '12px', background: l.color, display: 'inline-block', border: '1px solid #DDD5C0', flexShrink: 0 }} />
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.68rem', color: '#9E9282' }}>{l.label}</p>
                   </div>
                 ))}
               </div>
 
               <div className="adm-card" style={{ marginTop: '1.5rem' }}>
-                <p className="adm-label" style={{ marginBottom: '1rem' }}>Block a date</p>
+                <p className="adm-label" style={{ marginBottom: '1rem' }}>Block entire date</p>
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                   <div style={{ flex: '1', minWidth: '140px' }}>
                     <label className="adm-label">Date</label>
@@ -443,12 +443,12 @@ export default function AdminBookingsPage() {
           {/* ── BOOKINGS ── */}
           {!loading && tab === 'bookings' && (
             <>
-              <p className="adm-label" style={{ marginBottom: '1rem' }}>All bookings — {bookings.length} total</p>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>All bookings — {bookings.length} total</p>
               {bookings.map(b => (
                 <div key={b.id} className="adm-card" style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }} onClick={() => setSelectedBooking(b)}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.3rem' }}>
-                      <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.85rem', color: '#E8DDB5', textTransform: 'none' }}>{b.name}</p>
+                      <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.85rem', color: '#1B3A5C', textTransform: 'none' }}>{b.name}</p>
                       <span className={`badge badge-${b.status}`}>{b.status}</span>
                     </div>
                     <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.4)' }}>
@@ -456,8 +456,8 @@ export default function AdminBookingsPage() {
                     </p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#E8DDB5', fontWeight: 300 }}>£{b.session_price}</p>
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: 'rgba(245,240,232,0.3)' }}>{b.email}</p>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#1B3A5C', fontWeight: 300 }}>£{b.session_price}</p>
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: '#9E9282' }}>{b.email}</p>
                   </div>
                 </div>
               ))}
@@ -467,7 +467,7 @@ export default function AdminBookingsPage() {
           {/* ── SLOTS ── */}
           {!loading && tab === 'slots' && (
             <>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'rgba(245,240,232,0.45)', marginBottom: '1.5rem', lineHeight: 1.65 }}>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#5c5550', marginBottom: '1.5rem', lineHeight: 1.65 }}>
                 Click a slot to toggle it on or off for all future bookings on that day. Blue = available. Add new time slots using the form below.
               </p>
 
@@ -475,10 +475,10 @@ export default function AdminBookingsPage() {
                 const daySlots = slots.filter(s => s.day_of_week === day && !s.specific_date);
                 return (
                   <div key={day} className="adm-card" style={{ marginBottom: '2px' }}>
-                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'capitalize', color: '#A8CAEC', marginBottom: '0.75rem' }}>{day}</p>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'capitalize', color: '#1B3A5C', marginBottom: '0.75rem', fontWeight: 600 }}>{day}</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                       {daySlots.length === 0 && (
-                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.25)' }}>No slots — add one below</p>
+                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9E9282' }}>No slots — add one below</p>
                       )}
                       {daySlots.map(slot => (
                         <div key={slot.id} style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
@@ -491,7 +491,7 @@ export default function AdminBookingsPage() {
                             <span style={{ fontSize: '0.6rem', opacity: 0.6 }}>{slot.is_active ? '●' : '○'}</span>
                           </button>
                           <button
-                            style={{ background: 'rgba(127,29,29,0.3)', border: 'none', color: '#fca5a5', cursor: 'pointer', padding: '0.5rem 0.4rem', fontSize: '0.65rem', lineHeight: 1 }}
+                            style={{ background: '#fee2e2', border: 'none', color: '#991b1b', cursor: 'pointer', padding: '0.5rem 0.4rem', fontSize: '0.65rem', lineHeight: 1 }}
                             onClick={() => deleteSlot(slot)}
                             title="Delete slot"
                           >
@@ -534,18 +534,18 @@ export default function AdminBookingsPage() {
                 <div key={v.id} className="adm-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.3rem' }}>
-                      <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#E8DDB5', letterSpacing: '0.05em' }}>{v.code}</p>
+                      <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', letterSpacing: '0.05em' }}>{v.code}</p>
                       <span className={`badge badge-${v.status}`}>{v.status}</span>
                     </div>
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.4)' }}>
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9E9282' }}>
                       {v.occasion} · {v.session_type} · From {v.buyer_name}{v.recipient_name ? ` → ${v.recipient_name}` : ''}
                     </p>
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: 'rgba(245,240,232,0.25)', marginTop: '0.2rem' }}>
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: '#9E9282', marginTop: '0.2rem' }}>
                       Expires {new Date(v.expires_at).toLocaleDateString('en-GB')}
                     </p>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#E8DDB5', fontWeight: 300 }}>£{v.session_price}</p>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#1B3A5C', fontWeight: 300 }}>£{v.session_price}</p>
                     {v.status === 'unused' && <button className="adm-btn adm-btn-danger" onClick={() => revokeVoucher(v.id)}>Revoke</button>}
                   </div>
                 </div>
@@ -561,8 +561,8 @@ export default function AdminBookingsPage() {
           <div className="modal" onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
               <div>
-                <p className="adm-label" style={{ marginBottom: '0.3rem' }}>Booking details</p>
-                <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.2rem', color: '#E8DDB5', textTransform: 'none' }}>{selectedBooking.name}</h2>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.3rem' }}>Booking details</p>
+                <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.2rem', color: '#1B3A5C', textTransform: 'none' }}>{selectedBooking.name}</h2>
               </div>
               <span className={`badge badge-${selectedBooking.status}`}>{selectedBooking.status}</span>
             </div>
@@ -580,9 +580,9 @@ export default function AdminBookingsPage() {
                 ['Notes', selectedBooking.notes || 'None'],
                 ['Booked', new Date(selectedBooking.created_at).toLocaleDateString('en-GB')],
               ].map(([label, value]) => (
-                <div key={label} style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid rgba(168,202,236,0.06)', paddingBottom: '0.5rem' }}>
-                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A8CAEC', width: '80px', flexShrink: 0 }}>{label}</p>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.7)' }}>{value}</p>
+                <div key={label} style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid #DDD5C0', paddingBottom: '0.5rem' }}>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9E9282', width: '80px', flexShrink: 0 }}>{label}</p>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#2C2820' }}>{value}</p>
                 </div>
               ))}
             </div>
