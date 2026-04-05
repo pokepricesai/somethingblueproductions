@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { createClient } from '@supabase/supabase-js';
 import { notFound } from 'next/navigation';
@@ -7,6 +8,8 @@ const supabase = createClient(
   'https://knwyfoqmlwbxtfhvkbmc.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y'
 );
+
+const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
 const serviceColors: Record<string, string> = {
   family: '#3a4828',
@@ -20,6 +23,14 @@ const serviceLabels: Record<string, string> = {
   newborn: 'Newborn Photography',
   wedding: 'Wedding Photography',
   commercial: 'Commercial Photography',
+};
+
+// Hero image per service type — falls back to location image
+const serviceHeroImages: Record<string, string> = {
+  family: 'services-families.jpg',
+  newborn: 'services-newborn.jpg',
+  wedding: 'services-weddings.jpg',
+  commercial: 'commercial-brand-card.jpg',
 };
 
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
@@ -56,6 +67,9 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
     .order('name')
     .limit(8);
 
+  // Location hero image filename — e.g. location-cambridge.jpg
+  const locationHeroImg = `${STORAGE}/location-${location.slug}.jpg`;
+
   return (
     <>
       <style>{`
@@ -65,13 +79,15 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
         .lp-nearby-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
         .lp-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
         .lp-cta-buttons a { text-align: center; }
+        .zoom-card { overflow: hidden; }
+        .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; }
+        .zoom-card:hover .zoom-img { transform: scale(1.025) !important; }
 
         @media (min-width: 640px) {
           .lp-pad { padding: 3.5rem 2.5rem; }
           .lp-hero { padding: 10rem 2.5rem 4rem; }
           .lp-nearby-grid { grid-template-columns: repeat(4, 1fr); }
         }
-
         @media (min-width: 900px) {
           .lp-pad { padding: 4rem 4rem; }
           .lp-hero { padding: 10rem 4rem 5rem; }
@@ -81,7 +97,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* HERO */}
       <section style={{ backgroundColor: '#0d1b2a' }}>
         <div className="lp-hero" style={{ maxWidth: '700px' }}>
           <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '1.2rem', flexWrap: 'wrap' }}>
@@ -99,12 +115,21 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
         </div>
       </section>
 
-      {/* ─── LOCATION IMAGE ─── */}
-      <div style={{ width: '100%', aspectRatio: '16/6', maxHeight: '400px', overflow: 'hidden', backgroundColor: '#1b3a5c', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.2)', textAlign: 'center' }}>location-{location.slug}.jpg</span>
+      {/* LOCATION IMAGE */}
+      <div style={{ width: '100%', aspectRatio: '16/6', maxHeight: '400px', overflow: 'hidden', backgroundColor: '#1b3a5c', position: 'relative' }}>
+        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.3)', textAlign: 'center' }}>location-{location.slug}.jpg</span>
+        </div>
+        <Image
+          src={locationHeroImg}
+          alt={`Photography in ${location.name}`}
+          fill
+          sizes="100vw"
+          style={{ objectFit: 'cover' }}
+        />
       </div>
 
-      {/* ─── INTRO ─── */}
+      {/* INTRO */}
       <section className="lp-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>About this area</p>
@@ -127,7 +152,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
         </div>
       </section>
 
-      {/* ─── SERVICE PAGES ─── */}
+      {/* SERVICE PAGES */}
       <section className="lp-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -136,9 +161,20 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
           </div>
           <div className="lp-services-grid">
             {(pages || []).map((page) => (
-              <Link key={page.slug} href={`/${page.slug}`} style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: serviceColors[page.service] || '#2c2820', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '1.5rem', textDecoration: 'none', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)' }} />
-                <div style={{ position: 'relative', zIndex: 1 }}>
+              <Link key={page.slug} href={`/${page.slug}`} className="zoom-card" style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: serviceColors[page.service] || '#2c2820', display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '1.5rem', textDecoration: 'none' }}>
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.3)', textAlign: 'center' }}>{serviceHeroImages[page.service]}</span>
+                </div>
+                <Image
+                  src={`${STORAGE}/${serviceHeroImages[page.service] || 'services-families.jpg'}`}
+                  alt={`${serviceLabels[page.service]} in ${location.name}`}
+                  fill
+                  className="zoom-img"
+                  sizes="(max-width: 900px) 50vw, 25vw"
+                  style={{ objectFit: 'cover' }}
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)', zIndex: 2 }} />
+                <div style={{ position: 'relative', zIndex: 3 }}>
                   <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.5vw, 1.1rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.3rem' }}>{serviceLabels[page.service]}</h3>
                   <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.6)' }}>in {location.name}</p>
                 </div>
@@ -148,7 +184,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
         </div>
       </section>
 
-      {/* ─── NEARBY LOCATIONS ─── */}
+      {/* NEARBY LOCATIONS */}
       {allLocations && allLocations.length > 0 && (
         <section className="lp-pad" style={{ backgroundColor: '#F5F0E8' }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
@@ -167,7 +203,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
         </section>
       )}
 
-      {/* ─── CTA ─── */}
+      {/* CTA */}
       <section className="lp-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Book a session in {location.name}</p>
