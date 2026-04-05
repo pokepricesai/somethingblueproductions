@@ -104,6 +104,12 @@ export default function BookPage() {
   const [error, setError] = useState('');
   const [voucherChecking, setVoucherChecking] = useState(false);
   const [generatedCode, setGeneratedCode] = useState('');
+  const [calendarMonth, setCalendarMonth] = useState(() => {
+    const d = new Date();
+    return new Date(d.getFullYear(), d.getMonth(), 1);
+  });
+  const [dateSlotCache, setDateSlotCache] = useState<Record<string, boolean>>({});
+  const [slotsLoading, setSlotsLoading] = useState(false);
 
   const [booking, setBooking] = useState<BookingForm>({
     service: '', peopleCount: 1, duration: 30, price: 99,
@@ -123,6 +129,64 @@ export default function BookPage() {
       fetchSlots(booking.date);
     }
   }, [booking.date]);
+
+  // Pre-fetch availability for all days in visible month
+  useEffect(() => {
+    async function prefetchMonth() {
+      const year = calendarMonth.getFullYear();
+      const month = calendarMonth.getMonth();
+      const daysInMonth: string[] = [];
+      const cursor = new Date(year, month, 1);
+      while (cursor.getMonth() === month) {
+        daysInMonth.push(toUKDateStr(cursor));
+        cursor.setDate(cursor.getDate() + 1);
+      }
+
+      // Get all default slots
+      const { data: defaults } = await supabase
+        .from('availability_slots')
+        .select('day_of_week, slot_time')
+        .eq('is_active', true)
+        .is('specific_date', null);
+
+      // Get all overrides for this month
+      const monthStart = `${year}-${String(month + 1).padStart(2, '0')}-01`;
+      const monthEnd = `${year}-${String(month + 1).padStart(2, '0')}-31`;
+      const { data: overrides } = await supabase
+        .from('slot_overrides')
+        .select('slot_date, slot_time, type')
+        .gte('slot_date', monthStart)
+        .lte('slot_date', monthEnd);
+
+      // Get all bookings this month
+      const { data: bookings } = await supabase
+        .from('bookings')
+        .select('slot_date, slot_time')
+        .gte('slot_date', monthStart)
+        .lte('slot_date', monthEnd)
+        .eq('status', 'confirmed');
+
+      const cache: Record<string, boolean> = {};
+      for (const dateStr of daysInMonth) {
+        const dow = getUKDayOfWeek(new Date(dateStr + 'T12:00:00'));
+        const defaultTimes = new Set(
+          (defaults || []).filter(s => s.day_of_week === dow).map(s => s.slot_time)
+        );
+        const dayOverrides = (overrides || []).filter(o => o.slot_date === dateStr);
+        for (const o of dayOverrides) {
+          if (o.type === 'blocked') defaultTimes.delete(o.slot_time);
+          if (o.type === 'added') defaultTimes.add(o.slot_time);
+        }
+        const bookedTimes = new Set(
+          (bookings || []).filter(b => b.slot_date === dateStr).map(b => b.slot_time)
+        );
+        for (const t of bookedTimes) defaultTimes.delete(t);
+        cache[dateStr] = defaultTimes.size > 0;
+      }
+      setDateSlotCache(cache);
+    }
+    prefetchMonth();
+  }, [calendarMonth]);
 
   async function fetchSlots(date: string) {
     const d = new Date(date + 'T12:00:00Z'); // noon UTC avoids any BST boundary issues
@@ -500,72 +564,137 @@ export default function BookPage() {
               {bookStep === 'datetime' && (
                 <div className="book-card">
                   <button className="back-link" onClick={() => setBookStep('service')}>← Back</button>
-                  <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.5rem' }}>Choose your date</h2>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#9E9282', marginBottom: '1.5rem' }}>Browse up to 6 months ahead. All times shown in UK time.</p>
+                  <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.25rem' }}>Choose your date</h2>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', marginBottom: '1.5rem' }}>All times shown in UK time (GMT/BST).</p>
 
-                  {/* Month-grouped date picker */}
+                  {/* Month navigation */}
                   {(() => {
-                    const months: Record<string, Date[]> = {};
-                    allDays.forEach(d => {
-                      const monthKey = d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
-                      if (!months[monthKey]) months[monthKey] = [];
-                      months[monthKey].push(d);
-                    });
-                    return Object.entries(months).map(([monthLabel, days]) => (
-                      <div key={monthLabel} style={{ marginBottom: '1.5rem' }}>
-                        <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.75rem' }}>{monthLabel}</p>
-                        <div className="date-grid">
-                          {days.map(d => {
+                    const year = calendarMonth.getFullYear();
+                    const month = calendarMonth.getMonth();
+                    const today = new Date(); today.setHours(0,0,0,0);
+                    const maxMonth = new Date(); maxMonth.setMonth(maxMonth.getMonth() + 6);
+                    const canGoPrev = calendarMonth > new Date(today.getFullYear(), today.getMonth(), 1);
+                    const canGoNext = calendarMonth < new Date(maxMonth.getFullYear(), maxMonth.getMonth(), 1);
+
+                    // Build calendar grid — start on Monday
+                    const firstDay = new Date(year, month, 1);
+                    const startDow = (firstDay.getDay() + 6) % 7; // 0=Mon
+                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+                    const cells: (Date | null)[] = [];
+                    for (let i = 0; i < startDow; i++) cells.push(null);
+                    for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
+
+                    return (
+                      <div>
+                        {/* Month header */}
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                          <button
+                            onClick={() => { const d = new Date(calendarMonth); d.setMonth(d.getMonth() - 1); setCalendarMonth(d); setBooking(prev => ({ ...prev, date: '', time: '' })); }}
+                            disabled={!canGoPrev}
+                            style={{ background: 'none', border: '1px solid #DDD5C0', color: canGoPrev ? '#1B3A5C' : '#DDD5C0', cursor: canGoPrev ? 'pointer' : 'default', padding: '0.4rem 0.75rem', fontFamily: "'Carose', sans-serif", fontSize: '0.7rem' }}
+                          >←</button>
+                          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.75rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C' }}>
+                            {firstDay.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}
+                          </p>
+                          <button
+                            onClick={() => { const d = new Date(calendarMonth); d.setMonth(d.getMonth() + 1); setCalendarMonth(d); setBooking(prev => ({ ...prev, date: '', time: '' })); }}
+                            disabled={!canGoNext}
+                            style={{ background: 'none', border: '1px solid #DDD5C0', color: canGoNext ? '#1B3A5C' : '#DDD5C0', cursor: canGoNext ? 'pointer' : 'default', padding: '0.4rem 0.75rem', fontFamily: "'Carose', sans-serif", fontSize: '0.7rem' }}
+                          >→</button>
+                        </div>
+
+                        {/* Day of week headers */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px', marginBottom: '2px' }}>
+                          {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => (
+                            <p key={d} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9E9282', textAlign: 'center', padding: '0.3rem 0' }}>{d}</p>
+                          ))}
+                        </div>
+
+                        {/* Calendar grid */}
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px', marginBottom: '1.5rem' }}>
+                          {cells.map((d, i) => {
+                            if (!d) return <div key={`empty-${i}`} />;
                             const dateStr = toUKDateStr(d);
-                            const dayName = d.toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'Europe/London' });
-                            const dayNum = d.toLocaleDateString('en-GB', { day: 'numeric', timeZone: 'Europe/London' });
+                            const isPast = d < today;
+                            const hasSlots = dateSlotCache[dateStr] === true;
                             const isSelected = booking.date === dateStr;
+                            const isToday = toUKDateStr(d) === toUKDateStr(today);
+
                             return (
                               <div
                                 key={dateStr}
-                                className={`date-btn ${isSelected ? 'selected' : ''}`}
-                                onClick={() => setBooking(prev => ({ ...prev, date: dateStr, time: '' }))}
+                                onClick={() => {
+                                  if (isPast || !hasSlots) return;
+                                  setBooking(prev => ({ ...prev, date: dateStr, time: '' }));
+                                  fetchSlots(dateStr);
+                                }}
+                                style={{
+                                  padding: '0.5rem 0.25rem',
+                                  textAlign: 'center',
+                                  cursor: isPast || !hasSlots ? 'default' : 'pointer',
+                                  background: isSelected ? '#1B3A5C' : 'transparent',
+                                  border: isToday ? '1px solid #1B3A5C' : '1px solid transparent',
+                                  opacity: isPast ? 0.3 : 1,
+                                  position: 'relative',
+                                  transition: 'background 0.15s',
+                                }}
                               >
-                                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: isSelected ? '#A8CAEC' : '#9E9282' }}>{dayName}</p>
-                                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: isSelected ? '#E8DDB5' : '#2C2820', fontWeight: 300 }}>{dayNum}</p>
+                                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.88rem', color: isSelected ? '#E8DDB5' : isPast || !hasSlots ? '#9E9282' : '#1B3A5C', fontWeight: 300, lineHeight: 1 }}>{d.getDate()}</p>
+                                {hasSlots && !isPast && (
+                                  <span style={{ display: 'block', width: '5px', height: '5px', borderRadius: '50%', background: isSelected ? '#A8CAEC' : '#16a34a', margin: '3px auto 0' }} />
+                                )}
                               </div>
                             );
                           })}
                         </div>
+
+                        {/* Inline time picker — drops down when date selected */}
+                        {booking.date && booking.date.startsWith(`${year}-${String(month + 1).padStart(2, '0')}`) && (
+                          <div style={{ borderTop: '1px solid #DDD5C0', paddingTop: '1.25rem', marginBottom: '1.5rem' }}>
+                            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1B3A5C', marginBottom: '0.75rem' }}>
+                              {new Date(booking.date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/London' })}
+                            </p>
+                            {availableSlots.length === 0 ? (
+                              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#9E9282' }}>No times available — please choose another date.</p>
+                            ) : (
+                              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                {availableSlots.map(slot => {
+                                  const [h, m] = slot.slot_time.split(':');
+                                  const hour = parseInt(h);
+                                  const ampm = hour >= 12 ? 'pm' : 'am';
+                                  const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+                                  const label = `${displayHour}${m !== '00' ? ':' + m : ''}${ampm}`;
+                                  const isTimeSelected = booking.time === slot.slot_time;
+                                  return (
+                                    <button
+                                      key={slot.slot_time}
+                                      onClick={() => setBooking(prev => ({ ...prev, time: slot.slot_time }))}
+                                      style={{
+                                        fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', letterSpacing: '0.1em',
+                                        padding: '0.6rem 1rem', border: 'none', cursor: 'pointer',
+                                        background: isTimeSelected ? '#1B3A5C' : '#F5F0E8',
+                                        color: isTimeSelected ? '#E8DDB5' : '#1B3A5C',
+                                        outline: isTimeSelected ? 'none' : '1px solid #DDD5C0',
+                                        transition: 'all 0.15s',
+                                      }}
+                                    >
+                                      {label}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        )}
                       </div>
-                    ));
+                    );
                   })()}
 
-                  {booking.date && (
-                    <>
-                      <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '1rem' }}>Choose your time</h2>
-                      {availableSlots.length === 0 ? (
-                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#9E9282', marginBottom: '1.5rem' }}>No slots available on this date. Please choose another day.</p>
-                      ) : (
-                        <div className="time-grid">
-                          {availableSlots.map(slot => {
-                            const available = isSlotAvailable(slot.slot_time);
-                            const [h, m] = slot.slot_time.split(':');
-                            const hour = parseInt(h);
-                            const ampm = hour >= 12 ? 'pm' : 'am';
-                            const displayHour = hour > 12 ? hour - 12 : hour;
-                            const label = `${displayHour}${m !== '00' ? ':' + m : ''}${ampm}`;
-                            return (
-                              <button
-                                key={slot.slot_time}
-                                className={`time-btn ${booking.time === slot.slot_time ? 'selected' : ''}`}
-                                disabled={!available}
-                                onClick={() => setBooking(prev => ({ ...prev, time: slot.slot_time }))}
-                              >
-                                {label}
-                                {!available && <span style={{ display: 'block', fontSize: '0.55rem', opacity: 0.7 }}>Booked</span>}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </>
-                  )}
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: '#9E9282', marginBottom: '1.25rem' }}>
+                    <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#16a34a', marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                    Green dot = availability on this date
+                  </p>
 
                   <button
                     className="book-btn-primary"
