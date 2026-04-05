@@ -208,6 +208,33 @@ export default function AdminBookingsPage() {
     setTimeout(() => setActionMsg(''), 3000);
   }
 
+  async function toggleSpecificSlot(date: Date, time: string) {
+    const dateStr = date.toISOString().split('T')[0];
+    const dow = date.toLocaleDateString('en-GB', { weekday: 'long' }).toLowerCase();
+    // Check if there's already a specific override for this date+time
+    const existing = slots.find(s => s.specific_date === dateStr && s.slot_time === time);
+    if (existing) {
+      // Toggle it
+      const newValue = !existing.is_active;
+      await supabase.from('availability_slots').update({ is_active: newValue, is_blocked: !newValue }).eq('id', existing.id);
+      setSlots(prev => prev.map(s => s.id === existing.id ? { ...s, is_active: newValue, is_blocked: !newValue } : s));
+      setActionMsg(`${formatTime(time)} on ${dateStr} ${newValue ? 'unblocked' : 'blocked'}`);
+    } else {
+      // Create a specific block for just this date
+      const { data } = await supabase.from('availability_slots').insert({
+        day_of_week: dow,
+        slot_time: time,
+        specific_date: dateStr,
+        is_active: false,
+        is_blocked: true,
+        blocked_reason: 'Manually blocked',
+      }).select().single();
+      if (data) setSlots(prev => [...prev, data]);
+      setActionMsg(`${formatTime(time)} on ${dateStr} blocked`);
+    }
+    setTimeout(() => setActionMsg(''), 2500);
+  }
+
   async function cancelBooking(id: number) {
     if (!confirm('Cancel this booking?')) return;
     await supabase.from('bookings').update({ status: 'cancelled' }).eq('id', id);
@@ -261,6 +288,7 @@ export default function AdminBookingsPage() {
         .cal-cell { background: rgba(255,255,255,0.02); padding: 0.35rem; min-height: 44px; position: relative; transition: background 0.15s; }
         .cal-cell.blocked { background: rgba(127,29,29,0.15); }
         .cal-cell.inactive { background: rgba(0,0,0,0.2); }
+        .cal-cell.available:hover { background: rgba(127,29,29,0.08); outline: 1px dashed rgba(252,165,165,0.3); }
         .booking-chip { background: #1B3A5C; padding: 0.25rem 0.5rem; margin-bottom: 2px; cursor: pointer; }
         .booking-chip:hover { opacity: 0.85; }
         .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-bottom: 1.5rem; }
@@ -352,7 +380,19 @@ export default function AdminBookingsPage() {
                         const isInactive = !slot || !slot.is_active;
                         const isPast = d < new Date(new Date().setHours(0,0,0,0));
                         return (
-                          <div key={`${d.toISOString()}-${time}`} className={`cal-cell ${isBlocked ? 'blocked' : isInactive ? 'inactive' : ''}`} style={{ opacity: isPast ? 0.4 : 1 }}>
+                          <div
+                            key={`${d.toISOString()}-${time}`}
+                            className={`cal-cell ${isBlocked ? 'blocked' : isInactive ? 'inactive' : 'available'}`}
+                            style={{
+                              opacity: isPast ? 0.4 : 1,
+                              cursor: isPast || dayBookings.length > 0 ? 'default' : 'pointer',
+                            }}
+                            onClick={() => {
+                              if (isPast || dayBookings.length > 0) return;
+                              toggleSpecificSlot(d, time);
+                            }}
+                            title={isPast ? '' : dayBookings.length > 0 ? 'Has booking — cannot block' : isBlocked ? 'Click to unblock this slot' : isInactive ? '' : 'Click to block this slot'}
+                          >
                             {dayBookings.map(b => (
                               <div key={b.id} className="booking-chip" style={{ background: SERVICE_COLOURS[b.service_type] || '#1B3A5C' }} onClick={() => setSelectedBooking(b)}>
                                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(232,221,181,0.9)', lineHeight: 1.3 }}>{b.name.split(' ')[0]}</p>
@@ -367,6 +407,20 @@ export default function AdminBookingsPage() {
                     </>
                   ))}
                 </div>
+              </div>
+
+              <div style={{ display: 'flex', gap: '1.5rem', marginTop: '0.75rem', flexWrap: 'wrap' }}>
+                {[
+                  { color: 'rgba(255,255,255,0.02)', label: 'Available — click to block' },
+                  { color: 'rgba(127,29,29,0.3)', label: 'Blocked — click to unblock' },
+                  { color: 'rgba(0,0,0,0.3)', label: 'Not available (recurring)' },
+                  { color: '#1B3A5C', label: 'Has booking' },
+                ].map(l => (
+                  <div key={l.label} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                    <span style={{ width: '12px', height: '12px', background: l.color, display: 'inline-block', border: '1px solid rgba(168,202,236,0.1)', flexShrink: 0 }} />
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.68rem', color: 'rgba(245,240,232,0.35)' }}>{l.label}</p>
+                  </div>
+                ))}
               </div>
 
               <div className="adm-card" style={{ marginTop: '1.5rem' }}>
@@ -424,7 +478,7 @@ export default function AdminBookingsPage() {
                     <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'capitalize', color: '#A8CAEC', marginBottom: '0.75rem' }}>{day}</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                       {daySlots.length === 0 && (
-                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.25)' }}>No slots — add one below</p>
+                        <p style={{ fontFamily: "'Inter', sans-serif', fontSize: '0.75rem', color: 'rgba(245,240,232,0.25)' }}>No slots — add one below</p>
                       )}
                       {daySlots.map(slot => (
                         <div key={slot.id} style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
