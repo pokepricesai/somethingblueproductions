@@ -89,6 +89,8 @@ const SERVICE_COLOURS: Record<string, string> = {
   headshots: '#2c2820',
 };
 
+const DAYS = ['tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
 type Tab = 'calendar' | 'bookings' | 'slots' | 'vouchers';
 
 export default function AdminBookingsPage() {
@@ -102,6 +104,8 @@ export default function AdminBookingsPage() {
   const [blockingReason, setBlockingReason] = useState('');
   const [loading, setLoading] = useState(true);
   const [actionMsg, setActionMsg] = useState('');
+  const [newSlotDay, setNewSlotDay] = useState('tuesday');
+  const [newSlotTime, setNewSlotTime] = useState('');
 
   const weekDays = getWeekDays(weekStart);
 
@@ -128,22 +132,57 @@ export default function AdminBookingsPage() {
   const getSlotsForDay = (date: Date) => {
     const dow = date.toLocaleDateString('en-GB', { weekday: 'long' }).toLowerCase();
     const dateStr = date.toISOString().split('T')[0];
-    // Get recurring slots for this day of week
     const recurringSlots = slots.filter(s => s.day_of_week === dow && !s.specific_date);
-    // Get specific date overrides
     const specificSlots = slots.filter(s => s.specific_date === dateStr);
     const specificTimes = specificSlots.map(s => s.slot_time);
-    // Merge: specific overrides take precedence
     const merged = recurringSlots.filter(s => !specificTimes.includes(s.slot_time));
     return [...merged, ...specificSlots].sort((a, b) => a.slot_time.localeCompare(b.slot_time));
   };
 
-  const allTimes = [...new Set(slots.map(s => s.slot_time))].sort();
+  const allTimes = [...new Set(slots.filter(s => !s.specific_date).map(s => s.slot_time))].sort();
 
   async function toggleSlotActive(slot: Slot) {
-    await supabase.from('availability_slots').update({ is_active: !slot.is_active }).eq('id', slot.id);
-    setActionMsg('Slot updated');
-    fetchAll();
+    const newValue = !slot.is_active;
+    // Optimistic update
+    setSlots(prev => prev.map(s => s.id === slot.id ? { ...s, is_active: newValue } : s));
+    const { error } = await supabase
+      .from('availability_slots')
+      .update({ is_active: newValue })
+      .eq('id', slot.id);
+    if (error) {
+      // Revert on error
+      setSlots(prev => prev.map(s => s.id === slot.id ? { ...s, is_active: slot.is_active } : s));
+      setActionMsg('Error updating slot');
+    } else {
+      setActionMsg(`${formatTime(slot.slot_time)} on ${slot.day_of_week} ${newValue ? 'enabled' : 'disabled'}`);
+    }
+    setTimeout(() => setActionMsg(''), 2500);
+  }
+
+  async function addSlot() {
+    if (!newSlotTime) return;
+    const formatted = newSlotTime.length === 5 ? newSlotTime : newSlotTime + ':00';
+    const { error } = await supabase.from('availability_slots').insert({
+      day_of_week: newSlotDay,
+      slot_time: formatted,
+      is_active: true,
+      is_blocked: false,
+    });
+    if (error) {
+      setActionMsg('Error — slot may already exist');
+    } else {
+      setActionMsg(`Added ${formatTime(formatted)} on ${newSlotDay}`);
+      setNewSlotTime('');
+      fetchAll();
+    }
+    setTimeout(() => setActionMsg(''), 2500);
+  }
+
+  async function deleteSlot(slot: Slot) {
+    if (!confirm(`Delete ${formatTime(slot.slot_time)} on ${slot.day_of_week}?`)) return;
+    await supabase.from('availability_slots').delete().eq('id', slot.id);
+    setSlots(prev => prev.filter(s => s.id !== slot.id));
+    setActionMsg('Slot deleted');
     setTimeout(() => setActionMsg(''), 2000);
   }
 
@@ -151,8 +190,7 @@ export default function AdminBookingsPage() {
     if (!blockingDate) return;
     const d = new Date(blockingDate);
     const dow = d.toLocaleDateString('en-GB', { weekday: 'long' }).toLowerCase();
-    const daySlots = slots.filter(s => s.day_of_week === dow && !s.specific_date);
-
+    const daySlots = slots.filter(s => s.day_of_week === dow && !s.specific_date && s.is_active);
     for (const slot of daySlots) {
       await supabase.from('availability_slots').insert({
         day_of_week: dow,
@@ -174,16 +212,16 @@ export default function AdminBookingsPage() {
     if (!confirm('Cancel this booking?')) return;
     await supabase.from('bookings').update({ status: 'cancelled' }).eq('id', id);
     setSelectedBooking(null);
+    setBookings(prev => prev.map(b => b.id === id ? { ...b, status: 'cancelled' } : b));
     setActionMsg('Booking cancelled');
-    fetchAll();
     setTimeout(() => setActionMsg(''), 2000);
   }
 
   async function revokeVoucher(id: number) {
     if (!confirm('Revoke this voucher?')) return;
     await supabase.from('vouchers').update({ status: 'revoked' }).eq('id', id);
+    setVouchers(prev => prev.map(v => v.id === id ? { ...v, status: 'revoked' } : v));
     setActionMsg('Voucher revoked');
-    fetchAll();
     setTimeout(() => setActionMsg(''), 2000);
   }
 
@@ -200,10 +238,10 @@ export default function AdminBookingsPage() {
   return (
     <>
       <style>{`
-        .adm { min-height: 100vh; background: #0d1b2a; font-family: 'Inter', sans-serif; }
-        .adm-header { background: #0d1b2a; border-bottom: 1px solid rgba(168,202,236,0.1); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 10; }
-        .adm-tabs { display: flex; gap: 2px; padding: 1rem 2rem 0; }
-        .adm-tab { font-family: 'Carose', sans-serif; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.6rem 1.2rem; background: transparent; border: 1px solid rgba(168,202,236,0.15); color: rgba(245,240,232,0.4); cursor: pointer; transition: all 0.2s; }
+        .adm { min-height: 100vh; background: #0d1b2a; font-family: 'Inter', sans-serif; padding-top: 80px; }
+        .adm-header { background: #0d1b2a; border-bottom: 1px solid rgba(168,202,236,0.1); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .adm-tabs { display: flex; gap: 2px; padding: 1rem 2rem 0; overflow-x: auto; }
+        .adm-tab { font-family: 'Carose', sans-serif; font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase; padding: 0.6rem 1.2rem; background: transparent; border: 1px solid rgba(168,202,236,0.15); color: rgba(245,240,232,0.4); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
         .adm-tab.active { background: #1B3A5C; border-color: #1B3A5C; color: #E8DDB5; }
         .adm-tab:hover:not(.active) { border-color: rgba(168,202,236,0.3); color: rgba(245,240,232,0.7); }
         .adm-body { padding: 1.5rem 2rem 4rem; }
@@ -215,15 +253,15 @@ export default function AdminBookingsPage() {
         .adm-btn:hover { opacity: 0.8; }
         .adm-input { background: rgba(255,255,255,0.06); border: 1px solid rgba(168,202,236,0.15); color: #E8DDB5; padding: 0.6rem 0.85rem; font-family: 'Inter', sans-serif; font-size: 0.82rem; outline: none; width: 100%; box-sizing: border-box; }
         .adm-input:focus { border-color: #A8CAEC; }
+        .adm-select { background: rgba(255,255,255,0.06); border: 1px solid rgba(168,202,236,0.15); color: #E8DDB5; padding: 0.6rem 0.85rem; font-family: 'Inter', sans-serif; font-size: 0.82rem; outline: none; cursor: pointer; }
         .adm-label { font-family: 'Carose', sans-serif; font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase; color: #A8CAEC; display: block; margin-bottom: 0.4rem; }
         .cal-grid { display: grid; grid-template-columns: 60px repeat(7, 1fr); gap: 1px; background: rgba(168,202,236,0.06); }
         .cal-header { background: #0d1b2a; padding: 0.75rem 0.5rem; text-align: center; }
         .cal-time { background: #0d1b2a; padding: 0.5rem; display: flex; align-items: center; justify-content: flex-end; padding-right: 0.75rem; }
-        .cal-cell { background: rgba(255,255,255,0.02); padding: 0.35rem; min-height: 44px; position: relative; cursor: pointer; transition: background 0.15s; }
-        .cal-cell:hover { background: rgba(168,202,236,0.06); }
+        .cal-cell { background: rgba(255,255,255,0.02); padding: 0.35rem; min-height: 44px; position: relative; transition: background 0.15s; }
         .cal-cell.blocked { background: rgba(127,29,29,0.15); }
-        .cal-cell.inactive { background: rgba(0,0,0,0.2); cursor: default; }
-        .booking-chip { background: #1B3A5C; padding: 0.25rem 0.5rem; margin-bottom: 2px; cursor: pointer; border-radius: 0; }
+        .cal-cell.inactive { background: rgba(0,0,0,0.2); }
+        .booking-chip { background: #1B3A5C; padding: 0.25rem 0.5rem; margin-bottom: 2px; cursor: pointer; }
         .booking-chip:hover { opacity: 0.85; }
         .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin-bottom: 1.5rem; }
         .stat-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(168,202,236,0.08); padding: 1.2rem 1.5rem; }
@@ -236,26 +274,26 @@ export default function AdminBookingsPage() {
         .badge-used { background: rgba(34,197,94,0.15); color: #86efac; }
         .badge-revoked { background: rgba(239,68,68,0.15); color: #fca5a5; }
         .action-msg { position: fixed; bottom: 2rem; right: 2rem; background: #1B3A5C; color: #E8DDB5; padding: 0.75rem 1.5rem; font-family: 'Carose', sans-serif; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; z-index: 100; }
+        .slot-btn { font-family: 'Carose', sans-serif; font-size: 0.65rem; letter-spacing: 0.1em; padding: 0.5rem 0.85rem; border: 1px solid; cursor: pointer; transition: all 0.15s; display: inline-flex; align-items: center; gap: 0.4rem; }
+        .slot-btn.active { background: #1B3A5C; border-color: #1B3A5C; color: #E8DDB5; }
+        .slot-btn.inactive { background: rgba(255,255,255,0.03); border-color: rgba(168,202,236,0.1); color: rgba(245,240,232,0.3); }
+        .slot-btn:hover { opacity: 0.8; }
         @media (max-width: 900px) {
           .stat-grid { grid-template-columns: 1fr 1fr; }
           .adm-body { padding: 1rem; }
           .adm-header { padding: 0.75rem 1rem; }
-          .adm-tabs { padding: 0.75rem 1rem 0; overflow-x: auto; }
         }
       `}</style>
 
       <div className="adm">
-
-        {/* Header */}
         <div className="adm-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1rem', color: '#E8DDB5', textTransform: 'none' }}>Something Blue</h1>
-            <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', background: 'rgba(168,202,236,0.1)', padding: '0.2rem 0.6rem' }}>Bookings Admin</span>
+            <a href="/admin" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.4)', textDecoration: 'none' }}>← Admin</a>
+            <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1rem', color: '#E8DDB5', textTransform: 'none' }}>Bookings & Calendar</h1>
           </div>
           <a href="/" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.4)', textDecoration: 'none' }}>← Site</a>
         </div>
 
-        {/* Tabs */}
         <div className="adm-tabs">
           {(['calendar', 'bookings', 'slots', 'vouchers'] as Tab[]).map(t => (
             <button key={t} className={`adm-tab ${tab === t ? 'active' : ''}`} onClick={() => setTab(t)}>{t}</button>
@@ -263,52 +301,37 @@ export default function AdminBookingsPage() {
         </div>
 
         <div className="adm-body">
+          {loading && <p style={{ color: 'rgba(245,240,232,0.4)', fontSize: '0.82rem' }}>Loading...</p>}
 
-          {loading && <p style={{ color: 'rgba(245,240,232,0.4)', fontFamily: "'Inter', sans-serif", fontSize: '0.82rem' }}>Loading...</p>}
-
-          {/* ── CALENDAR TAB ── */}
+          {/* ── CALENDAR ── */}
           {!loading && tab === 'calendar' && (
             <>
-              {/* Stats */}
               <div className="stat-grid">
-                <div className="stat-card">
-                  <p className="adm-label">This week</p>
-                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.8rem', color: '#E8DDB5', fontWeight: 300 }}>
-                    {upcomingBookings.filter(b => weekDays.some(d => d.toISOString().split('T')[0] === b.slot_date)).length}
-                  </p>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.4)' }}>bookings</p>
-                </div>
-                <div className="stat-card">
-                  <p className="adm-label">Week revenue</p>
-                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.8rem', color: '#E8DDB5', fontWeight: 300 }}>£{weekRevenue}</p>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.4)' }}>confirmed</p>
-                </div>
-                <div className="stat-card">
-                  <p className="adm-label">Upcoming</p>
-                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.8rem', color: '#E8DDB5', fontWeight: 300 }}>{upcomingBookings.length}</p>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.4)' }}>total sessions</p>
-                </div>
-                <div className="stat-card">
-                  <p className="adm-label">Vouchers</p>
-                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.8rem', color: '#E8DDB5', fontWeight: 300 }}>{vouchers.filter(v => v.status === 'unused').length}</p>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.4)' }}>unredeemed</p>
-                </div>
+                {[
+                  { label: 'This week', value: upcomingBookings.filter(b => weekDays.some(d => d.toISOString().split('T')[0] === b.slot_date)).length, sub: 'bookings' },
+                  { label: 'Week revenue', value: `£${weekRevenue}`, sub: 'confirmed' },
+                  { label: 'Upcoming', value: upcomingBookings.length, sub: 'total sessions' },
+                  { label: 'Vouchers', value: vouchers.filter(v => v.status === 'unused').length, sub: 'unredeemed' },
+                ].map(s => (
+                  <div key={s.label} className="stat-card">
+                    <p className="adm-label">{s.label}</p>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.8rem', color: '#E8DDB5', fontWeight: 300 }}>{s.value}</p>
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.4)' }}>{s.sub}</p>
+                  </div>
+                ))}
               </div>
 
-              {/* Week navigation */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
-                <button className="adm-btn adm-btn-ghost" onClick={() => { const d = new Date(weekStart); d.setDate(d.getDate() - 7); setWeekStart(d); }}>← Prev week</button>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem', flexWrap: 'wrap' }}>
+                <button className="adm-btn adm-btn-ghost" onClick={() => { const d = new Date(weekStart); d.setDate(d.getDate() - 7); setWeekStart(d); }}>← Prev</button>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A8CAEC' }}>
-                  {weekStart.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })} — {weekDays[6].toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  {weekStart.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} — {weekDays[6].toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}
                 </p>
-                <button className="adm-btn adm-btn-ghost" onClick={() => { const d = new Date(weekStart); d.setDate(d.getDate() + 7); setWeekStart(d); }}>Next week →</button>
+                <button className="adm-btn adm-btn-ghost" onClick={() => { const d = new Date(weekStart); d.setDate(d.getDate() + 7); setWeekStart(d); }}>Next →</button>
                 <button className="adm-btn adm-btn-ghost" onClick={() => setWeekStart(getMondayOfWeek(new Date()))}>Today</button>
               </div>
 
-              {/* Calendar grid */}
               <div style={{ overflowX: 'auto' }}>
                 <div className="cal-grid" style={{ minWidth: '700px' }}>
-                  {/* Header row */}
                   <div className="cal-header" />
                   {weekDays.map(d => (
                     <div key={d.toISOString()} className="cal-header">
@@ -316,12 +339,10 @@ export default function AdminBookingsPage() {
                       <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: d.toDateString() === new Date().toDateString() ? '#A8CAEC' : '#E8DDB5', fontWeight: 300 }}>{d.getDate()}</p>
                     </div>
                   ))}
-
-                  {/* Time rows */}
                   {allTimes.map(time => (
                     <>
                       <div key={`t-${time}`} className="cal-time">
-                        <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', color: 'rgba(245,240,232,0.35)', letterSpacing: '0.05em' }}>{formatTime(time)}</p>
+                        <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', color: 'rgba(245,240,232,0.35)' }}>{formatTime(time)}</p>
                       </div>
                       {weekDays.map(d => {
                         const daySlots = getSlotsForDay(d);
@@ -330,30 +351,16 @@ export default function AdminBookingsPage() {
                         const isBlocked = slot?.is_blocked;
                         const isInactive = !slot || !slot.is_active;
                         const isPast = d < new Date(new Date().setHours(0,0,0,0));
-
                         return (
-                          <div
-                            key={`${d.toISOString()}-${time}`}
-                            className={`cal-cell ${isBlocked ? 'blocked' : isInactive ? 'inactive' : ''}`}
-                            style={{ opacity: isPast ? 0.4 : 1 }}
-                          >
+                          <div key={`${d.toISOString()}-${time}`} className={`cal-cell ${isBlocked ? 'blocked' : isInactive ? 'inactive' : ''}`} style={{ opacity: isPast ? 0.4 : 1 }}>
                             {dayBookings.map(b => (
-                              <div
-                                key={b.id}
-                                className="booking-chip"
-                                style={{ background: SERVICE_COLOURS[b.service_type] || '#1B3A5C' }}
-                                onClick={() => setSelectedBooking(b)}
-                              >
+                              <div key={b.id} className="booking-chip" style={{ background: SERVICE_COLOURS[b.service_type] || '#1B3A5C' }} onClick={() => setSelectedBooking(b)}>
                                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(232,221,181,0.9)', lineHeight: 1.3 }}>{b.name.split(' ')[0]}</p>
                                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: 'rgba(232,221,181,0.55)' }}>{b.service_type} · {b.session_duration}m</p>
                               </div>
                             ))}
-                            {isBlocked && dayBookings.length === 0 && (
-                              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: 'rgba(252,165,165,0.5)', padding: '0.2rem' }}>blocked</p>
-                            )}
-                            {isInactive && !isBlocked && dayBookings.length === 0 && (
-                              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: 'rgba(245,240,232,0.15)', padding: '0.2rem' }}>—</p>
-                            )}
+                            {isBlocked && !dayBookings.length && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: 'rgba(252,165,165,0.5)', padding: '0.2rem' }}>blocked</p>}
+                            {isInactive && !isBlocked && !dayBookings.length && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.55rem', color: 'rgba(245,240,232,0.1)', padding: '0.2rem' }}>—</p>}
                           </div>
                         );
                       })}
@@ -362,9 +369,8 @@ export default function AdminBookingsPage() {
                 </div>
               </div>
 
-              {/* Block a date */}
               <div className="adm-card" style={{ marginTop: '1.5rem' }}>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Block a date</p>
+                <p className="adm-label" style={{ marginBottom: '1rem' }}>Block a date</p>
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
                   <div style={{ flex: '1', minWidth: '140px' }}>
                     <label className="adm-label">Date</label>
@@ -380,12 +386,10 @@ export default function AdminBookingsPage() {
             </>
           )}
 
-          {/* ── BOOKINGS TAB ── */}
+          {/* ── BOOKINGS ── */}
           {!loading && tab === 'bookings' && (
             <>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>
-                All bookings — {bookings.length} total
-              </p>
+              <p className="adm-label" style={{ marginBottom: '1rem' }}>All bookings — {bookings.length} total</p>
               {bookings.map(b => (
                 <div key={b.id} className="adm-card" style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }} onClick={() => setSelectedBooking(b)}>
                   <div>
@@ -406,47 +410,70 @@ export default function AdminBookingsPage() {
             </>
           )}
 
-          {/* ── SLOTS TAB ── */}
+          {/* ── SLOTS ── */}
           {!loading && tab === 'slots' && (
             <>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>
-                Recurring availability — toggle slots on/off
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'rgba(245,240,232,0.45)', marginBottom: '1.5rem', lineHeight: 1.65 }}>
+                Click a slot to toggle it on or off for all future bookings on that day. Blue = available. Add new time slots using the form below.
               </p>
-              {['tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(day => {
+
+              {DAYS.map(day => {
                 const daySlots = slots.filter(s => s.day_of_week === day && !s.specific_date);
-                if (daySlots.length === 0) return null;
                 return (
                   <div key={day} className="adm-card" style={{ marginBottom: '2px' }}>
                     <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'capitalize', color: '#A8CAEC', marginBottom: '0.75rem' }}>{day}</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                      {daySlots.length === 0 && (
+                        <p style={{ fontFamily: "'Inter', sans-serif', fontSize: '0.75rem', color: 'rgba(245,240,232,0.25)' }}>No slots — add one below</p>
+                      )}
                       {daySlots.map(slot => (
-                        <button
-                          key={slot.id}
-                          className="adm-btn"
-                          style={{
-                            background: slot.is_active ? '#1B3A5C' : 'rgba(255,255,255,0.04)',
-                            color: slot.is_active ? '#E8DDB5' : 'rgba(245,240,232,0.3)',
-                            border: `1px solid ${slot.is_active ? '#1B3A5C' : 'rgba(168,202,236,0.1)'}`,
-                          }}
-                          onClick={() => toggleSlotActive(slot)}
-                        >
-                          {formatTime(slot.slot_time)}
-                        </button>
+                        <div key={slot.id} style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
+                          <button
+                            className={`slot-btn ${slot.is_active ? 'active' : 'inactive'}`}
+                            onClick={() => toggleSlotActive(slot)}
+                            title={slot.is_active ? 'Click to disable' : 'Click to enable'}
+                          >
+                            {formatTime(slot.slot_time)}
+                            <span style={{ fontSize: '0.6rem', opacity: 0.6 }}>{slot.is_active ? '●' : '○'}</span>
+                          </button>
+                          <button
+                            style={{ background: 'rgba(127,29,29,0.3)', border: 'none', color: '#fca5a5', cursor: 'pointer', padding: '0.5rem 0.4rem', fontSize: '0.65rem', lineHeight: 1 }}
+                            onClick={() => deleteSlot(slot)}
+                            title="Delete slot"
+                          >
+                            ×
+                          </button>
+                        </div>
                       ))}
                     </div>
                   </div>
                 );
               })}
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.3)', marginTop: '1rem' }}>
-                Click a time to toggle it on/off for all future bookings on that day. To block a specific date only, use the calendar tab.
-              </p>
+
+              {/* Add new slot */}
+              <div className="adm-card" style={{ marginTop: '1rem' }}>
+                <p className="adm-label" style={{ marginBottom: '1rem' }}>Add a new slot</p>
+                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'flex-end' }}>
+                  <div>
+                    <label className="adm-label">Day</label>
+                    <select className="adm-select" value={newSlotDay} onChange={e => setNewSlotDay(e.target.value)}>
+                      {DAYS.map(d => <option key={d} value={d} style={{ textTransform: 'capitalize' }}>{d.charAt(0).toUpperCase() + d.slice(1)}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="adm-label">Time (24hr)</label>
+                    <input type="time" className="adm-input" style={{ width: '140px' }} value={newSlotTime} onChange={e => setNewSlotTime(e.target.value)} />
+                  </div>
+                  <button className="adm-btn adm-btn-primary" onClick={addSlot}>Add slot</button>
+                </div>
+              </div>
             </>
           )}
 
-          {/* ── VOUCHERS TAB ── */}
+          {/* ── VOUCHERS ── */}
           {!loading && tab === 'vouchers' && (
             <>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>
+              <p className="adm-label" style={{ marginBottom: '1rem' }}>
                 Gift vouchers — {vouchers.length} total · {vouchers.filter(v => v.status === 'unused').length} unredeemed
               </p>
               {vouchers.map(v => (
@@ -457,8 +484,7 @@ export default function AdminBookingsPage() {
                       <span className={`badge badge-${v.status}`}>{v.status}</span>
                     </div>
                     <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.4)' }}>
-                      {v.occasion} · {v.session_type} · From {v.buyer_name}
-                      {v.recipient_name ? ` → ${v.recipient_name}` : ''}
+                      {v.occasion} · {v.session_type} · From {v.buyer_name}{v.recipient_name ? ` → ${v.recipient_name}` : ''}
                     </p>
                     <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: 'rgba(245,240,232,0.25)', marginTop: '0.2rem' }}>
                       Expires {new Date(v.expires_at).toLocaleDateString('en-GB')}
@@ -466,9 +492,7 @@ export default function AdminBookingsPage() {
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#E8DDB5', fontWeight: 300 }}>£{v.session_price}</p>
-                    {v.status === 'unused' && (
-                      <button className="adm-btn adm-btn-danger" onClick={() => revokeVoucher(v.id)}>Revoke</button>
-                    )}
+                    {v.status === 'unused' && <button className="adm-btn adm-btn-danger" onClick={() => revokeVoucher(v.id)}>Revoke</button>}
                   </div>
                 </div>
               ))}
@@ -477,18 +501,17 @@ export default function AdminBookingsPage() {
         </div>
       </div>
 
-      {/* Booking detail modal */}
+      {/* Booking modal */}
       {selectedBooking && (
         <div className="modal-overlay" onClick={() => setSelectedBooking(null)}>
           <div className="modal" onClick={e => e.stopPropagation()}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
               <div>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.3rem' }}>Booking details</p>
+                <p className="adm-label" style={{ marginBottom: '0.3rem' }}>Booking details</p>
                 <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.2rem', color: '#E8DDB5', textTransform: 'none' }}>{selectedBooking.name}</h2>
               </div>
               <span className={`badge badge-${selectedBooking.status}`}>{selectedBooking.status}</span>
             </div>
-
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', marginBottom: '1.5rem' }}>
               {[
                 ['Date', formatDate(selectedBooking.slot_date)],
@@ -509,13 +532,10 @@ export default function AdminBookingsPage() {
                 </div>
               ))}
             </div>
-
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <a href={`mailto:${selectedBooking.email}`} className="adm-btn adm-btn-ghost" style={{ textDecoration: 'none' }}>Email client</a>
-              <a href={`tel:${selectedBooking.phone}`} className="adm-btn adm-btn-ghost" style={{ textDecoration: 'none' }}>Call client</a>
-              {selectedBooking.status === 'confirmed' && (
-                <button className="adm-btn adm-btn-danger" onClick={() => cancelBooking(selectedBooking.id)}>Cancel booking</button>
-              )}
+              <a href={`mailto:${selectedBooking.email}`} className="adm-btn adm-btn-ghost" style={{ textDecoration: 'none' }}>Email</a>
+              <a href={`tel:${selectedBooking.phone}`} className="adm-btn adm-btn-ghost" style={{ textDecoration: 'none' }}>Call</a>
+              {selectedBooking.status === 'confirmed' && <button className="adm-btn adm-btn-danger" onClick={() => cancelBooking(selectedBooking.id)}>Cancel booking</button>}
               <button className="adm-btn adm-btn-ghost" onClick={() => setSelectedBooking(null)}>Close</button>
             </div>
           </div>
