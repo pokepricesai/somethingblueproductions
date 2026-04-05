@@ -1118,7 +1118,7 @@ export default function BookPage() {
             </div>
           )}
 
-          {/* ── GIFT FLOW ── */}}
+          {/* ── GIFT FLOW ── */}
           {mode === 'gift' && (
             <div>
               <button className="back-link" onClick={() => { setMode('choose'); setGiftStep('occasion'); }}>← Back</button>
