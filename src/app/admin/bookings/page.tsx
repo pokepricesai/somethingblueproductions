@@ -83,6 +83,8 @@ function toLocalDateStr(date: Date) {
   const d = String(date.getDate()).padStart(2, '0');
   return `${y}-${m}-${d}`;
 }
+
+function formatDate(dateStr: string) {
   return new Date(dateStr).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 }
 
