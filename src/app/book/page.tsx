@@ -61,17 +61,35 @@ interface GiftForm {
   message: string;
 }
 
-function getNext14Days() {
-  const days = [];
+// ── UK timezone helpers ──────────────────────────────────────────────────────
+// All dates are treated as Europe/London (handles GMT and BST automatically)
+
+function toUKDateStr(date: Date): string {
+  // Format date as YYYY-MM-DD in UK local time (not UTC)
+  return date.toLocaleDateString('en-CA', { timeZone: 'Europe/London' });
+  // en-CA gives YYYY-MM-DD format
+}
+
+function getUKDayOfWeek(date: Date): string {
+  return date.toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'Europe/London' }).toLowerCase();
+}
+
+function getNext6Months(): Date[] {
+  const days: Date[] = [];
   const today = new Date();
-  for (let i = 1; i <= 28; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
-    const dow = d.toLocaleDateString('en-GB', { weekday: 'long' }).toLowerCase();
-    if (['tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].includes(dow)) {
-      days.push(d);
-    }
-    if (days.length >= 14) break;
+  // Start from tomorrow
+  const start = new Date(today);
+  start.setDate(start.getDate() + 1);
+  start.setHours(0, 0, 0, 0);
+
+  // Go up to 6 months ahead
+  const end = new Date(today);
+  end.setMonth(end.getMonth() + 6);
+
+  const cursor = new Date(start);
+  while (cursor <= end) {
+    days.push(new Date(cursor));
+    cursor.setDate(cursor.getDate() + 1);
   }
   return days;
 }
@@ -98,7 +116,7 @@ export default function BookPage() {
     buyerName: '', buyerEmail: '', recipientName: '', recipientEmail: '', message: '',
   });
 
-  const availableDays = getNext14Days();
+  const allDays = getNext6Months();
 
   useEffect(() => {
     if (booking.date) {
@@ -107,23 +125,46 @@ export default function BookPage() {
   }, [booking.date]);
 
   async function fetchSlots(date: string) {
-    const d = new Date(date);
-    const dow = d.toLocaleDateString('en-GB', { weekday: 'long' }).toLowerCase();
-    const { data: slots } = await supabase
+    const d = new Date(date + 'T12:00:00Z'); // noon UTC avoids any BST boundary issues
+    const dow = getUKDayOfWeek(new Date(date + 'T12:00:00'));
+
+    // 1. Get default recurring slots for this day
+    const { data: defaults } = await supabase
       .from('availability_slots')
-      .select('*')
+      .select('slot_time')
       .eq('day_of_week', dow)
       .eq('is_active', true)
-      .eq('is_blocked', false);
+      .is('specific_date', null);
 
+    // 2. Get overrides for this specific date
+    const { data: overrideData } = await supabase
+      .from('slot_overrides')
+      .select('slot_time, type')
+      .eq('slot_date', date);
+
+    // 3. Get already booked slots
     const { data: existing } = await supabase
       .from('bookings')
       .select('slot_time')
       .eq('slot_date', date)
       .eq('status', 'confirmed');
 
-    setAvailableSlots(slots || []);
-    setBookedSlots((existing || []).map(b => b.slot_time));
+    // 4. Apply same logic as admin calendar
+    const finalTimes = new Set((defaults || []).map((s: {slot_time: string}) => s.slot_time));
+    for (const o of (overrideData || [])) {
+      if (o.type === 'blocked') finalTimes.delete(o.slot_time);
+      if (o.type === 'added') finalTimes.add(o.slot_time);
+    }
+
+    const bookedTimes = new Set((existing || []).map((b: {slot_time: string}) => b.slot_time));
+    for (const t of bookedTimes) finalTimes.delete(t);
+
+    const sortedSlots = Array.from(finalTimes)
+      .sort()
+      .map((slot_time, id) => ({ id, slot_time, day_of_week: dow }));
+
+    setAvailableSlots(sortedSlots);
+    setBookedSlots(Array.from(bookedTimes));
   }
 
   async function checkVoucher() {
@@ -460,27 +501,40 @@ export default function BookPage() {
                 <div className="book-card">
                   <button className="back-link" onClick={() => setBookStep('service')}>← Back</button>
                   <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.5rem' }}>Choose your date</h2>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#9E9282', marginBottom: '1.5rem' }}>Available dates for the next 4 weeks.</p>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#9E9282', marginBottom: '1.5rem' }}>Browse up to 6 months ahead. All times shown in UK time.</p>
 
-                  <div className="date-grid">
-                    {availableDays.map(d => {
-                      const dateStr = d.toISOString().split('T')[0];
-                      const dayName = d.toLocaleDateString('en-GB', { weekday: 'short' });
-                      const dayNum = d.toLocaleDateString('en-GB', { day: 'numeric' });
-                      const month = d.toLocaleDateString('en-GB', { month: 'short' });
-                      return (
-                        <div
-                          key={dateStr}
-                          className={`date-btn ${booking.date === dateStr ? 'selected' : ''}`}
-                          onClick={() => setBooking(prev => ({ ...prev, date: dateStr, time: '' }))}
-                        >
-                          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: booking.date === dateStr ? '#A8CAEC' : '#9E9282' }}>{dayName}</p>
-                          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: booking.date === dateStr ? '#E8DDB5' : '#2C2820', fontWeight: 300 }}>{dayNum}</p>
-                          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.6rem', color: booking.date === dateStr ? 'rgba(232,221,181,0.6)' : '#9E9282' }}>{month}</p>
+                  {/* Month-grouped date picker */}
+                  {(() => {
+                    const months: Record<string, Date[]> = {};
+                    allDays.forEach(d => {
+                      const monthKey = d.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
+                      if (!months[monthKey]) months[monthKey] = [];
+                      months[monthKey].push(d);
+                    });
+                    return Object.entries(months).map(([monthLabel, days]) => (
+                      <div key={monthLabel} style={{ marginBottom: '1.5rem' }}>
+                        <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.75rem' }}>{monthLabel}</p>
+                        <div className="date-grid">
+                          {days.map(d => {
+                            const dateStr = toUKDateStr(d);
+                            const dayName = d.toLocaleDateString('en-GB', { weekday: 'short', timeZone: 'Europe/London' });
+                            const dayNum = d.toLocaleDateString('en-GB', { day: 'numeric', timeZone: 'Europe/London' });
+                            const isSelected = booking.date === dateStr;
+                            return (
+                              <div
+                                key={dateStr}
+                                className={`date-btn ${isSelected ? 'selected' : ''}`}
+                                onClick={() => setBooking(prev => ({ ...prev, date: dateStr, time: '' }))}
+                              >
+                                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: isSelected ? '#A8CAEC' : '#9E9282' }}>{dayName}</p>
+                                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: isSelected ? '#E8DDB5' : '#2C2820', fontWeight: 300 }}>{dayNum}</p>
+                              </div>
+                            );
+                          })}
                         </div>
-                      );
-                    })}
-                  </div>
+                      </div>
+                    ));
+                  })()}
 
                   {booking.date && (
                     <>
@@ -579,7 +633,7 @@ export default function BookPage() {
                     <div>
                       <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.2rem' }}>{selectedService?.label} · {booking.duration} min</p>
                       <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.5)' }}>
-                        {new Date(booking.date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })} · {booking.time}
+                        {new Date(booking.date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/London' })} · {booking.time}
                       </p>
                     </div>
                     <div style={{ textAlign: 'right' }}>
