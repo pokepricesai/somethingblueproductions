@@ -24,8 +24,9 @@ const OCCASIONS = [
   'Birthday', 'Baby Shower', 'Engagement', 'Wedding', 'Christmas', 'Mother\'s Day', 'Just Because',
 ];
 
-type Mode = 'choose' | 'book' | 'gift';
+type Mode = 'choose' | 'book' | 'gift' | 'redeem';
 type BookingStep = 'service' | 'datetime' | 'details' | 'payment' | 'confirm';
+type RedeemStep = 'enter' | 'datetime' | 'details' | 'confirm';
 type GiftStep = 'occasion' | 'details' | 'payment' | 'confirm';
 
 interface Slot {
@@ -63,6 +64,18 @@ interface GiftForm {
 
 // ── UK timezone helpers ──────────────────────────────────────────────────────
 // All dates are treated as Europe/London (handles GMT and BST automatically)
+
+interface VoucherData {
+  id: number;
+  code: string;
+  occasion: string;
+  session_type: string;
+  session_duration: number;
+  session_price: number;
+  recipient_name: string;
+  buyer_name: string;
+  expires_at: string;
+}
 
 function toUKDateStr(date: Date): string {
   // Format date as YYYY-MM-DD in UK local time (not UTC)
@@ -110,6 +123,12 @@ export default function BookPage() {
   });
   const [dateSlotCache, setDateSlotCache] = useState<Record<string, boolean>>({});
   const [slotsLoading, setSlotsLoading] = useState(false);
+  const [redeemStep, setRedeemStep] = useState<RedeemStep>('enter');
+  const [redeemCode, setRedeemCode] = useState('');
+  const [redeemError, setRedeemError] = useState('');
+  const [redeemChecking, setRedeemChecking] = useState(false);
+  const [redeemedVoucher, setRedeemedVoucher] = useState<VoucherData | null>(null);
+  const [redeemBooking, setRedeemBooking] = useState({ date: '', time: '', name: '', email: '', phone: '', notes: '' });
 
   const [booking, setBooking] = useState<BookingForm>({
     service: '', peopleCount: 1, duration: 30, price: 99,
@@ -249,6 +268,62 @@ export default function BookPage() {
       setError('This voucher code is invalid or has already been used.');
     }
     setVoucherChecking(false);
+  }
+
+  async function validateVoucherCode() {
+    if (!redeemCode.trim()) return;
+    setRedeemChecking(true);
+    setRedeemError('');
+    const { data } = await supabase
+      .from('vouchers')
+      .select('*')
+      .eq('code', redeemCode.trim().toUpperCase())
+      .eq('status', 'unused')
+      .single();
+
+    if (data && new Date(data.expires_at) > new Date()) {
+      setRedeemedVoucher(data);
+      setRedeemStep('datetime');
+    } else if (data && new Date(data.expires_at) <= new Date()) {
+      setRedeemError('This voucher has expired. Please contact us at hello@something-blue-productions.com.');
+    } else {
+      setRedeemError('Voucher code not found or already used. Please check and try again.');
+    }
+    setRedeemChecking(false);
+  }
+
+  async function handleRedeemBooking() {
+    if (!redeemedVoucher) return;
+    setLoading(true);
+    setError('');
+    try {
+      const { error: dbError } = await supabase.from('bookings').insert({
+        name: redeemBooking.name,
+        email: redeemBooking.email,
+        phone: redeemBooking.phone,
+        service_type: redeemedVoucher.session_type,
+        people_count: redeemedVoucher.session_duration === 60 ? 3 : 1,
+        session_duration: redeemedVoucher.session_duration,
+        session_price: 0,
+        slot_date: redeemBooking.date,
+        slot_time: redeemBooking.time,
+        voucher_code: redeemedVoucher.code,
+        notes: redeemBooking.notes,
+        status: 'confirmed',
+      });
+      if (dbError) throw dbError;
+
+      // Mark voucher as used
+      await supabase
+        .from('vouchers')
+        .update({ status: 'used', redeemed_at: new Date().toISOString() })
+        .eq('id', redeemedVoucher.id);
+
+      setRedeemStep('confirm');
+    } catch {
+      setError('Something went wrong. Please try again or contact us.');
+    }
+    setLoading(false);
   }
 
   async function handleBookingPayment() {
@@ -461,6 +536,14 @@ export default function BookPage() {
                   The perfect gift for a birthday, baby shower, engagement or Christmas. They choose their own date. From £99.
                 </p>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px' }}>Buy a voucher →</span>
+              </div>
+              <div className="mode-card" onClick={() => setMode('redeem')} style={{ borderLeft: '3px solid #A8CAEC' }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>Have a voucher?</p>
+                <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.4rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.5rem' }}>Redeem a gift voucher</h2>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#9E9282', lineHeight: 1.65, marginBottom: '1rem' }}>
+                  Received a gift voucher? Enter your code to book your session — no payment needed.
+                </p>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px' }}>Redeem now →</span>
               </div>
               {/* Trust signals */}
               <div style={{ padding: '1.5rem', background: '#0d1b2a', marginTop: '2px' }}>
@@ -806,7 +889,236 @@ export default function BookPage() {
             </div>
           )}
 
-          {/* ── GIFT FLOW ── */}
+          {/* ── REDEEM FLOW ── */}
+          {mode === 'redeem' && (
+            <div>
+              <button className="back-link" onClick={() => { setMode('choose'); setRedeemStep('enter'); setRedeemedVoucher(null); setRedeemCode(''); setRedeemError(''); }}>← Back</button>
+
+              {/* Step indicators */}
+              <div className="step-indicator">
+                {['enter', 'datetime', 'details'].map((s, i) => (
+                  <div key={s} className={`step-dot ${['enter','datetime','details','confirm'].indexOf(redeemStep) >= i ? 'active' : ''}`} />
+                ))}
+              </div>
+
+              {/* Step 1: Enter code */}
+              {redeemStep === 'enter' && (
+                <div className="book-card">
+                  <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.5rem' }}>Enter your voucher code</h2>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#9E9282', marginBottom: '1.5rem', lineHeight: 1.65 }}>
+                    Your code was emailed when the voucher was purchased. It looks like <strong>SBP-XXXX-XXXX-XXXX</strong>.
+                  </p>
+                  <div style={{ marginBottom: '1rem' }}>
+                    <label className="book-label">Voucher code</label>
+                    <div className="voucher-row">
+                      <input
+                        className="book-input"
+                        placeholder="SBP-XXXX-XXXX-XXXX"
+                        value={redeemCode}
+                        onChange={e => { setRedeemCode(e.target.value.toUpperCase()); setRedeemError(''); }}
+                        style={{ textTransform: 'uppercase', letterSpacing: '0.1em' }}
+                        onKeyDown={e => e.key === 'Enter' && validateVoucherCode()}
+                      />
+                      <button className="voucher-check-btn" onClick={validateVoucherCode} disabled={redeemChecking}>
+                        {redeemChecking ? '...' : 'Check'}
+                      </button>
+                    </div>
+                  </div>
+                  {redeemError && (
+                    <div className="error-msg">
+                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#991b1b' }}>{redeemError}</p>
+                    </div>
+                  )}
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9E9282', lineHeight: 1.7 }}>
+                    Can&apos;t find your code? Email <a href="mailto:hello@something-blue-productions.com" style={{ color: '#1B3A5C' }}>hello@something-blue-productions.com</a>
+                  </p>
+                </div>
+              )}
+
+              {/* Step 2: Date & Time (same calendar as booking flow) */}
+              {redeemStep === 'datetime' && redeemedVoucher && (
+                <div className="book-card">
+                  {/* Voucher summary — locked, can't change */}
+                  <div style={{ background: '#F5F0E8', border: '1px solid #DDD5C0', padding: '1.25rem', marginBottom: '1.5rem' }}>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>Your voucher — {redeemedVoucher.code}</p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                      <div>
+                        <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#1B3A5C', textTransform: 'none', fontWeight: 300 }}>
+                          {redeemedVoucher.session_duration === 60 ? 'Family Session' : 'Studio Session'}
+                        </p>
+                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9E9282' }}>
+                          {redeemedVoucher.session_duration} min · {redeemedVoucher.session_duration === 60 ? '10–20' : '5–10'} images included
+                        </p>
+                        {redeemedVoucher.occasion && (
+                          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: '#9E9282', marginTop: '0.2rem' }}>
+                            {redeemedVoucher.occasion} gift from {redeemedVoucher.buyer_name}
+                          </p>
+                        )}
+                      </div>
+                      <div style={{ textAlign: 'right' }}>
+                        <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.2rem', color: '#16a34a', fontWeight: 300 }}>£0</p>
+                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.65rem', color: '#9E9282' }}>No payment needed</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.25rem' }}>Choose your date & time</h2>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', marginBottom: '1.5rem' }}>All times shown in UK time (GMT/BST).</p>
+
+                  {/* Same month calendar as booking flow */}
+                  {(() => {
+                    const year = calendarMonth.getFullYear();
+                    const month = calendarMonth.getMonth();
+                    const today = new Date(); today.setHours(0,0,0,0);
+                    const maxMonth = new Date(); maxMonth.setMonth(maxMonth.getMonth() + 6);
+                    const canGoPrev = calendarMonth > new Date(today.getFullYear(), today.getMonth(), 1);
+                    const canGoNext = calendarMonth < new Date(maxMonth.getFullYear(), maxMonth.getMonth(), 1);
+                    const firstDay = new Date(year, month, 1);
+                    const startDow = (firstDay.getDay() + 6) % 7;
+                    const daysInMonth = new Date(year, month + 1, 0).getDate();
+                    const cells: (Date | null)[] = [];
+                    for (let i = 0; i < startDow; i++) cells.push(null);
+                    for (let d = 1; d <= daysInMonth; d++) cells.push(new Date(year, month, d));
+
+                    return (
+                      <div>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                          <button onClick={() => { const d = new Date(calendarMonth); d.setMonth(d.getMonth() - 1); setCalendarMonth(d); setRedeemBooking(prev => ({ ...prev, date: '', time: '' })); }} disabled={!canGoPrev} style={{ background: 'none', border: '1px solid #DDD5C0', color: canGoPrev ? '#1B3A5C' : '#DDD5C0', cursor: canGoPrev ? 'pointer' : 'default', padding: '0.4rem 0.75rem', fontFamily: "'Carose', sans-serif", fontSize: '0.7rem' }}>←</button>
+                          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.75rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C' }}>{firstDay.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</p>
+                          <button onClick={() => { const d = new Date(calendarMonth); d.setMonth(d.getMonth() + 1); setCalendarMonth(d); setRedeemBooking(prev => ({ ...prev, date: '', time: '' })); }} disabled={!canGoNext} style={{ background: 'none', border: '1px solid #DDD5C0', color: canGoNext ? '#1B3A5C' : '#DDD5C0', cursor: canGoNext ? 'pointer' : 'default', padding: '0.4rem 0.75rem', fontFamily: "'Carose', sans-serif", fontSize: '0.7rem' }}>→</button>
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px', marginBottom: '2px' }}>
+                          {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => (
+                            <p key={d} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9E9282', textAlign: 'center', padding: '0.3rem 0' }}>{d}</p>
+                          ))}
+                        </div>
+                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px', marginBottom: '1.5rem' }}>
+                          {cells.map((d, i) => {
+                            if (!d) return <div key={`re-empty-${i}`} />;
+                            const dateStr = toUKDateStr(d);
+                            const isPast = d < today;
+                            const hasSlots = dateSlotCache[dateStr] === true;
+                            const isSelected = redeemBooking.date === dateStr;
+                            return (
+                              <div key={dateStr} onClick={() => { if (isPast || !hasSlots) return; setRedeemBooking(prev => ({ ...prev, date: dateStr, time: '' })); fetchSlots(dateStr); }}
+                                style={{ padding: '0.5rem 0.25rem', textAlign: 'center', cursor: isPast || !hasSlots ? 'default' : 'pointer', background: isSelected ? '#1B3A5C' : 'transparent', border: '1px solid transparent', opacity: isPast ? 0.3 : 1, position: 'relative', transition: 'background 0.15s' }}>
+                                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.88rem', color: isSelected ? '#E8DDB5' : !hasSlots || isPast ? '#9E9282' : '#1B3A5C', fontWeight: 300, lineHeight: 1 }}>{d.getDate()}</p>
+                                {hasSlots && !isPast && <span style={{ display: 'block', width: '5px', height: '5px', borderRadius: '50%', background: isSelected ? '#A8CAEC' : '#16a34a', margin: '3px auto 0' }} />}
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Inline time picker */}
+                        {redeemBooking.date && redeemBooking.date.startsWith(`${year}-${String(month + 1).padStart(2, '0')}`) && (
+                          <div style={{ borderTop: '1px solid #DDD5C0', paddingTop: '1.25rem', marginBottom: '1.5rem' }}>
+                            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1B3A5C', marginBottom: '0.75rem' }}>
+                              {new Date(redeemBooking.date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/London' })}
+                            </p>
+                            {availableSlots.length === 0 ? (
+                              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#9E9282' }}>No times available — please choose another date.</p>
+                            ) : (
+                              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                {availableSlots.map(slot => {
+                                  const [h, m] = slot.slot_time.split(':');
+                                  const hour = parseInt(h);
+                                  const ampm = hour >= 12 ? 'pm' : 'am';
+                                  const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+                                  const label = `${displayHour}${m !== '00' ? ':' + m : ''}${ampm}`;
+                                  const isTimeSelected = redeemBooking.time === slot.slot_time;
+                                  return (
+                                    <button key={slot.slot_time} onClick={() => setRedeemBooking(prev => ({ ...prev, time: slot.slot_time }))}
+                                      style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', letterSpacing: '0.1em', padding: '0.6rem 1rem', border: 'none', cursor: 'pointer', background: isTimeSelected ? '#1B3A5C' : '#F5F0E8', color: isTimeSelected ? '#E8DDB5' : '#1B3A5C', outline: isTimeSelected ? 'none' : '1px solid #DDD5C0', transition: 'all 0.15s' }}>
+                                      {label}
+                                    </button>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
+
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: '#9E9282', marginBottom: '1.25rem' }}>
+                    <span style={{ display: 'inline-block', width: '6px', height: '6px', borderRadius: '50%', background: '#16a34a', marginRight: '0.4rem', verticalAlign: 'middle' }} />
+                    Green dot = availability on this date
+                  </p>
+
+                  <button className="book-btn-primary" disabled={!redeemBooking.date || !redeemBooking.time} onClick={() => setRedeemStep('details')}>
+                    Enter your details →
+                  </button>
+                </div>
+              )}
+
+              {/* Step 3: Details */}
+              {redeemStep === 'details' && redeemedVoucher && (
+                <div className="book-card">
+                  <button className="back-link" onClick={() => setRedeemStep('datetime')}>← Back</button>
+                  <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '1.5rem' }}>Your details</h2>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
+                    <div>
+                      <label className="book-label">Full name</label>
+                      <input className="book-input" placeholder="Your name" value={redeemBooking.name} onChange={e => setRedeemBooking(prev => ({ ...prev, name: e.target.value }))} />
+                    </div>
+                    <div>
+                      <label className="book-label">Email address</label>
+                      <input className="book-input" type="email" placeholder="your@email.com" value={redeemBooking.email} onChange={e => setRedeemBooking(prev => ({ ...prev, email: e.target.value }))} />
+                    </div>
+                    <div>
+                      <label className="book-label">Phone number</label>
+                      <input className="book-input" type="tel" placeholder="07700 000000" value={redeemBooking.phone} onChange={e => setRedeemBooking(prev => ({ ...prev, phone: e.target.value }))} />
+                    </div>
+                    <div>
+                      <label className="book-label">Anything we should know? (optional)</label>
+                      <textarea className="book-input" placeholder="Young children, accessibility needs, anything else..." value={redeemBooking.notes} onChange={e => setRedeemBooking(prev => ({ ...prev, notes: e.target.value }))} />
+                    </div>
+                  </div>
+
+                  {/* Booking summary */}
+                  <div className="price-summary" style={{ marginBottom: '1.5rem' }}>
+                    <div>
+                      <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.2rem' }}>
+                        {redeemedVoucher.session_duration === 60 ? 'Family Session' : 'Studio Session'} · {redeemedVoucher.session_duration} min
+                      </p>
+                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.5)' }}>
+                        {new Date(redeemBooking.date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/London' })} · {redeemBooking.time}
+                      </p>
+                    </div>
+                    <div style={{ textAlign: 'right' }}>
+                      <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.3rem', color: '#A8CAEC', fontWeight: 300 }}>£0</p>
+                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.65rem', color: 'rgba(245,240,232,0.4)' }}>Gift voucher</p>
+                    </div>
+                  </div>
+
+                  {error && <div className="error-msg"><p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#991b1b' }}>{error}</p></div>}
+
+                  <button className="book-btn-primary" disabled={!redeemBooking.name || !redeemBooking.email || !redeemBooking.phone || loading} onClick={handleRedeemBooking}>
+                    {loading ? 'Confirming...' : 'Confirm booking →'}
+                  </button>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: '#9E9282', textAlign: 'center', marginTop: '0.75rem' }}>
+                    To change your slot, email hello@something-blue-productions.com
+                  </p>
+                </div>
+              )}
+
+              {/* Confirm */}
+              {redeemStep === 'confirm' && (
+                <div className="book-card" style={{ textAlign: 'center' }}>
+                  <div className="confirm-icon">✓</div>
+                  <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.4rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.75rem' }}>You&apos;re booked in.</h2>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#9E9282', lineHeight: 1.8, marginBottom: '1.5rem' }}>
+                    A confirmation has been sent to {redeemBooking.email}. We&apos;ll include our style guide so you&apos;re prepared for the day.<br /><br />
+                    To make any changes, email <a href="mailto:hello@something-blue-productions.com" style={{ color: '#1B3A5C' }}>hello@something-blue-productions.com</a>.
+                  </p>
+                  <Link href="/" className="book-btn-secondary" style={{ display: 'inline-block', width: 'auto', padding: '0.85rem 2rem' }}>Back to home</Link>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* ── GIFT FLOW ── */}}
           {mode === 'gift' && (
             <div>
               <button className="back-link" onClick={() => { setMode('choose'); setGiftStep('occasion'); }}>← Back</button>
