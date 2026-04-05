@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import Nav from "@/components/layout/Nav";
 import Footer from "@/components/layout/Footer";
@@ -21,11 +22,11 @@ export const metadata: Metadata = {
   ],
   authors: [{ name: "Something Blue Productions" }],
   creator: "Something Blue Productions",
-  metadataBase: new URL("https://www.something-blue-productions.com"),
+  metadataBase: new URL("https://something-blue-productions.com"),
   openGraph: {
     type: "website",
     locale: "en_GB",
-    url: "https://www.something-blue-productions.com",
+    url: "https://something-blue-productions.com",
     siteName: "Something Blue Productions",
     title: "Something Blue Productions | Wedding & Family Photography Cambridge",
     description:
@@ -50,6 +51,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en-GB">
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-8QJ0ER13SV"
+          strategy="afterInteractive"
+        />
+        <Script id="ga4" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-8QJ0ER13SV');
+          `}
+        </Script>
+      </head>
       <body className="antialiased">
         <Nav />
         {children}
