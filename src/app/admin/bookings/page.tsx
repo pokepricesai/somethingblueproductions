@@ -417,7 +417,7 @@ export default function AdminBookingsPage() {
                 if (daySlots.length === 0) return null;
                 return (
                   <div key={day} className="adm-card" style={{ marginBottom: '2px' }}>
-                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.75rem', textTransform: 'capitalize' }}>{day}</p>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'capitalize', color: '#A8CAEC', marginBottom: '0.75rem' }}>{day}</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                       {daySlots.map(slot => (
                         <button
