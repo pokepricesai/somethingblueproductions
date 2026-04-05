@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { createClient } from '@supabase/supabase-js';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2025-02-24.acacia',
+});
+
 const supabase = createClient(
   'https://knwyfoqmlwbxtfhvkbmc.supabase.co',
   process.env.SUPABASE_SERVICE_ROLE_KEY!
@@ -32,7 +35,6 @@ export async function POST(req: NextRequest) {
     const meta = session.metadata!;
 
     if (meta.type === 'booking') {
-      // Save booking to Supabase
       await supabase.from('bookings').insert({
         name: meta.name,
         email: meta.email,
@@ -48,7 +50,6 @@ export async function POST(req: NextRequest) {
         status: 'confirmed',
       });
 
-      // Send confirmation emails via API
       await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/send-booking-confirmation`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -56,7 +57,6 @@ export async function POST(req: NextRequest) {
       });
 
     } else if (meta.type === 'gift') {
-      // Generate unique voucher code
       const code = generateVoucherCode();
 
       await supabase.from('vouchers').insert({
@@ -73,7 +73,6 @@ export async function POST(req: NextRequest) {
         status: 'unused',
       });
 
-      // Send voucher email
       await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/send-voucher-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
