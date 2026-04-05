@@ -424,7 +424,7 @@ export default function AdminBookingsPage() {
                     <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', letterSpacing: '0.15em', textTransform: 'capitalize', color: '#A8CAEC', marginBottom: '0.75rem' }}>{day}</p>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                       {daySlots.length === 0 && (
-                        <p style={{ fontFamily: "'Inter', sans-serif', fontSize: '0.75rem', color: 'rgba(245,240,232,0.25)' }}>No slots — add one below</p>
+                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.25)' }}>No slots — add one below</p>
                       )}
                       {daySlots.map(slot => (
                         <div key={slot.id} style={{ display: 'flex', alignItems: 'center', gap: '2px' }}>
