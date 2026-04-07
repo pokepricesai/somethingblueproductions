@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 
 const supabaseUrl = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co';
 const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y';
@@ -23,7 +22,9 @@ const services = [
   'Headshots',
   'Brand & Business Photography',
   'Performance & Show Photography',
-  'Studio Session',
+  'Extended Studio Session',
+  'Outdoor Session',
+  'Multi-outfit Shoot',
   'Other',
 ];
 
@@ -48,6 +49,14 @@ export default function EnquirePage() {
         body: JSON.stringify(formData),
       });
       if (!res.ok) throw new Error('Failed');
+
+      // Send email alert to Samantha
+      await fetch('/api/send-enquiry-alert', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+
       window.location.href = '/thank-you';
     } catch {
       setStatus('error');
@@ -94,7 +103,6 @@ export default function EnquirePage() {
         .eq-submit:hover { background: #0d1b2a; }
         .eq-submit:disabled { opacity: 0.6; cursor: not-allowed; }
         .eq-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
         @media (min-width: 640px) {
           .eq-pad { padding: 3.5rem 2.5rem; }
           .eq-hero { padding: 10rem 2.5rem 4rem; }
@@ -124,7 +132,7 @@ export default function EnquirePage() {
       <section className="eq-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div className="eq-grid">
 
-          {/* Left — contact options */}
+          {/* Left — contact + studio info */}
           <div>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>Reach us directly</p>
 
@@ -158,11 +166,33 @@ export default function EnquirePage() {
               </div>
             </a>
 
-            <div style={{ marginTop: '2rem', padding: '1.5rem', backgroundColor: '#E8DDB5', borderLeft: '3px solid #1B3A5C' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.4rem' }}>Studios in Papworth Everard & Waterbeach</p>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#5c5550', lineHeight: 1.65 }}>
-                Both studios are available for newborn, family, maternity and commercial sessions. Let us know which location suits you best.
+            {/* Studio info */}
+            <div style={{ marginTop: '2rem' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Our studios</p>
+
+              <div style={{ background: '#FAF8F2', border: '1px solid #DDD5C0', padding: '1.25rem 1.5rem', marginBottom: '2px' }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.75rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.35rem' }}>Papworth Everard · CB23</p>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#5c5550', lineHeight: 1.65 }}>
+                  Our bookable studio — available for couple, maternity, newborn, family and headshot sessions. Book directly online from £99.
+                </p>
+                <a href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '1px', display: 'inline-block', marginTop: '0.75rem' }}>Book a session →</a>
+              </div>
+
+              <div style={{ background: '#FAF8F2', border: '1px solid #DDD5C0', padding: '1.25rem 1.5rem' }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.75rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.35rem' }}>Waterbeach · CB25</p>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#5c5550', lineHeight: 1.65 }}>
+                  Available for larger, more in-depth shoots — extended sessions, multiple outfits, outdoor combinations, video and bespoke projects. Please enquire below.
+                </p>
+              </div>
+            </div>
+
+            {/* Quick book nudge */}
+            <div style={{ marginTop: '1.5rem', padding: '1.25rem 1.5rem', background: '#0d1b2a' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Want to book right now?</p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'rgba(245,240,232,0.55)', lineHeight: 1.65, marginBottom: '0.75rem' }}>
+                Studio sessions at Papworth Everard can be booked and paid for instantly online.
               </p>
+              <a href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', background: '#1B3A5C', color: '#E8DDB5', padding: '0.7rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Book a studio session →</a>
             </div>
           </div>
 
