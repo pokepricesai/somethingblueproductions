@@ -1,7 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-const brevo = require('@getbrevo/brevo');
-const apiInstance = new brevo.TransactionalEmailsApi();
-apiInstance.authentications['apiKey'].apiKey = process.env.BREVO_API_KEY;
+async function sendEmail(to: {email: string, name: string}[], subject: string, htmlContent: string, sender = { name: 'Something Blue Productions', email: 'hello@something-blue-productions.com' }, replyTo?: {email: string, name: string}) {
+  const body: Record<string, unknown> = { sender, to, subject, htmlContent };
+  if (replyTo) body.replyTo = replyTo;
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'api-key': process.env.BREVO_API_KEY!,
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Brevo error: ${err}`);
+  }
+  return res.json();
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -28,13 +43,13 @@ export async function POST(req: NextRequest) {
 </body>
 </html>`;
 
-    await apiInstance.sendTransacEmail({
-      sender: { name: 'Something Blue Website', email: 'hello@something-blue-productions.com' },
-      to: [{ email: 'hello@something-blue-productions.com', name: 'Samantha' }],
-      replyTo: { email, name },
-      subject: `New enquiry from ${name}${service ? ' — ' + service : ''}`,
-      htmlContent: html,
-    });
+    await sendEmail(
+      [{ email: 'hello@something-blue-productions.com', name: 'Samantha' }],
+      `New enquiry from ${name}${service ? ' — ' + service : ''}`,
+      html,
+      { name: 'Something Blue Website', email: 'hello@something-blue-productions.com' },
+      { email, name }
+    );
 
     return NextResponse.json({ success: true });
   } catch (error) {

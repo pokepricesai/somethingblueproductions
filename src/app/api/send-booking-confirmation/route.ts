@@ -1,7 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-const brevo = require('@getbrevo/brevo');
-const apiInstance = new brevo.TransactionalEmailsApi();
-apiInstance.authentications['apiKey'].apiKey = process.env.BREVO_API_KEY;
+async function sendEmail(to: {email: string, name: string}[], subject: string, htmlContent: string, sender = { name: 'Something Blue Productions', email: 'hello@something-blue-productions.com' }, replyTo?: {email: string, name: string}) {
+  const body: Record<string, unknown> = { sender, to, subject, htmlContent };
+  if (replyTo) body.replyTo = replyTo;
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'api-key': process.env.BREVO_API_KEY!,
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Brevo error: ${err}`);
+  }
+  return res.json();
+}
 
 function formatTime(time: string) {
   const [h, m] = time.split(':');
@@ -97,20 +112,19 @@ export async function POST(req: NextRequest) {
 </html>`;
 
     // Send to client
-    await apiInstance.sendTransacEmail({
-      sender: { name: 'Something Blue Productions', email: 'hello@something-blue-productions.com' },
-      to: [{ email: meta.email, name: meta.name }],
-      subject: `Your session is confirmed — ${dateFormatted}`,
-      htmlContent: clientHtml,
-    });
+    await sendEmail(
+      [{ email: meta.email, name: meta.name }],
+      `Your session is confirmed — ${dateFormatted}`,
+      clientHtml
+    );
 
     // Send to Samantha
-    await apiInstance.sendTransacEmail({
-      sender: { name: 'Something Blue Bookings', email: 'hello@something-blue-productions.com' },
-      to: [{ email: 'hello@something-blue-productions.com', name: 'Samantha' }],
-      subject: `New booking — ${meta.name} · ${dateFormatted} ${timeFormatted}`,
-      htmlContent: samHtml,
-    });
+    await sendEmail(
+      [{ email: 'hello@something-blue-productions.com', name: 'Samantha' }],
+      `New booking — ${meta.name} · ${dateFormatted} ${timeFormatted}`,
+      samHtml,
+      { name: 'Something Blue Bookings', email: 'hello@something-blue-productions.com' }
+    );
 
     return NextResponse.json({ success: true });
   } catch (error) {

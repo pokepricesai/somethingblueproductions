@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-02-24.acacia',
-});
-
 export async function POST(req: NextRequest) {
   const { booking } = await req.json();
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2025-02-24.acacia',
+  });
 
   const session = await stripe.checkout.sessions.create({
     payment_method_types: ['card'],
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
         currency: 'gbp',
         product_data: {
           name: `${booking.service.charAt(0).toUpperCase() + booking.service.slice(1)} Studio Session`,
-          description: `${booking.duration} minutes · ${booking.duration === 30 ? '5–10' : '10–20'} images · Papworth Everard Studio · ${new Date(booking.date).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' })} at ${booking.time}`,
+          description: `${booking.duration} minutes · ${booking.duration === 30 ? '5–10' : '10–20'} images · Papworth Everard Studio · ${new Date(booking.date + 'T12:00:00').toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'Europe/London' })} at ${booking.time}`,
         },
         unit_amount: booking.price * 100,
       },

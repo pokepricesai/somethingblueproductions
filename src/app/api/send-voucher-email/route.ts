@@ -1,7 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server';
-const brevo = require('@getbrevo/brevo');
-const apiInstance = new brevo.TransactionalEmailsApi();
-apiInstance.authentications['apiKey'].apiKey = process.env.BREVO_API_KEY;
+async function sendEmail(to: {email: string, name: string}[], subject: string, htmlContent: string, sender = { name: 'Something Blue Productions', email: 'hello@something-blue-productions.com' }, replyTo?: {email: string, name: string}) {
+  const body: Record<string, unknown> = { sender, to, subject, htmlContent };
+  if (replyTo) body.replyTo = replyTo;
+  const res = await fetch('https://api.brevo.com/v3/smtp/email', {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+      'api-key': process.env.BREVO_API_KEY!,
+    },
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Brevo error: ${err}`);
+  }
+  return res.json();
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -79,30 +94,28 @@ export async function POST(req: NextRequest) {
 </html>`;
 
     // Send to recipient
-    await apiInstance.sendTransacEmail({
-      sender: { name: 'Something Blue Productions', email: 'hello@something-blue-productions.com' },
-      to: [{ email: recipientEmail, name: recipientName }],
-      subject: `Your gift voucher — Something Blue Productions`,
-      htmlContent: voucherHtml,
-    });
+    await sendEmail(
+      [{ email: recipientEmail, name: recipientName }],
+      `Your gift voucher — Something Blue Productions`,
+      voucherHtml
+    );
 
     // Send receipt to buyer if different from recipient
     if (meta.buyer_email && meta.buyer_email !== recipientEmail) {
-      await apiInstance.sendTransacEmail({
-        sender: { name: 'Something Blue Productions', email: 'hello@something-blue-productions.com' },
-        to: [{ email: meta.buyer_email, name: meta.buyer_name }],
-        subject: `Gift voucher purchase confirmed — ${code}`,
-        htmlContent: buyerHtml,
-      });
+      await sendEmail(
+        [{ email: meta.buyer_email, name: meta.buyer_name }],
+        `Gift voucher purchase confirmed — ${code}`,
+        buyerHtml
+      );
     }
 
     // Notify Samantha
-    await apiInstance.sendTransacEmail({
-      sender: { name: 'Something Blue Bookings', email: 'hello@something-blue-productions.com' },
-      to: [{ email: 'hello@something-blue-productions.com', name: 'Samantha' }],
-      subject: `New gift voucher sold — ${code} · £${meta.price}`,
-      htmlContent: `<div style="font-family:Georgia,serif;padding:24px;max-width:500px;"><h2 style="font-weight:300;color:#1B3A5C;">New voucher sold</h2><p><strong>Code:</strong> ${code}</p><p><strong>From:</strong> ${meta.buyer_name} (${meta.buyer_email})</p><p><strong>To:</strong> ${recipientName} (${recipientEmail})</p><p><strong>Session:</strong> ${sessionLabel}</p><p><strong>Occasion:</strong> ${meta.occasion}</p><p><strong>Paid:</strong> £${meta.price}</p></div>`,
-    });
+    await sendEmail(
+      [{ email: 'hello@something-blue-productions.com', name: 'Samantha' }],
+      `New gift voucher sold — ${code} · £${meta.price}`,
+      `<div style="font-family:Georgia,serif;padding:24px;max-width:500px;"><h2 style="font-weight:300;color:#1B3A5C;">New voucher sold</h2><p><strong>Code:</strong> ${code}</p><p><strong>From:</strong> ${meta.buyer_name} (${meta.buyer_email})</p><p><strong>To:</strong> ${recipientName} (${recipientEmail})</p><p><strong>Session:</strong> ${sessionLabel}</p><p><strong>Occasion:</strong> ${meta.occasion}</p><p><strong>Paid:</strong> £${meta.price}</p></div>`,
+      { name: 'Something Blue Bookings', email: 'hello@something-blue-productions.com' }
+    );
 
     return NextResponse.json({ success: true });
   } catch (error) {
