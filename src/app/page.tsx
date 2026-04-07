@@ -9,15 +9,7 @@ function Img({ src, alt, zoom = false, priority = false }: { src: string; alt: s
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
         <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: '0 1rem' }}>{src.split('/').pop()}</span>
       </div>
-      <Image
-        src={src}
-        alt={alt}
-        fill
-        sizes="100vw"
-        priority={priority}
-        className={zoom ? 'zoom-img' : undefined}
-        style={{ objectFit: 'cover', zIndex: 1 }}
-      />
+      <Image src={src} alt={alt} fill sizes="100vw" priority={priority} className={zoom ? 'zoom-img' : undefined} style={{ objectFit: 'cover', zIndex: 1 }} />
     </>
   );
 }
@@ -42,15 +34,31 @@ export default function Home() {
         .home-cta-buttons { flex-direction: column; }
         .home-cta-buttons a { text-align: center; }
         .home-portfolio-header { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
-
         .zoom-card { overflow: hidden; }
         .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; }
         .zoom-card:hover .zoom-img { transform: scale(1.025) !important; }
+
+        /* Floating mobile CTA */
+        .mobile-float {
+          position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
+          display: flex; gap: 1px;
+          box-shadow: 0 -4px 24px rgba(0,0,0,0.18);
+        }
+        .mobile-float a {
+          flex: 1; padding: 1rem 0.5rem; text-align: center;
+          font-family: 'Carose', sans-serif; font-size: 0.6rem;
+          letter-spacing: 0.15em; text-transform: uppercase;
+          text-decoration: none; display: block;
+        }
+        .mobile-float-book { background: #1B3A5C; color: #E8DDB5; }
+        .mobile-float-gift { background: #A8CAEC; color: #0d1b2a; }
+        .mobile-float-enquire { background: #E8DDB5; color: #1B3A5C; }
 
         @media (min-width: 640px) {
           .home-section-pad { padding: 3.5rem 2.5rem; }
           .home-process-grid { grid-template-columns: 1fr 1fr; }
           .home-testimonials-grid { grid-template-columns: 1fr 1fr; }
+          .mobile-float { display: none; }
         }
         @media (min-width: 900px) {
           .home-section-pad { padding: 4rem 4rem; }
@@ -68,8 +76,16 @@ export default function Home() {
           .home-cta-buttons { flex-direction: row; }
           .home-cta-buttons a { text-align: left; }
           .home-portfolio-header { flex-direction: row; align-items: flex-end; }
+          .mobile-float { display: none; }
         }
       `}</style>
+
+      {/* ─── FLOATING MOBILE CTA ─── */}
+      <div className="mobile-float">
+        <a href="/book" className="mobile-float-book">Book session</a>
+        <a href="/book#gifts" className="mobile-float-gift">Gift voucher</a>
+        <a href="/enquire" className="mobile-float-enquire">Enquire</a>
+      </div>
 
       {/* ─── HERO ─── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#0d1b2a', minHeight: '100svh' }}>
@@ -83,9 +99,14 @@ export default function Home() {
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.7)', marginBottom: '2rem', maxWidth: '400px' }}>
             Wedding and family photography rooted in Cambridgeshire. Quiet, honest work from two studio spaces.
           </p>
-          <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.85)', textDecoration: 'none', borderBottom: '1px solid rgba(245,240,232,0.35)', paddingBottom: '3px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-            See the work →
-          </Link>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.85rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
+              Book a session
+            </Link>
+            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.85)', textDecoration: 'none', border: '1px solid rgba(245,240,232,0.35)', padding: '0.85rem 2rem', display: 'inline-block' }}>
+              See the work →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -124,7 +145,6 @@ export default function Home() {
             </Link>
           ))}
         </div>
-
         <Link href="/commercial" className="home-commercial-strip" style={{ display: 'flex', justifyContent: 'space-between', maxWidth: '1400px', margin: '2px auto 0', backgroundColor: '#2C2820', padding: '1.4rem 1.5rem', textDecoration: 'none' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
             <span className="home-commercial-label" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282', whiteSpace: 'nowrap' }}>Also available</span>
@@ -137,9 +157,91 @@ export default function Home() {
         </Link>
       </section>
 
+      {/* ─── STUDIO BOOKING CTA ─── */}
+      <section style={{ backgroundColor: '#1B3A5C', padding: '0' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr', maxWidth: '1400px', margin: '0 auto' }}>
+          <div style={{ padding: '3rem 2rem', borderRight: '1px solid rgba(168,202,236,0.1)' }}>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.75rem' }}>Book instantly online</p>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.75rem', lineHeight: 1.2 }}>
+              Studio sessions from <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(1.6rem, 3vw, 2.2rem)' }}>£99.</span>
+            </h2>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(232,221,181,0.55)', lineHeight: 1.7, marginBottom: '1.5rem', maxWidth: '420px' }}>
+              Couple, maternity, newborn, family and headshot sessions at our Papworth Everard studio. All images included — we never charge per image. Pick your date and pay securely online.
+            </p>
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+              <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
+                Book a session →
+              </Link>
+              <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(232,221,181,0.25)', color: 'rgba(232,221,181,0.6)', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
+                About the studio
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        {/* Session types */}
+        <div style={{ borderTop: '1px solid rgba(168,202,236,0.1)', display: 'flex', flexWrap: 'wrap' }}>
+          {[
+            { label: 'Studio Session', desc: '30 min · 1–2 people · 5–10 images', price: '£99' },
+            { label: 'Family Session', desc: '60 min · 3+ people · 10–20 images', price: '£199' },
+            { label: 'Gift Vouchers', desc: 'Perfect for birthdays, baby showers & Christmas', price: 'From £99', href: '/book' },
+          ].map((s, i) => (
+            <Link key={i} href={s.href || '/book'} style={{ flex: '1', minWidth: '200px', padding: '1.5rem 2rem', borderRight: '1px solid rgba(168,202,236,0.08)', textDecoration: 'none', display: 'block', transition: 'background 0.2s' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.7rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.3rem' }}>{s.label}</p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(232,221,181,0.4)', marginBottom: '0.5rem', lineHeight: 1.5 }}>{s.desc}</p>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#A8CAEC', fontWeight: 300 }}>{s.price}</p>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ─── GIFT VOUCHERS ─── */}
+      <section className="home-section-pad" style={{ backgroundColor: '#0d1b2a' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr', gap: '2.5rem', alignItems: 'center' }}>
+          <div>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>The perfect gift</p>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '1rem', lineHeight: 1.2 }}>
+              Give the gift of a{' '}
+              <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)' }}>session.</span>
+            </h2>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', color: 'rgba(245,240,232,0.5)', lineHeight: 1.8, marginBottom: '1.5rem', maxWidth: '480px' }}>
+              Gift vouchers for birthdays, baby showers, engagements, weddings or Christmas. The recipient chooses their own date and time — valid for 12 months. All images included, no per-image charges.
+            </p>
+            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
+              <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
+                Buy a gift voucher →
+              </Link>
+            </div>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {['Birthday', 'Baby Shower', 'Engagement', 'Wedding gift', 'Christmas', "Mother's Day", 'Just Because'].map(o => (
+                <span key={o} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.5)', border: '1px solid rgba(168,202,236,0.15)', padding: '0.25rem 0.6rem' }}>{o}</span>
+              ))}
+            </div>
+          </div>
+          <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.1)', padding: '2rem' }}>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1.5rem' }}>What&apos;s included</p>
+            {[
+              { title: 'Studio Session', desc: '30 min · 1–2 people · 5–10 images', price: '£99' },
+              { title: 'Family Session', desc: '60 min · 3+ people · 10–20 images', price: '£199' },
+            ].map(s => (
+              <div key={s.title} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 0', borderBottom: '1px solid rgba(168,202,236,0.08)' }}>
+                <div>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>{s.title}</p>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.35)' }}>{s.desc}</p>
+                </div>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.2rem', color: '#A8CAEC', fontWeight: 300 }}>{s.price}</p>
+              </div>
+            ))}
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.3)', marginTop: '1rem', lineHeight: 1.7 }}>
+              Vouchers are emailed instantly. Valid for 12 months. Recipient books their own date online — no chasing needed.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ─── PORTFOLIO STRIP ─── */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
-        <div className="home-portfolio-header" style={{ display: 'flex', marginBottom: '1.5rem', padding: '0 1.5rem' }}>
+        <div className="home-portfolio-header" style={{ display: 'flex', marginBottom: '1.5rem', padding: '3rem 1.5rem 0' }}>
           <div>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>Selected work</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>The portfolio</h2>
@@ -156,9 +258,6 @@ export default function Home() {
             { w: '230px', aspect: '4/3', color: '#a09080', img: 'portfolio-strip-06.jpg', sizes: '230px' },
           ].map((item, i) => (
             <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
-              </div>
               <Image src={`${STORAGE}/${item.img}`} alt="Something Blue Productions portfolio" fill sizes={item.sizes} style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
@@ -179,27 +278,39 @@ export default function Home() {
           </div>
           <div className="home-studios-grid">
             {[
-              { tag: 'Studio · Cambridgeshire', name: 'Papworth Everard', desc: 'A warm, airy space ideal for newborn, family and maternity sessions. Accessible from Cambridge, Huntingdon and the A14 corridor.', href: '/studio/papworth-everard', color: '#1b3a5c', img: 'studio-papworth-hero.jpg' },
-              { tag: 'Studio · Near Cambridge', name: 'Waterbeach', desc: 'Minutes from Cambridge city centre and the A10. Perfect for families, mini sessions and selected commercial work.', href: '/studio/waterbeach', color: '#162d4a', img: 'studio-waterbeach-hero.jpg' },
+              {
+                tag: 'Book online · From £99',
+                name: 'Papworth Everard',
+                desc: 'Our bookable studio for couple, maternity, newborn, family and headshot sessions. Choose your date and pay instantly online.',
+                href: '/studio/papworth-everard',
+                color: '#1b3a5c',
+                img: 'studio-papworth-hero.jpg',
+                cta: 'Book a session →',
+                ctaHref: '/book',
+              },
+              {
+                tag: 'Enquire · Larger projects',
+                name: 'Waterbeach',
+                desc: 'Available for extended shoots, multiple outfits, outdoor combinations, video and bespoke commercial projects. Please get in touch to discuss.',
+                href: '/studio/waterbeach',
+                color: '#162d4a',
+                img: 'studio-waterbeach-hero.jpg',
+                cta: 'Enquire about Waterbeach →',
+                ctaHref: '/enquire',
+              },
             ].map((studio) => (
-              <Link key={studio.href} href={studio.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '16/9', backgroundColor: studio.color, textDecoration: 'none' }}>
+              <div key={studio.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '16/9', backgroundColor: studio.color }}>
                 <Img src={`${STORAGE}/${studio.img}`} alt={`${studio.name} photography studio`} zoom />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.92) 0%, rgba(13,27,42,0.3) 60%, transparent 100%)', zIndex: 2 }} />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.95) 0%, rgba(13,27,42,0.3) 60%, transparent 100%)', zIndex: 2 }} />
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 1.8rem', zIndex: 3 }}>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', display: 'block', marginBottom: '0.4rem' }}>{studio.tag}</span>
                   <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.1rem, 2vw, 1.6rem)', color: '#E8DDB5', lineHeight: 1.2, marginBottom: '0.5rem', textTransform: 'none' }}>{studio.name}</h3>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: 'rgba(245,240,232,0.5)', lineHeight: 1.65, maxWidth: '300px', marginBottom: '0.8rem' }}>{studio.desc}</p>
-                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ width: '18px', height: '1px', backgroundColor: 'currentColor', display: 'inline-block' }} />
-                    About this studio
-                  </span>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: 'rgba(245,240,232,0.5)', lineHeight: 1.65, maxWidth: '300px', marginBottom: '1rem' }}>{studio.desc}</p>
+                  <Link href={studio.ctaHref} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', background: studio.ctaHref === '/book' ? '#E8DDB5' : 'transparent', color: studio.ctaHref === '/book' ? '#0d1b2a' : 'rgba(232,221,181,0.6)', border: studio.ctaHref === '/book' ? 'none' : '1px solid rgba(232,221,181,0.25)', padding: '0.6rem 1.25rem', textDecoration: 'none', display: 'inline-block' }}>
+                    {studio.cta}
+                  </Link>
                 </div>
-              </Link>
-            ))}
-          </div>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginTop: '1.2rem' }}>
-            {['Newborn sessions', 'Family shoots', 'Maternity', 'Mini sessions', 'Headshots', 'Brand photography', 'Indoor assured'].map((tag) => (
-              <span key={tag} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9E9282', border: '1px solid rgba(168,202,236,0.2)', padding: '0.3rem 0.75rem' }}>{tag}</span>
+              </div>
             ))}
           </div>
         </div>
@@ -240,7 +351,7 @@ export default function Home() {
           </div>
           <div className="home-process-grid" style={{ gap: '2px' }}>
             {[
-              { num: '01', title: 'Send an enquiry', desc: "Tell us what you're looking for — a few sentences is enough. We'll come back to you within 24 hours." },
+              { num: '01', title: 'Book or enquire', desc: 'Studio sessions can be booked and paid for online in minutes. For weddings, outdoor shoots or larger projects, send us a message.' },
               { num: '02', title: 'Short conversation', desc: "We'll talk through what you want and make sure everything feels right before anything is confirmed." },
               { num: '03', title: 'The session', desc: "Relaxed and led by you. Outdoors, in studio, at a venue — wherever feels right. No awkward direction." },
               { num: '04', title: 'Your gallery', desc: "Edited, delivered, and yours. A private online gallery and your choice of print products and digital files." },
@@ -251,6 +362,14 @@ export default function Home() {
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#9E9282', lineHeight: 1.7 }}>{step.desc}</p>
               </div>
             ))}
+          </div>
+          <div style={{ marginTop: '2rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#1B3A5C', color: '#E8DDB5', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
+              Book a studio session →
+            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(44,40,32,0.2)', color: '#5c5550', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
+              Send an enquiry
+            </Link>
           </div>
         </div>
       </section>
@@ -273,9 +392,6 @@ export default function Home() {
             ].map((post) => (
               <Link key={post.href} href={post.href} className="zoom-card" style={{ textDecoration: 'none', display: 'block' }}>
                 <div style={{ aspectRatio: '3/2', backgroundColor: post.color, marginBottom: '1rem', position: 'relative' }}>
-                  <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textAlign: 'center' }}>{post.img}</span>
-                  </div>
                   <Image src={`${STORAGE}/${post.img}`} alt={post.title} fill sizes="(max-width: 900px) 100vw, 33vw" className="zoom-img" style={{ objectFit: 'cover', zIndex: 1 }} />
                 </div>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>{post.cat}</p>
@@ -287,23 +403,26 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── ENQUIRY CTA ─── */}
+      {/* ─── FINAL CTA ─── */}
       <section className="home-section-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-40%', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(27,58,92,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ maxWidth: '540px', margin: '0 auto', position: 'relative', zIndex: 1 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Get in touch</p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Ready when you are</p>
           <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>
-            Let&apos;s talk about what you need
+            Book a session or send us a message
           </h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.45)', lineHeight: 1.8, marginBottom: '2rem' }}>
-            Whether it&apos;s a wedding date, a newborn session, or just an idea you&apos;re thinking through — drop us a message and we&apos;ll come back to you quickly.
+            Studio sessions from £99, bookable online. Gift vouchers available for any occasion. For weddings, outdoor shoots and larger projects — drop us a message.
           </p>
           <div className="home-cta-buttons" style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Start your enquiry
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              Book a session
             </Link>
-            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              See the work first
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#A8CAEC', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              Buy a gift voucher
+            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              Enquire
             </Link>
           </div>
         </div>

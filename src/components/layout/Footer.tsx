@@ -64,6 +64,23 @@ export default function Footer() {
         }
       `}</style>
 
+      {/* ─── BOOKING BAND ─── */}
+      <div style={{ maxWidth: '1200px', margin: '0 auto 3rem', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.1)', padding: '2rem', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Book instantly online</p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>Studio sessions from £99 · All images included</p>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.35)' }}>Papworth Everard studio · Couple, maternity, newborn, family, headshots</p>
+        </div>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>
+            Book a session →
+          </Link>
+          <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>
+            Buy a gift voucher →
+          </Link>
+        </div>
+      </div>
+
       <div className="footer-grid">
 
         {/* Brand + contact */}
@@ -118,24 +135,27 @@ export default function Footer() {
           <Link href="/commercial/performance" className="footer-link">Performance Photography</Link>
         </div>
 
-        {/* Information */}
+        {/* Book & Information */}
         <div>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Information</p>
-          <Link href="/about" className="footer-link">About</Link>
-          <Link href="/portfolio" className="footer-link">Portfolio</Link>
-          <Link href="/packages" className="footer-link">Packages & Pricing</Link>
-          <Link href="/testimonials" className="footer-link">Testimonials</Link>
-          <Link href="/journal" className="footer-link">Journal</Link>
-          <Link href="/locations" className="footer-link">Locations</Link>
-          <Link href="/enquire" className="footer-link">Enquire</Link>
-          <Link href="/privacy" className="footer-link">Privacy Policy</Link>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Book Online</p>
+          <Link href="/book" className="footer-link" style={{ color: '#A8CAEC' }}>Book a studio session</Link>
+          <Link href="/book" className="footer-link" style={{ color: '#A8CAEC' }}>Buy a gift voucher</Link>
+          <Link href="/book" className="footer-link" style={{ color: '#A8CAEC' }}>Redeem a voucher</Link>
+          <div style={{ marginTop: '1.5rem' }}>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Information</p>
+            <Link href="/about" className="footer-link">About Samantha</Link>
+            <Link href="/portfolio" className="footer-link">Portfolio</Link>
+            <Link href="/journal" className="footer-link">Journal</Link>
+            <Link href="/locations" className="footer-link">Locations</Link>
+            <Link href="/enquire" className="footer-link">Enquire</Link>
+          </div>
         </div>
 
         {/* Studios + locations */}
         <div>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Studios</p>
-          <Link href="/studio/papworth-everard" className="footer-link">Papworth Everard Studio</Link>
-          <Link href="/studio/waterbeach" className="footer-link">Waterbeach Studio</Link>
+          <Link href="/studio/papworth-everard" className="footer-link">Papworth Everard — Book online</Link>
+          <Link href="/studio/waterbeach" className="footer-link">Waterbeach — Enquire</Link>
           <div style={{ marginTop: '1.5rem' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Locations</p>
             <Link href="/locations/cambridge" className="footer-link">Cambridge</Link>
