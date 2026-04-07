@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as SibApiV3Sdk from '@getbrevo/brevo';
-
-const apiInstance = new SibApiV3Sdk.TransactionalEmailsApi();
-apiInstance.setApiKey(SibApiV3Sdk.TransactionalEmailsApiApiKeys.apiKey, process.env.BREVO_API_KEY!);
+const brevo = require('@getbrevo/brevo');
+const apiInstance = new brevo.TransactionalEmailsApi();
+apiInstance.authentications['apiKey'].apiKey = process.env.BREVO_API_KEY;
 
 export async function POST(req: NextRequest) {
   try {
