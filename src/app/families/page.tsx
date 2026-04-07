@@ -54,9 +54,6 @@ export default function FamiliesPage() {
       {/* ─── HERO ─── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#3a4828', minHeight: '90svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.15) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.65) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>families-hero.jpg</span>
-        </div>
         <img src={`${STORAGE}/families-hero.jpg`} alt="Family photography Cambridgeshire" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
         <div className="f-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Family Photography · Cambridge</p>
@@ -66,9 +63,25 @@ export default function FamiliesPage() {
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '420px' }}>
             Relaxed, natural family photography across Cambridgeshire. Outdoors in locations you love, or in our warm studio spaces. No awkward posing — just time together, beautifully documented.
           </p>
-          <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.85)', textDecoration: 'none', borderBottom: '1px solid rgba(245,240,232,0.35)', paddingBottom: '3px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-            Enquire about a family session →
-          </Link>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.85rem 2rem', textDecoration: 'none', display: 'inline-block' }}>Book a studio session</Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.85)', textDecoration: 'none', border: '1px solid rgba(245,240,232,0.35)', padding: '0.85rem 2rem', display: 'inline-block' }}>Enquire about outdoor →</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── STUDIO BOOKING BAND ─── */}
+      <section style={{ backgroundColor: '#1B3A5C', padding: '2rem 1.5rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Book instantly · Papworth Everard Studio</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>Family Session — £199 · 60 min · 10–20 images</p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>All images included. No per-image charges. Choose your date and pay securely online. Also makes a wonderful birthday or anniversary gift.</p>
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Book a session →</Link>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Buy as a gift →</Link>
+          </div>
         </div>
       </section>
 
@@ -86,10 +99,7 @@ export default function FamiliesPage() {
               </p>
             </div>
             <div style={{ aspectRatio: '4/3', backgroundColor: '#a08870', overflow: 'hidden', position: 'relative' }}>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>families-intro.jpg</span>
-              </div>
-              <img src={`${STORAGE}/families-intro.jpg`} alt="Family outdoor session" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'relative', zIndex: 1 }} />
+              <img src={`${STORAGE}/families-intro.jpg`} alt="Family outdoor session" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
             </div>
           </div>
         </div>
@@ -99,19 +109,17 @@ export default function FamiliesPage() {
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="f-split-grid" style={{ maxWidth: '1300px', margin: '0 auto' }}>
           {[
-            { color: '#3a4828', img: 'families-outdoor-card.jpg', label: 'Outdoors', title: 'Outdoor Sessions', desc: 'Parks, meadows, riversides, woodland. We know the best locations across Cambridgeshire — or we can shoot somewhere that means something to you.' },
-            { color: '#1b3a5c', img: 'families-studio-card.jpg', label: 'Studio', title: 'Studio Sessions', desc: 'Our studios in Papworth Everard and Waterbeach offer beautiful controlled light, whatever the weather. Perfect for younger children and winter sessions.' },
+            { color: '#3a4828', img: 'families-outdoor-card.jpg', label: 'Outdoors · Enquire', title: 'Outdoor Sessions', desc: 'Parks, meadows, riversides, woodland. We know the best locations across Cambridgeshire — or we can shoot somewhere that means something to you.', href: '/enquire', cta: 'Enquire →' },
+            { color: '#1b3a5c', img: 'families-studio-card.jpg', label: 'Studio · Book online from £199', title: 'Studio Sessions', desc: 'Our Papworth Everard studio offers beautiful controlled light, whatever the weather. Book a 60 min family session online and pay securely.', href: '/book', cta: 'Book a session →' },
           ].map((card) => (
             <div key={card.title} style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: card.color, overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{card.img}</span>
-              </div>
               <img src={`${STORAGE}/${card.img}`} alt={card.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
-              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 55%)', zIndex: 2 }} />
+              <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 55%)', zIndex: 2 }} />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem', zIndex: 3 }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>{card.label}</p>
                 <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>{card.title}</h2>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, maxWidth: '320px' }}>{card.desc}</p>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, maxWidth: '320px', marginBottom: '1rem' }}>{card.desc}</p>
+                <Link href={card.href} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.15em', textTransform: 'uppercase', background: card.href === '/book' ? '#E8DDB5' : 'transparent', color: card.href === '/book' ? '#0d1b2a' : 'rgba(232,221,181,0.7)', border: card.href === '/book' ? 'none' : '1px solid rgba(232,221,181,0.35)', padding: '0.6rem 1.2rem', textDecoration: 'none', display: 'inline-block' }}>{card.cta}</Link>
               </div>
             </div>
           ))}
@@ -136,12 +144,23 @@ export default function FamiliesPage() {
             { w: '200px', aspect: '2/3', color: '#887868', img: 'families-portfolio-05.jpg' },
           ].map((item, i) => (
             <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
-              </div>
               <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* ─── GIFT VOUCHER CALLOUT ─── */}
+      <section style={{ backgroundColor: '#0d1b2a', padding: '2.5rem 1.5rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>The perfect gift</p>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.4rem' }}>Give a family session as a gift</h2>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'rgba(245,240,232,0.4)', lineHeight: 1.65, maxWidth: '500px' }}>
+              Family sessions make a beautiful gift for birthdays, anniversaries, baby showers or Christmas. The recipient chooses their own date — valid for 12 months. From £199.
+            </p>
+          </div>
+          <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.85rem 1.75rem', textDecoration: 'none', display: 'inline-block', flexShrink: 0 }}>Buy a gift voucher →</Link>
         </div>
       </section>
 
@@ -223,41 +242,6 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── PACKAGES ─── */}
-      <section className="f-pad" style={{ backgroundColor: '#F5F0E8' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div style={{ marginBottom: '2.5rem' }}>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>Investment</p>
-            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Family session packages</h2>
-          </div>
-          <div className="f-packages-grid" style={{ marginBottom: '1.5rem' }}>
-            {[
-              { name: 'Mini Session', price: 'From £195', includes: ['45 minutes', 'One location', 'Online gallery', '20+ edited images', 'Print release'], note: 'Perfect for a quick seasonal update', highlight: false },
-              { name: 'Full Session', price: 'From £345', includes: ['90 minutes', 'One location or studio', 'Online gallery', '50+ edited images', 'Print release', 'Styling guide'], note: 'Our most popular option', highlight: true },
-              { name: 'Extended Session', price: 'From £495', includes: ['2.5 hours', 'Multiple locations', 'Online gallery', '80+ edited images', 'Print release', 'Styling guide', 'Print credit included'], note: 'For larger families or multiple generations', highlight: false },
-            ].map((pkg) => (
-              <div key={pkg.name} style={{ padding: '2rem 1.8rem', backgroundColor: pkg.highlight ? '#1B3A5C' : '#FAF8F2', border: pkg.highlight ? 'none' : '1px solid #DDD5C0' }}>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: pkg.highlight ? '#A8CAEC' : '#9E9282', marginBottom: '0.3rem' }}>{pkg.name}</p>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.5rem', color: pkg.highlight ? '#E8DDB5' : '#2C2820', textTransform: 'none', marginBottom: '0.4rem' }}>{pkg.price}</p>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: pkg.highlight ? 'rgba(168,202,236,0.7)' : '#9E9282', marginBottom: '1.2rem', fontStyle: 'italic' }}>{pkg.note}</p>
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.45rem', marginBottom: '1.8rem' }}>
-                  {pkg.includes.map((item) => (
-                    <li key={item} style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: pkg.highlight ? 'rgba(245,240,232,0.65)' : '#5c5550', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: pkg.highlight ? '#A8CAEC' : '#DDD5C0', flexShrink: 0, display: 'inline-block' }} />
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-                <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: pkg.highlight ? '#E8DDB5' : '#1B3A5C', textDecoration: 'none', borderBottom: `1px solid ${pkg.highlight ? 'rgba(232,221,181,0.3)' : 'rgba(27,58,92,0.3)'}`, paddingBottom: '2px' }}>
-                  Enquire about this package
-                </Link>
-              </div>
-            ))}
-          </div>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', textAlign: 'center' }}>All packages can be adapted. Studio or outdoor, siblings only, grandparents included — just tell us what you need.</p>
-        </div>
-      </section>
-
       {/* ─── FAQs ─── */}
       <section className="f-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div className="f-faqs">
@@ -269,8 +253,8 @@ export default function FamiliesPage() {
             {[
               { q: "What if my kids won't cooperate?", a: "They almost always do — eventually. We're used to it. The uncooperative moments often make the best images. We never force anything and we never rush." },
               { q: 'What age works best for family sessions?', a: "All ages work well. Newborns are a special case (see our newborn page). For family sessions with young children, 18 months+ is generally easiest, but we've successfully photographed every age." },
-              { q: 'Indoor or outdoor — which is better?', a: "Both have their strengths. Outdoor sessions have more space and natural movement. Studio sessions give beautiful controlled light and are weather-proof. Many families do one of each over time." },
-              { q: 'How long does a session take?', a: "Mini sessions are 45 minutes. Full sessions are 90 minutes. Extended sessions run to about 2.5 hours. We build in time for a slow start — no one needs to be ready the moment we arrive." },
+              { q: 'Indoor or outdoor — which is better?', a: "Both have their strengths. Outdoor sessions have more space and natural movement. Studio sessions give beautiful controlled light and are weather-proof. Our Papworth Everard studio can be booked online from £199 for 3+ people." },
+              { q: 'How long does a session take?', a: "Studio family sessions are 60 minutes. Outdoor sessions typically run 90 minutes to 2 hours. We build in time for a slow start — no one needs to be ready the moment we arrive." },
               { q: 'What should we wear?', a: "We send all booked clients a full styling guide. Generally: coordinate rather than match, avoid large logos, and dress for comfort. Earth tones and blues work particularly well with our editing style." },
               { q: 'When will we get our photos?', a: "Your full edited gallery is delivered within 3 weeks of your session. We'll send a sneak peek of a few images within 48 hours." },
             ].map((faq, i) => (
@@ -286,14 +270,15 @@ export default function FamiliesPage() {
       {/* ─── CTA ─── */}
       <section className="f-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Ready to book?</p>
-          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Let&apos;s plan your family session</h2>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Ready?</p>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Book or enquire today</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.45)', lineHeight: 1.8, marginBottom: '2rem' }}>
-            Tell us your family size, the ages of your children, whether you&apos;re thinking indoor or outdoor, and roughly when you&apos;d like to shoot. We&apos;ll come back to you quickly.
+            Studio family sessions can be booked and paid for online instantly — from £199 for 60 minutes. For outdoor sessions, get in touch and we&apos;ll plan it together.
           </p>
           <div className="f-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire now</Link>
-            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>See family portfolio</Link>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Book a studio session</Link>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#A8CAEC', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Buy as a gift</Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire about outdoor</Link>
           </div>
         </div>
       </section>

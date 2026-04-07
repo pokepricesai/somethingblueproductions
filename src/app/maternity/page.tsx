@@ -115,6 +115,20 @@ export default function MaternityPage() {
           ))}
         </div>
       </section>
+      {/* ─── BOOKING BAND ─── */}
+      <section style={{ backgroundColor: '#1B3A5C', padding: '2rem 1.5rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Book a maternity session</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>Studio or outdoor · From £245 · All images included</p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>A maternity session makes a beautiful baby shower gift — someone else can book and pay, the mum-to-be chooses when.</p>
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <a href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire now →</a>
+            <a href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Buy as a baby shower gift →</a>
+          </div>
+        </div>
+      </section>
 
       {/* GALLERY STRIP */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>

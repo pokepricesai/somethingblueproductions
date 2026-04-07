@@ -132,6 +132,28 @@ export default function WeddingsPage() {
         </div>
       </section>
 
+      {/* ─── ENGAGEMENT & GIFT ─── */}
+      <section style={{ backgroundColor: '#E8DDB5', padding: '2.5rem 1.5rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr', gap: '2px' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', backgroundColor: '#fff', border: '1px solid #DDD5C0' }}>
+            <div>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.3rem' }}>Before the wedding</p>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.05rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.3rem' }}>Engagement sessions</p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', lineHeight: 1.65, maxWidth: '400px' }}>Get comfortable in front of the camera before your wedding day. Engagement sessions also make a wonderful gift — ideal as an engagement present or anniversary shoot.</p>
+            </div>
+            <a href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#1B3A5C', color: '#E8DDB5', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', flexShrink: 0 }}>Enquire about an engagement shoot →</a>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', backgroundColor: '#fff', border: '1px solid #DDD5C0' }}>
+            <div>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.3rem' }}>The perfect wedding present</p>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.05rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.3rem' }}>Gift a studio session</p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', lineHeight: 1.65, maxWidth: '400px' }}>Give the newlyweds a couple portrait session as a wedding gift. They choose their own date — a beautiful, lasting present from £99.</p>
+            </div>
+            <a href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', flexShrink: 0 }}>Buy a gift voucher →</a>
+          </div>
+        </div>
+      </section>
+
       {/* ─── WHAT TO EXPECT ─── */}
       <section className="w-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
