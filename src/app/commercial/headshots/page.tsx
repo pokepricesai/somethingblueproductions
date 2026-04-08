@@ -111,7 +111,7 @@ export default function HeadshotsPage() {
 
       {/* GALLERY STRIP */}
       <section style={{ padding: '3rem 0', backgroundColor: '#F5F0E8' }}>
-        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem', maxWidth: '1100px', margin: '0 auto 1.5rem' }}>
           {[
             { w: '200px', aspect: '3/4', color: '#2a2030', img: 'commercial-headshots-portfolio-01.jpg' },
             { w: '200px', aspect: '3/4', color: '#302830', img: 'commercial-headshots-portfolio-02.jpg' },

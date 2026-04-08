@@ -165,7 +165,7 @@ export default function NewbornPage() {
 
       {/* ── GALLERY STRIP ── */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
-        <div className="n-strip-header" style={{ marginBottom: '1.5rem', padding: '0 1.5rem' }}>
+        <div className="n-strip-header" style={{ marginBottom: '1.5rem', padding: '0 1.5rem', maxWidth: '1100px', margin: '0 auto 1.5rem' }}>
           <div>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>Recent sessions</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Newborn work</h2>
