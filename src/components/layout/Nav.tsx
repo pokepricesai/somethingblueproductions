@@ -31,7 +31,9 @@ const navLinks = [
       { label: 'Headshots', href: '/commercial/headshots' },
     ],
   },
+  { label: 'Packages', href: '/packages' },
   { label: 'Journal', href: '/journal' },
+  { label: 'About', href: '/about' },
 ];
 
 export default function Nav() {
@@ -157,7 +159,7 @@ export default function Nav() {
         }
       `}</style>
 
-      {/* ─── MAIN NAV ─── */}
+      {/* ── MAIN NAV ── */}
       <header style={{
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
         padding: scrolled ? '0.8rem 2.5rem' : '1.4rem 2.5rem',
@@ -234,7 +236,7 @@ export default function Nav() {
         )}
       </header>
 
-      {/* ─── MOBILE OVERLAY ─── */}
+      {/* ── MOBILE OVERLAY ── */}
       {isMobile && (
         <div style={{
           position: 'fixed', inset: 0, zIndex: 99,
@@ -300,7 +302,7 @@ export default function Nav() {
         </div>
       )}
 
-      {/* ─── MOBILE STICKY BAR ─── */}
+      {/* ── MOBILE STICKY BAR ── */}
       {isMobile && !menuOpen && (
         <div style={{
           position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 90,

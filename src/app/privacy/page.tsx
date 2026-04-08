@@ -33,7 +33,7 @@ export default function PrivacyPage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* ── HERO ── */}
       <section style={{ backgroundColor: '#0d1b2a' }}>
         <div className="priv-hero" style={{ maxWidth: '700px' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Legal</p>
@@ -41,12 +41,12 @@ export default function PrivacyPage() {
             Privacy Policy
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.4)' }}>
-            Last updated: March 2025
+            Last updated: April 2026
           </p>
         </div>
       </section>
 
-      {/* ─── CONTENT ─── */}
+      {/* ── CONTENT ── */}
       <section className="priv-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div className="priv-body">
 
@@ -63,6 +63,7 @@ export default function PrivacyPage() {
             <h2 className="priv-h2">What information we collect</h2>
             <p className="priv-p">We collect the following types of personal information:</p>
             <p className="priv-p"><strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', letterSpacing: '0.05em' }}>Enquiry and booking information</strong> — when you contact us or book a session, we collect your name, email address, phone number, and details about the service you&apos;re interested in.</p>
+            <p className="priv-p"><strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', letterSpacing: '0.05em' }}>Payment information</strong> — when you pay for a session or gift voucher online, payment is processed securely by Stripe. We do not store your card details on our systems.</p>
             <p className="priv-p"><strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', letterSpacing: '0.05em' }}>Website usage data</strong> — we may collect anonymised data about how you use our website, including pages visited and time spent, via Google Analytics.</p>
             <p className="priv-p"><strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', letterSpacing: '0.05em' }}>Photography and images</strong> — when we photograph you or your family, the resulting images are personal data and are handled with the care and respect they deserve.</p>
           </div>
@@ -73,6 +74,7 @@ export default function PrivacyPage() {
             <p className="priv-p">— Respond to your enquiry and manage your booking</p>
             <p className="priv-p">— Deliver the photography services you have booked</p>
             <p className="priv-p">— Send you your images and any related communications</p>
+            <p className="priv-p">— Process payments securely for bookings and gift vouchers</p>
             <p className="priv-p">— Improve our website and understand how visitors use it</p>
             <p className="priv-p">We do not sell, rent, or share your personal information with third parties for marketing purposes.</p>
           </div>
@@ -108,7 +110,9 @@ export default function PrivacyPage() {
           <div className="priv-section" style={{ paddingTop: '1.5rem', borderTop: '1px solid #DDD5C0' }}>
             <h2 className="priv-h2">Third-party services</h2>
             <p className="priv-p">We use the following third-party services which may process your data:</p>
-            <p className="priv-p"><strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', letterSpacing: '0.05em' }}>Supabase</strong> — stores enquiry data securely on EU-based servers.</p>
+            <p className="priv-p"><strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', letterSpacing: '0.05em' }}>Stripe</strong> — processes payments for bookings and gift vouchers. Card details are handled directly by Stripe and never stored on our systems. Stripe is PCI-DSS compliant.</p>
+            <p className="priv-p"><strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', letterSpacing: '0.05em' }}>Brevo</strong> — sends transactional emails including booking confirmations, gift voucher delivery and enquiry alerts. Your email address is shared with Brevo solely for this purpose.</p>
+            <p className="priv-p"><strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', letterSpacing: '0.05em' }}>Supabase</strong> — stores enquiry and booking data securely on EU-based servers.</p>
             <p className="priv-p"><strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', letterSpacing: '0.05em' }}>Google Analytics</strong> — anonymised website usage data.</p>
             <p className="priv-p"><strong style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', letterSpacing: '0.05em' }}>Vercel</strong> — our website hosting provider.</p>
           </div>

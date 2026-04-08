@@ -50,7 +50,7 @@ export default async function LocationsPage() {
         }
       `}</style>
 
-      {/* HERO */}
+      {/* ── HERO ── */}
       <section style={{ backgroundColor: '#0d1b2a' }}>
         <div className="loc-hero" style={{ maxWidth: '700px' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Where we work</p>
@@ -64,7 +64,7 @@ export default async function LocationsPage() {
         </div>
       </section>
 
-      {/* LOCATIONS GRID */}
+      {/* ── LOCATIONS GRID ── */}
       <section className="loc-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -88,7 +88,30 @@ export default async function LocationsPage() {
         </div>
       </section>
 
-      {/* SERVICES BY LOCATION */}
+      {/* ── PRICING NUDGE ── */}
+      <section style={{ backgroundColor: '#1B3A5C', padding: '2rem 1.5rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Book instantly · Papworth Everard Studio</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>
+              Studio sessions from £99 — all images included
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>
+              Or enquire about outdoor, wedding and bespoke sessions anywhere in Cambridgeshire.
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              Book a session →
+            </Link>
+            <Link href="/packages" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: 'transparent', color: 'rgba(232,221,181,0.6)', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', border: '1px solid rgba(232,221,181,0.2)' }}>
+              See all packages →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICES BY LOCATION ── */}
       <section className="loc-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -118,7 +141,7 @@ export default async function LocationsPage() {
         </div>
       </section>
 
-      {/* STUDIOS */}
+      {/* ── STUDIOS ── */}
       <section className="loc-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -143,7 +166,7 @@ export default async function LocationsPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <section className="loc-pad" style={{ backgroundColor: '#F5F0E8', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Get in touch</p>

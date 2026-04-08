@@ -109,11 +109,13 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
         .post-related-link:hover .post-related-img-inner { transform: scale(1.04); }
         .post-related-title { transition: color 0.2s; }
         .post-related-link:hover .post-related-title { color: #1B3A5C !important; }
+        .post-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; align-items: center; }
 
         @media (min-width: 640px) {
           .post-pad { padding: 3.5rem 2.5rem; }
           .post-hero { padding: 10rem 2.5rem 4rem; }
           .post-related-grid { grid-template-columns: 1fr 1fr; }
+          .post-cta-buttons { flex-direction: row; justify-content: center; }
         }
         @media (min-width: 900px) {
           .post-pad { padding: 4rem 4rem; }
@@ -122,7 +124,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* ── HERO ── */}
       <section style={{ backgroundColor: '#0d1b2a' }}>
         <div className="post-hero" style={{ maxWidth: '780px' }}>
           <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
@@ -143,14 +145,10 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
         </div>
       </section>
 
-      {/* ─── HERO IMAGE ─── */}
+      {/* ── HERO IMAGE ── */}
       <div style={{ width: '100%', aspectRatio: '16/7', maxHeight: '500px', overflow: 'hidden', backgroundColor: heroColor, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         {post.image_url ? (
-          <img
-            src={post.image_url}
-            alt={post.title}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-          />
+          <img src={post.image_url} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
         ) : (
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>
             {post.image_tag ? `${post.image_tag}-hero.jpg` : 'journal-hero.jpg'}
@@ -158,7 +156,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
         )}
       </div>
 
-      {/* ─── CONTENT ─── */}
+      {/* ── CONTENT ── */}
       <section className="post-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div className="post-body">
           <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(0.95rem, 1.3vw, 1.1rem)', lineHeight: 1.9, color: '#2C2820', textTransform: 'none', marginBottom: '2.5rem', borderLeft: '3px solid #1B3A5C', paddingLeft: '1.2rem' }}>
@@ -183,10 +181,11 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
             </div>
           )}
 
+          {/* Post footer */}
           <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #DDD5C0' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>Something Blue Productions</p>
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#9E9282', lineHeight: 1.7, marginBottom: '1.2rem' }}>
-              Photography and video for weddings, families, newborn and maternity. Two studios in Cambridgeshire.
+              Photography and video for weddings, families, newborn and maternity. Two studios in Cambridgeshire. Studio sessions from £99 — all images included.
             </p>
             <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
               Get in touch →
@@ -195,7 +194,7 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
         </div>
       </section>
 
-      {/* ─── RELATED ─── */}
+      {/* ── RELATED ── */}
       {related.length > 0 && (
         <section className="post-pad" style={{ backgroundColor: '#E8DDB5' }}>
           <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
@@ -226,16 +225,21 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
         </section>
       )}
 
-      {/* ─── CTA ─── */}
+      {/* ── CTA ── */}
       <section className="post-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
-        <div style={{ maxWidth: '480px', margin: '0 auto' }}>
+        <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '1rem' }}>Ready to book?</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.45)', lineHeight: 1.8, marginBottom: '2rem' }}>
-            Get in touch and we&apos;ll come back to you within 24 hours.
+            Studio sessions from £99 — book instantly online. Or get in touch and we&apos;ll come back to you within 24 hours.
           </p>
-          <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-            Start your enquiry
-          </Link>
+          <div className="post-cta-buttons">
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              Book a session
+            </Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              Start your enquiry
+            </Link>
+          </div>
         </div>
       </section>
     </>

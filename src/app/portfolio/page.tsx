@@ -82,7 +82,7 @@ export default function PortfolioPage() {
       <style>{`
         .port-pad { padding: 3rem 1.5rem; }
         .port-hero { padding: 8rem 1.5rem 4rem; }
-        .port-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px; }
+        .port-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
         .port-item {
           position: relative;
           overflow: hidden;
@@ -130,55 +130,25 @@ export default function PortfolioPage() {
         @media (min-width: 640px) {
           .port-pad { padding: 3.5rem 2.5rem; }
           .port-hero { padding: 10rem 2.5rem 4rem; }
-        
+          .port-grid { grid-template-columns: repeat(4, 1fr); }
         }
         @media (min-width: 900px) {
           .port-pad { padding: 4rem 4rem; }
           .port-hero { padding: 10rem 4rem 5rem; }
-        
+          .port-grid { grid-template-columns: repeat(5, 1fr); }
           .port-cta-buttons { flex-direction: row; justify-content: center; }
           .port-cta-buttons a { text-align: left; }
         }
       `}</style>
 
-      {/* LIGHTBOX */}
+      {/* ── LIGHTBOX ── */}
       {lightbox && (
-        <div
-          onClick={closeLightbox}
-          style={{
-            position: 'fixed', inset: 0, zIndex: 999,
-            backgroundColor: 'rgba(13,27,42,0.97)',
-            display: 'flex', flexDirection: 'column',
-            alignItems: 'center', justifyContent: 'center',
-          }}
-        >
-          {/* Close */}
-          <button
-            onClick={closeLightbox}
-            style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: 'rgba(245,240,232,0.6)', fontSize: '1.8rem', cursor: 'pointer', lineHeight: 1, padding: '0.5rem' }}
-          >
-            ×
-          </button>
-
-          {/* Image */}
-          <div
-            onClick={e => e.stopPropagation()}
-            style={{ position: 'relative', width: '90vw', height: '80vh', maxWidth: '1200px' }}
-          >
-            <Image
-              src={lightbox.src}
-              alt={lightbox.label}
-              fill
-              sizes="90vw"
-              style={{ objectFit: 'contain' }}
-            />
+        <div onClick={closeLightbox} style={{ position: 'fixed', inset: 0, zIndex: 999, backgroundColor: 'rgba(13,27,42,0.97)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+          <button onClick={closeLightbox} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: 'rgba(245,240,232,0.6)', fontSize: '1.8rem', cursor: 'pointer', lineHeight: 1, padding: '0.5rem' }}>×</button>
+          <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '90vw', height: '80vh', maxWidth: '1200px' }}>
+            <Image src={lightbox.src} alt={lightbox.label} fill sizes="90vw" style={{ objectFit: 'contain' }} />
           </div>
-
-          {/* Controls */}
-          <div
-            onClick={e => e.stopPropagation()}
-            style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1.5rem' }}
-          >
+          <div onClick={e => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1.5rem' }}>
             <button className="lightbox-btn" onClick={goPrev} disabled={currentIndex <= 0}>←</button>
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.7)', marginBottom: '0.2rem' }}>{lightbox.label}</p>
@@ -189,7 +159,7 @@ export default function PortfolioPage() {
         </div>
       )}
 
-      {/* HERO */}
+      {/* ── HERO ── */}
       <section style={{ backgroundColor: '#0d1b2a' }}>
         <div className="port-hero" style={{ maxWidth: '700px' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>The portfolio</p>
@@ -203,16 +173,12 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* PORTFOLIO GRID */}
+      {/* ── PORTFOLIO GRID ── */}
       <section className="port-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '100%' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '2.5rem' }}>
             {filters.map((f) => (
-              <button
-                key={f.key}
-                onClick={() => setActiveFilter(f.key)}
-                className={`port-filter-btn${activeFilter === f.key ? ' active' : ''}`}
-              >
+              <button key={f.key} onClick={() => setActiveFilter(f.key)} className={`port-filter-btn${activeFilter === f.key ? ' active' : ''}`}>
                 {f.label}
               </button>
             ))}
@@ -223,21 +189,9 @@ export default function PortfolioPage() {
           </p>
           <div className="port-grid">
             {filtered.map((item, index) => (
-              <div
-                key={item.id}
-                className="port-item"
-                style={{ aspectRatio: '1/1', backgroundColor: item.color }}
-                onClick={() => openLightbox(item, index)}
-              >
+              <div key={item.id} className="port-item" style={{ aspectRatio: '1/1', backgroundColor: item.color }} onClick={() => openLightbox(item, index)}>
                 <div className="port-item-inner">
-                  <Image
-                    src={`${STORAGE}/${item.img}`}
-                    alt={`${item.label} photography ${item.location}`}
-                    fill
-                    sizes="(max-width: 640px) 33vw, (max-width: 900px) 25vw, 22vw"
-                    quality={85}
-                    style={{ objectFit: 'cover' }}
-                  />
+                  <Image src={`${STORAGE}/${item.img}`} alt={`${item.label} photography ${item.location}`} fill sizes="(max-width: 640px) 33vw, (max-width: 900px) 25vw, 22vw" quality={85} style={{ objectFit: 'cover' }} />
                 </div>
                 <div className="port-item-label-bg" />
                 <div className="port-item-label">
@@ -250,7 +204,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* SERVICE PORTFOLIOS */}
+      {/* ── SERVICE PORTFOLIOS ── */}
       <section className="port-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -276,7 +230,7 @@ export default function PortfolioPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <section className="port-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Like what you see?</p>

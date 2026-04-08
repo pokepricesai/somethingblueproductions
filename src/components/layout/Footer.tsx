@@ -64,7 +64,7 @@ export default function Footer() {
         }
       `}</style>
 
-      {/* ─── BOOKING BAND ─── */}
+      {/* ── BOOKING BAND ── */}
       <div style={{ maxWidth: '1200px', margin: '0 auto 3rem', background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.1)', padding: '2rem', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Book instantly online</p>
@@ -83,7 +83,7 @@ export default function Footer() {
 
       <div className="footer-grid">
 
-        {/* Brand + contact */}
+        {/* ── Brand + contact ── */}
         <div>
           <div style={{ fontFamily: "'Stay Humble', cursive", fontSize: '1.5rem', color: '#E8DDB5', marginBottom: '1rem' }}>
             Something Blue
@@ -122,7 +122,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Services */}
+        {/* ── Services ── */}
         <div>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Services</p>
           <Link href="/weddings" className="footer-link">Wedding Photography</Link>
@@ -135,7 +135,7 @@ export default function Footer() {
           <Link href="/commercial/performance" className="footer-link">Performance Photography</Link>
         </div>
 
-        {/* Book & Information */}
+        {/* ── Book & Information ── */}
         <div>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Book Online</p>
           <Link href="/book" className="footer-link" style={{ color: '#A8CAEC' }}>Book a studio session</Link>
@@ -143,15 +143,17 @@ export default function Footer() {
           <Link href="/book" className="footer-link" style={{ color: '#A8CAEC' }}>Redeem a voucher</Link>
           <div style={{ marginTop: '1.5rem' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Information</p>
-            <Link href="/about" className="footer-link">About Samantha</Link>
+            <Link href="/about" className="footer-link">About us</Link>
+            <Link href="/packages" className="footer-link">Packages & pricing</Link>
             <Link href="/portfolio" className="footer-link">Portfolio</Link>
+            <Link href="/testimonials" className="footer-link">Testimonials</Link>
             <Link href="/journal" className="footer-link">Journal</Link>
             <Link href="/locations" className="footer-link">Locations</Link>
             <Link href="/enquire" className="footer-link">Enquire</Link>
           </div>
         </div>
 
-        {/* Studios + locations */}
+        {/* ── Studios + locations ── */}
         <div>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Studios</p>
           <Link href="/studio/papworth-everard" className="footer-link">Papworth Everard — Book online</Link>
@@ -167,7 +169,7 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom bar */}
+      {/* ── Bottom bar ── */}
       <div style={{ maxWidth: '1200px', margin: '0 auto', paddingTop: '2rem', borderTop: '1px solid rgba(245,240,232,0.08)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.25)' }}>
           © {new Date().getFullYear()} Something Blue Productions. All rights reserved.

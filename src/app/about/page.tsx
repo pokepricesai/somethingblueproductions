@@ -39,7 +39,7 @@ export default function AboutPage() {
         }
       `}</style>
 
-      {/* HERO */}
+      {/* ── HERO ── */}
       <section style={{ backgroundColor: '#0d1b2a', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', textAlign: 'center' }}>about-hero.jpg</span>
@@ -57,7 +57,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* MAIN INTRO */}
+      {/* ── MAIN INTRO ── */}
       <section className="a-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="a-intro-grid">
@@ -82,29 +82,29 @@ export default function AboutPage() {
             <div style={{ paddingTop: '0.5rem' }}>
               <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>Who we are</p>
               <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2vw, 1.8rem)', color: '#2C2820', textTransform: 'none', marginBottom: '1.2rem' }}>
-                <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(1.8rem, 2.5vw, 2.2rem)' }}>Samantha Clark.</span>
+                <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(1.8rem, 2.5vw, 2.2rem)' }}>Samantha &amp; Luke.</span>
               </h2>
               <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1rem, 1.5vw, 1.15rem)', lineHeight: 1.9, color: '#2C2820', textTransform: 'none', marginBottom: '1.5rem' }}>
-                Founder, photographer, and the person who will actually show up to your session.
+                Photographer and videographer. Partners behind the lens and in life.
               </p>
               <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1.2rem' }}>
-                Before photography, Samantha spent years in the performing arts — on stage and behind it. That background shapes everything about how she works: the patience to wait for a moment rather than force it, the instinct for what&apos;s about to happen, and a genuine ease with people who feel awkward in front of a camera.
+                Samantha is the founder and photographer behind Something Blue Productions. Before photography, she spent years in the performing arts — on stage and behind it. That background shapes everything about how she works: the patience to wait for a moment rather than force it, the instinct for what&apos;s about to happen, and a genuine ease with people who feel awkward in front of a camera.
               </p>
               <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1.2rem' }}>
                 She moved into photography in 2020 and founded Something Blue Productions shortly after. She&apos;s a mother of two — which means she&apos;s spent a lot of time in exactly the kind of glorious chaos that a family session involves, and she wouldn&apos;t have it any other way.
               </p>
               <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1.2rem' }}>
-                She shoots everything: weddings, newborns, families, maternity, and commercial. The performing arts background also makes her particularly well-suited to performance photography and creative headshots.
+                Luke is a professional videographer and Samantha&apos;s partner. For weddings and larger projects requiring both photography and film, they work as a coordinated team — two people who actually know how to work together, not two photographers doing their own thing.
               </p>
               <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550' }}>
-                For weddings requiring video, Samantha works alongside her partner — a professional videographer — as a coordinated team. When you book both, you get two people who actually work together, not two photographers doing their own thing.
+                Between them, they cover everything: weddings, newborns, families, maternity, commercial. The performing arts background also makes Samantha particularly well-suited to performance photography and creative headshots.
               </p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* VALUES */}
+      {/* ── VALUES ── */}
       <section className="a-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -128,7 +128,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* BEHIND THE SCENES */}
+      {/* ── BEHIND THE SCENES ── */}
       <section className="a-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem' }}>
@@ -152,7 +152,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* STUDIOS */}
+      {/* ── STUDIOS ── */}
       <section className="a-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -161,7 +161,7 @@ export default function AboutPage() {
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2px' }}>
             {[
-              { name: 'Papworth Everard Studio', location: 'Cambridgeshire · CB23', desc: 'Our main studio space. Warm, airy, and accessible from Cambridge, Huntingdon and the A14. The go-to for newborn, family and maternity sessions.', href: '/studio/papworth-everard' },
+              { name: 'Papworth Everard Studio', location: 'Cambridgeshire · CB23', desc: 'Our main studio space. Warm, airy, and accessible from Cambridge, Huntingdon and the A14. The go-to for newborn, family and maternity sessions — and bookable online from £99.', href: '/studio/papworth-everard' },
               { name: 'Waterbeach Studio', location: 'Near Cambridge · CB25', desc: 'Minutes from Cambridge city centre via the A10. Perfect for Cambridge-based families, professionals needing headshots, and local brand work.', href: '/studio/waterbeach' },
             ].map((studio) => (
               <div key={studio.name} style={{ padding: '2rem', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.08)' }}>
@@ -181,7 +181,30 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* WHAT WE SHOOT */}
+      {/* ── PACKAGES NUDGE ── */}
+      <section style={{ backgroundColor: '#1B3A5C', padding: '2rem 1.5rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Pricing</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>
+              Studio sessions from £99 · Bespoke packages from £250
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>
+              All images included — no per-image charges. Ever.
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            <Link href="/packages" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              See all packages →
+            </Link>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: 'transparent', color: 'rgba(232,221,181,0.6)', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', border: '1px solid rgba(232,221,181,0.2)' }}>
+              Book a studio session →
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHAT WE SHOOT ── */}
       <section className="a-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -196,7 +219,7 @@ export default function AboutPage() {
               { title: 'Maternity', sub: 'Studio & outdoor', href: '/maternity', color: '#4a3c50' },
               { title: 'Studio Sessions', sub: 'Papworth & Waterbeach', href: '/studio', color: '#1b3a5c' },
               { title: 'Commercial', sub: 'Brand, headshots & performance', href: '/commercial', color: '#2c2820' },
-              { title: 'Packages', sub: 'Investment & pricing', href: '/packages', color: '#3a3020' },
+              { title: 'Packages & Pricing', sub: 'See what\'s included', href: '/packages', color: '#3a3020' },
               { title: 'Enquire', sub: 'Get in touch', href: '/enquire', color: '#1B3A5C' },
             ].map((s) => (
               <Link key={s.title} href={s.href} style={{ position: 'relative', aspectRatio: '1/1', backgroundColor: s.color, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '1.2rem', textDecoration: 'none', overflow: 'hidden' }}>
@@ -211,7 +234,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* TESTIMONIAL */}
+      {/* ── TESTIMONIAL ── */}
       <section className="a-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
           <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: '4rem', color: '#DDD5C0', lineHeight: 0.8, display: 'block', marginBottom: '1.5rem' }}>&ldquo;</span>
@@ -223,14 +246,14 @@ export default function AboutPage() {
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9E9282' }}>Wedding · Ely</p>
           </div>
           <div style={{ marginTop: '2rem' }}>
-            <Link href="/testimonials" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px' }}>
-              Read more testimonials →
+            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px' }}>
+              See our portfolio →
             </Link>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <section className="a-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Work with us</p>

@@ -45,7 +45,7 @@ export default function WeddingsPage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* ── HERO ── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#5c3d30', minHeight: '90svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -66,7 +66,7 @@ export default function WeddingsPage() {
         </div>
       </section>
 
-      {/* ─── INTRO ─── */}
+      {/* ── INTRO ── */}
       <section className="w-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '720px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>Our approach</p>
@@ -79,7 +79,7 @@ export default function WeddingsPage() {
         </div>
       </section>
 
-      {/* ─── PHOTOGRAPHY / VIDEO SPLIT ─── */}
+      {/* ── PHOTOGRAPHY / VIDEO SPLIT ── */}
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="w-services-grid" style={{ maxWidth: '1300px', margin: '0 auto' }}>
           {[
@@ -97,7 +97,7 @@ export default function WeddingsPage() {
                 <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.2rem, 2.5vw, 1.8rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.7rem' }}>{card.title}</h2>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.7, marginBottom: '1rem', maxWidth: '320px' }}>{card.desc}</p>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.55)', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <span style={{ width: '18px', height: '1px', backgroundColor: 'currentColor', display: 'inline-block' }} />See more
+                  <span style={{ width: '18px', height: '1px', backgroundColor: 'currentColor', display: 'inline-block' }} />Enquire
                 </span>
               </div>
             </Link>
@@ -105,7 +105,7 @@ export default function WeddingsPage() {
         </div>
       </section>
 
-      {/* ─── PORTFOLIO STRIP ─── */}
+      {/* ── PORTFOLIO STRIP ── */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="w-strip-header" style={{ marginBottom: '1.5rem', padding: '0 1.5rem' }}>
           <div>
@@ -132,16 +132,16 @@ export default function WeddingsPage() {
         </div>
       </section>
 
-      {/* ─── ENGAGEMENT & GIFT ─── */}
+      {/* ── ENGAGEMENT & GIFT ── */}
       <section style={{ backgroundColor: '#E8DDB5', padding: '2.5rem 1.5rem' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr', gap: '2px' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', backgroundColor: '#fff', border: '1px solid #DDD5C0' }}>
             <div>
               <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.3rem' }}>Before the wedding</p>
               <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.05rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.3rem' }}>Engagement sessions</p>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', lineHeight: 1.65, maxWidth: '400px' }}>Get comfortable in front of the camera before your wedding day. Engagement sessions also make a wonderful gift — ideal as an engagement present or anniversary shoot.</p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', lineHeight: 1.65, maxWidth: '400px' }}>Get comfortable in front of the camera before your wedding day. Engagement sessions are included in our Full Day and Full Day with Film packages, or available to add to any package.</p>
             </div>
-            <a href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#1B3A5C', color: '#E8DDB5', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', flexShrink: 0 }}>Enquire about an engagement shoot →</a>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#1B3A5C', color: '#E8DDB5', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', flexShrink: 0 }}>Enquire about an engagement shoot →</Link>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem', backgroundColor: '#fff', border: '1px solid #DDD5C0' }}>
             <div>
@@ -149,12 +149,12 @@ export default function WeddingsPage() {
               <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.05rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.3rem' }}>Gift a studio session</p>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', lineHeight: 1.65, maxWidth: '400px' }}>Give the newlyweds a couple portrait session as a wedding gift. They choose their own date — a beautiful, lasting present from £99.</p>
             </div>
-            <a href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', flexShrink: 0 }}>Buy a gift voucher →</a>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', flexShrink: 0 }}>Buy a gift voucher →</Link>
           </div>
         </div>
       </section>
 
-      {/* ─── WHAT TO EXPECT ─── */}
+      {/* ── WHAT TO EXPECT ── */}
       <section className="w-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -177,7 +177,7 @@ export default function WeddingsPage() {
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS ─── */}
+      {/* ── TESTIMONIALS ── */}
       <section className="w-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
@@ -202,7 +202,7 @@ export default function WeddingsPage() {
         </div>
       </section>
 
-      {/* ─── PACKAGES ─── */}
+      {/* ── PACKAGES ── */}
       <section className="w-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -211,13 +211,32 @@ export default function WeddingsPage() {
           </div>
           <div className="w-packages-grid" style={{ marginBottom: '1.5rem' }}>
             {[
-              { name: 'Essential', price: 'From £1,200', includes: ['6 hours coverage', 'One photographer', 'Online gallery', '300+ edited images', 'Print release'], highlight: false },
-              { name: 'Full Day', price: 'From £1,800', includes: ['Full day coverage', 'One photographer', 'Online gallery', '500+ edited images', 'Print release', 'Engagement session'], highlight: true },
-              { name: 'Complete', price: 'From £2,600', includes: ['Full day coverage', 'Two photographers', 'Wedding film', 'Online gallery', '600+ edited images', 'Engagement session'], highlight: false },
+              {
+                name: 'Half Day',
+                price: 'From £600',
+                priceSub: 'Photos only £600 · Photos + Video £800',
+                includes: ['Up to 5 hours coverage', 'Fully edited photos', 'Free engagement shoot', 'Optional cinematic video'],
+                highlight: false,
+              },
+              {
+                name: 'Full Day',
+                price: 'From £900',
+                priceSub: 'Photos only £900 · Photos + Video £1,200',
+                includes: ['Getting ready to first dance', 'Fully edited photos', 'Optional cinematic video', 'Free engagement shoot'],
+                highlight: true,
+              },
+              {
+                name: 'Full Day with Film',
+                price: '£2,000',
+                priceSub: 'Photos + Video included',
+                includes: ['Getting ready to first dance', 'Fully edited photos', '10-minute cinematic film', '1-minute social media cut', 'Free engagement shoot'],
+                highlight: false,
+              },
             ].map((pkg) => (
               <div key={pkg.name} style={{ padding: '2rem 1.8rem', backgroundColor: pkg.highlight ? '#1B3A5C' : 'rgba(255,255,255,0.04)', border: pkg.highlight ? 'none' : '1px solid rgba(168,202,236,0.1)' }}>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: pkg.highlight ? '#A8CAEC' : '#9E9282', marginBottom: '0.5rem' }}>{pkg.name}</p>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.5rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '1.5rem' }}>{pkg.price}</p>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: pkg.highlight ? '#A8CAEC' : '#9E9282', marginBottom: '0.3rem' }}>{pkg.name}</p>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.5rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0' }}>{pkg.price}</p>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.4)', marginBottom: '1.5rem', marginTop: '0.2rem' }}>{pkg.priceSub}</p>
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.8rem' }}>
                   {pkg.includes.map((item) => (
                     <li key={item} style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.6)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -232,13 +251,18 @@ export default function WeddingsPage() {
               </div>
             ))}
           </div>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: 'rgba(245,240,232,0.35)', textAlign: 'center' }}>
-            All packages can be tailored. Get in touch and we&apos;ll put something together that fits your day.
-          </p>
+          <div style={{ textAlign: 'center' }}>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: 'rgba(245,240,232,0.35)', marginBottom: '0.75rem' }}>
+              All packages can be tailored. Get in touch and we&apos;ll put something together that fits your day.
+            </p>
+            <Link href="/packages" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)', paddingBottom: '2px' }}>
+              See full pricing on the packages page →
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ─── FAQs ─── */}
+      {/* ── FAQs ── */}
       <section className="w-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div className="w-faqs">
           <div style={{ marginBottom: '2.5rem' }}>
@@ -250,8 +274,8 @@ export default function WeddingsPage() {
               { q: 'How far in advance should we book?', a: "Most couples book 9–18 months in advance, particularly for summer dates. That said, we do sometimes have availability at shorter notice — it's always worth getting in touch." },
               { q: 'Do you travel outside Cambridgeshire?', a: "Yes. We cover weddings across the UK and occasionally internationally. Travel costs are discussed transparently at enquiry stage — there are no surprises." },
               { q: 'How long until we receive our photos?', a: "Your full edited gallery is delivered within 6 weeks of your wedding. We also send a small selection of highlights within 48 hours so you have something to share straight away." },
-              { q: 'Can we have both photography and video?', a: "Yes — we offer combined packages that work out better value than booking separately, and mean both photographers work as a coordinated team on the day." },
-              { q: 'Do you do engagement or pre-wedding shoots?', a: "Yes, and we recommend them. It's a chance to get comfortable with us before the wedding day — and they often produce some of our favourite images." },
+              { q: 'Can we have both photography and video?', a: "Yes — Samantha shoots photography and Luke shoots video. We offer combined packages that work out better value than booking separately, and mean both work as a coordinated team on the day." },
+              { q: 'Do you do engagement or pre-wedding shoots?', a: "Yes, and we recommend them. It's a chance to get comfortable with us before the wedding day — and they're included free with our Full Day and Full Day with Film packages." },
               { q: 'Are you insured?', a: "Yes. We carry full professional indemnity and public liability insurance. Venue documentation available on request." },
             ].map((faq, i) => (
               <div key={i} style={{ padding: '1.5rem 0', borderBottom: '1px solid #DDD5C0' }}>
@@ -263,7 +287,7 @@ export default function WeddingsPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* ── CTA ── */}
       <section className="w-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Ready to talk?</p>

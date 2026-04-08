@@ -34,6 +34,7 @@ export default function Home() {
         .home-cta-buttons { flex-direction: column; }
         .home-cta-buttons a { text-align: center; }
         .home-portfolio-header { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+        .home-about-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
         .zoom-card { overflow: hidden; }
         .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; }
         .zoom-card:hover .zoom-img { transform: scale(1.025) !important; }
@@ -76,18 +77,19 @@ export default function Home() {
           .home-cta-buttons { flex-direction: row; }
           .home-cta-buttons a { text-align: left; }
           .home-portfolio-header { flex-direction: row; align-items: flex-end; }
+          .home-about-grid { grid-template-columns: 1fr 1fr; gap: 4rem; }
           .mobile-float { display: none; }
         }
       `}</style>
 
-      {/* ─── FLOATING MOBILE CTA ─── */}
+      {/* ── FLOATING MOBILE CTA ── */}
       <div className="mobile-float">
-        <a href="/book" className="mobile-float-book">Book session</a>
-        <a href="/book#gifts" className="mobile-float-gift">Gift voucher</a>
-        <a href="/enquire" className="mobile-float-enquire">Enquire</a>
+        <Link href="/book" className="mobile-float-book">Book session</Link>
+        <Link href="/book" className="mobile-float-gift">Gift voucher</Link>
+        <Link href="/enquire" className="mobile-float-enquire">Enquire</Link>
       </div>
 
-      {/* ─── HERO ─── */}
+      {/* ── HERO ── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#0d1b2a', minHeight: '100svh' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 2, backgroundImage: 'linear-gradient(to bottom, rgba(13,27,42,0.3) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.75) 100%)' }} />
         <Img src={`${STORAGE}/hero-main.jpg`} alt="Something Blue Productions — wedding and family photography Cambridge" priority />
@@ -110,7 +112,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── BRAND STATEMENT ─── */}
+      {/* ── BRAND STATEMENT ── */}
       <section className="home-section-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
           <p className="home-brand-statement" style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, lineHeight: 1.9, color: '#2C2820', letterSpacing: '0.04em', textTransform: 'none' }}>
@@ -122,7 +124,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── SERVICES ─── */}
+      {/* ── SERVICES ── */}
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="home-services-grid" style={{ maxWidth: '1400px', margin: '0 auto' }}>
           {[
@@ -138,8 +140,7 @@ export default function Home() {
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.3rem' }}>{service.label}</p>
                 <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(0.95rem, 1.4vw, 1.25rem)', color: '#ffffff', lineHeight: 1.2, marginBottom: '0.6rem', textTransform: 'none' }}>{service.title}</h2>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.45)', display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-                  <span style={{ width: '14px', height: '1px', backgroundColor: 'currentColor', display: 'inline-block' }} />
-                  Explore
+                  <span style={{ width: '14px', height: '1px', backgroundColor: 'currentColor', display: 'inline-block' }} />Explore
                 </span>
               </div>
             </Link>
@@ -157,7 +158,33 @@ export default function Home() {
         </Link>
       </section>
 
-      {/* ─── STUDIO BOOKING CTA ─── */}
+      {/* ── WHO WE ARE ── */}
+      <section className="home-section-pad" style={{ backgroundColor: '#E8DDB5' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div className="home-about-grid">
+            <div style={{ aspectRatio: '4/3', backgroundColor: '#1b3a5c', position: 'relative', overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>about-samantha-luke.jpg</span>
+              </div>
+              <Image src={`${STORAGE}/about-samantha-luke.jpg`} alt="Samantha and Luke — Something Blue Productions" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
+            </div>
+            <div>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>Behind the camera</p>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', lineHeight: 1.9, color: '#2C2820', textTransform: 'none', marginBottom: '1.2rem' }}>
+                Something Blue is Samantha and Luke — a photographer and videographer based in Cambridgeshire.
+              </p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1.8rem' }}>
+                Samantha shoots photography across weddings, families, newborn and maternity. Luke covers videography and commercial work. Together they run two studio spaces — one bookable online from £99, one available for larger projects.
+              </p>
+              <Link href="/about" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px' }}>
+                Meet Samantha &amp; Luke →
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── STUDIO BOOKING CTA ── */}
       <section style={{ backgroundColor: '#1B3A5C', padding: '0' }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr', maxWidth: '1400px', margin: '0 auto' }}>
           <div style={{ padding: '3rem 2rem', borderRight: '1px solid rgba(168,202,236,0.1)' }}>
@@ -186,7 +213,7 @@ export default function Home() {
             { label: 'Family Session', desc: '60 min · 3+ people · 10–20 images', price: '£199' },
             { label: 'Gift Vouchers', desc: 'Perfect for birthdays, baby showers & Christmas', price: 'From £99', href: '/book' },
           ].map((s, i) => (
-            <Link key={i} href={s.href || '/book'} style={{ flex: '1', minWidth: '200px', padding: '1.5rem 2rem', borderRight: '1px solid rgba(168,202,236,0.08)', textDecoration: 'none', display: 'block', transition: 'background 0.2s' }}>
+            <Link key={i} href={s.href || '/book'} style={{ flex: '1', minWidth: '200px', padding: '1.5rem 2rem', borderRight: '1px solid rgba(168,202,236,0.08)', textDecoration: 'none', display: 'block' }}>
               <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.7rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.3rem' }}>{s.label}</p>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(232,221,181,0.4)', marginBottom: '0.5rem', lineHeight: 1.5 }}>{s.desc}</p>
               <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#A8CAEC', fontWeight: 300 }}>{s.price}</p>
@@ -195,7 +222,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── GIFT VOUCHERS ─── */}
+      {/* ── GIFT VOUCHERS ── */}
       <section className="home-section-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr', gap: '2.5rem', alignItems: 'center' }}>
           <div>
@@ -239,7 +266,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── PORTFOLIO STRIP ─── */}
+      {/* ── PORTFOLIO STRIP ── */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="home-portfolio-header" style={{ display: 'flex', marginBottom: '1.5rem', padding: '3rem 1.5rem 0' }}>
           <div>
@@ -264,7 +291,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── STUDIOS ─── */}
+      {/* ── STUDIOS ── */}
       <section className="home-section-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
           <div className="home-studios-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
@@ -278,26 +305,8 @@ export default function Home() {
           </div>
           <div className="home-studios-grid">
             {[
-              {
-                tag: 'Book online · From £99',
-                name: 'Papworth Everard',
-                desc: 'Our bookable studio for couple, maternity, newborn, family and headshot sessions. Choose your date and pay instantly online.',
-                href: '/studio/papworth-everard',
-                color: '#1b3a5c',
-                img: 'studio-papworth-hero.jpg',
-                cta: 'Book a session →',
-                ctaHref: '/book',
-              },
-              {
-                tag: 'Enquire · Larger projects',
-                name: 'Waterbeach',
-                desc: 'Available for extended shoots, multiple outfits, outdoor combinations, video and bespoke commercial projects. Please get in touch to discuss.',
-                href: '/studio/waterbeach',
-                color: '#162d4a',
-                img: 'studio-waterbeach-hero.jpg',
-                cta: 'Enquire about Waterbeach →',
-                ctaHref: '/enquire',
-              },
+              { tag: 'Book online · From £99', name: 'Papworth Everard', desc: 'Our bookable studio for couple, maternity, newborn, family and headshot sessions. Choose your date and pay instantly online.', href: '/studio/papworth-everard', color: '#1b3a5c', img: 'studio-papworth-hero.jpg', cta: 'Book a session →', ctaHref: '/book' },
+              { tag: 'Enquire · Larger projects', name: 'Waterbeach', desc: 'Available for extended shoots, multiple outfits, outdoor combinations, video and bespoke commercial projects. Please get in touch to discuss.', href: '/studio/waterbeach', color: '#162d4a', img: 'studio-waterbeach-hero.jpg', cta: 'Enquire about Waterbeach →', ctaHref: '/enquire' },
             ].map((studio) => (
               <div key={studio.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '16/9', backgroundColor: studio.color }}>
                 <Img src={`${STORAGE}/${studio.img}`} alt={`${studio.name} photography studio`} zoom />
@@ -316,7 +325,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS ─── */}
+      {/* ── TESTIMONIALS ── */}
       <section className="home-section-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
@@ -342,7 +351,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── PROCESS ─── */}
+      {/* ── PROCESS ── */}
       <section className="home-section-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem' }}>
@@ -354,7 +363,7 @@ export default function Home() {
               { num: '01', title: 'Book or enquire', desc: 'Studio sessions can be booked and paid for online in minutes. For weddings, outdoor shoots or larger projects, send us a message.' },
               { num: '02', title: 'Short conversation', desc: "We'll talk through what you want and make sure everything feels right before anything is confirmed." },
               { num: '03', title: 'The session', desc: "Relaxed and led by you. Outdoors, in studio, at a venue — wherever feels right. No awkward direction." },
-              { num: '04', title: 'Your gallery', desc: "Edited, delivered, and yours. A private online gallery and your choice of print products and digital files." },
+              { num: '04', title: 'Your gallery', desc: "Delivered within 3 weeks for studio sessions, 6 weeks for weddings. All images included — yours to download and keep." },
             ].map((step) => (
               <div key={step.num} style={{ padding: '2rem 1.5rem', backgroundColor: '#E8DDB5' }}>
                 <div style={{ fontFamily: "'Stay Humble', cursive", fontSize: '2.8rem', color: '#DDD5C0', lineHeight: 1, marginBottom: '1rem' }}>{step.num}</div>
@@ -374,7 +383,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── JOURNAL ─── */}
+      {/* ── JOURNAL ── */}
       <section className="home-section-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div className="home-portfolio-header" style={{ display: 'flex', marginBottom: '2rem' }}>
@@ -403,7 +412,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ─── FINAL CTA ─── */}
+      {/* ── FINAL CTA ── */}
       <section className="home-section-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-40%', left: '50%', transform: 'translateX(-50%)', width: '600px', height: '600px', borderRadius: '50%', background: 'radial-gradient(ellipse, rgba(27,58,92,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />
         <div style={{ maxWidth: '540px', margin: '0 auto', position: 'relative', zIndex: 1 }}>

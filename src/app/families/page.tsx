@@ -51,7 +51,7 @@ export default function FamiliesPage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* ── HERO ── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#3a4828', minHeight: '90svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.15) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.65) 100%)', zIndex: 1 }} />
         <img src={`${STORAGE}/families-hero.jpg`} alt="Family photography Cambridgeshire" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
@@ -70,12 +70,12 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── STUDIO BOOKING BAND ─── */}
+      {/* ── STUDIO BOOKING BAND ── */}
       <section style={{ backgroundColor: '#1B3A5C', padding: '2rem 1.5rem' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Book instantly · Papworth Everard Studio</p>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>Family Session — £199 · 60 min · 10–20 images</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>Family Session — £199 · 60 min · 15–20 images</p>
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>All images included. No per-image charges. Choose your date and pay securely online. Also makes a wonderful birthday or anniversary gift.</p>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
@@ -85,7 +85,7 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── INTRO ─── */}
+      {/* ── INTRO ── */}
       <section className="f-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="f-intro-grid">
@@ -105,8 +105,26 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── OUTDOOR / STUDIO SPLIT ─── */}
-      <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
+      {/* ── PACKAGES NUDGE ── */}
+      <section style={{ backgroundColor: '#1B3A5C', padding: '2rem 1.5rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Pricing</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>
+              Studio from £199 · Bespoke outdoor & video packages from £250
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>
+              See all family packages — including outdoor sessions, event coverage and combined photo & video.
+            </p>
+          </div>
+          <Link href="/packages" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', whiteSpace: 'nowrap' }}>
+            See all packages →
+          </Link>
+        </div>
+      </section>
+
+      {/* ── OUTDOOR / STUDIO SPLIT ── */}
+      <section style={{ padding: '3rem 1.5rem', backgroundColor: '#F5F0E8' }}>
         <div className="f-split-grid" style={{ maxWidth: '1300px', margin: '0 auto' }}>
           {[
             { color: '#3a4828', img: 'families-outdoor-card.jpg', label: 'Outdoors · Enquire', title: 'Outdoor Sessions', desc: 'Parks, meadows, riversides, woodland. We know the best locations across Cambridgeshire — or we can shoot somewhere that means something to you.', href: '/enquire', cta: 'Enquire →' },
@@ -126,7 +144,7 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── PORTFOLIO STRIP ─── */}
+      {/* ── PORTFOLIO STRIP ── */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="f-strip-header" style={{ marginBottom: '1.5rem', padding: '0 1.5rem' }}>
           <div>
@@ -150,7 +168,7 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── GIFT VOUCHER CALLOUT ─── */}
+      {/* ── GIFT VOUCHER CALLOUT ── */}
       <section style={{ backgroundColor: '#0d1b2a', padding: '2.5rem 1.5rem' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '2rem', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
@@ -164,7 +182,7 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── LOCATIONS ─── */}
+      {/* ── LOCATIONS ── */}
       <section className="f-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -192,7 +210,7 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── WHAT TO EXPECT ─── */}
+      {/* ── WHAT TO EXPECT ── */}
       <section className="f-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -202,9 +220,9 @@ export default function FamiliesPage() {
           <div className="f-process-grid" style={{ gap: '2px' }}>
             {[
               { num: '01', title: 'We talk first', desc: "We have a quick chat before your session — about your family, your kids' ages, what you want from the day, and which location or studio suits you best." },
-              { num: '02', title: 'The session', desc: "Sessions last 1.5–2 hours. We arrive, get everyone comfortable, and just start — no warm-up time needed. Kids are usually our best assistants." },
-              { num: '03', title: 'Your gallery', desc: "Your edited gallery is ready within 3 weeks. You choose your favourites for prints, canvases or digital files — we guide you through the options." },
-              { num: '04', title: 'Prints & products', desc: "We offer a full range of wall art, albums and digital collections. Nothing is pressured — you take your time and choose what feels right." },
+              { num: '02', title: 'The session', desc: "Sessions last 1–2 hours. We arrive, get everyone comfortable, and just start — no warm-up time needed. Kids are usually our best assistants." },
+              { num: '03', title: 'Your gallery', desc: "Your edited gallery is ready within 3 weeks. All images are included — no selecting a limited set, no per-image charges. Every edited image is yours." },
+              { num: '04', title: 'Style guide', desc: "We send a full style guide with your booking confirmation so you arrive prepared — what to wear, what to bring, and how to get the most from your session." },
             ].map((step) => (
               <div key={step.num} style={{ padding: '2rem 1.5rem', backgroundColor: '#F5F0E8' }}>
                 <div style={{ fontFamily: "'Stay Humble', cursive", fontSize: '2.8rem', color: '#DDD5C0', lineHeight: 1, marginBottom: '1rem' }}>{step.num}</div>
@@ -216,7 +234,7 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── TESTIMONIALS ─── */}
+      {/* ── TESTIMONIALS ── */}
       <section className="f-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
@@ -242,7 +260,7 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── FAQs ─── */}
+      {/* ── FAQs ── */}
       <section className="f-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div className="f-faqs">
           <div style={{ marginBottom: '2.5rem' }}>
@@ -255,8 +273,8 @@ export default function FamiliesPage() {
               { q: 'What age works best for family sessions?', a: "All ages work well. Newborns are a special case (see our newborn page). For family sessions with young children, 18 months+ is generally easiest, but we've successfully photographed every age." },
               { q: 'Indoor or outdoor — which is better?', a: "Both have their strengths. Outdoor sessions have more space and natural movement. Studio sessions give beautiful controlled light and are weather-proof. Our Papworth Everard studio can be booked online from £199 for 3+ people." },
               { q: 'How long does a session take?', a: "Studio family sessions are 60 minutes. Outdoor sessions typically run 90 minutes to 2 hours. We build in time for a slow start — no one needs to be ready the moment we arrive." },
-              { q: 'What should we wear?', a: "We send all booked clients a full styling guide. Generally: coordinate rather than match, avoid large logos, and dress for comfort. Earth tones and blues work particularly well with our editing style." },
-              { q: 'When will we get our photos?', a: "Your full edited gallery is delivered within 3 weeks of your session. We'll send a sneak peek of a few images within 48 hours." },
+              { q: 'What should we wear?', a: "We send all booked clients a full styling guide with their confirmation. Generally: coordinate rather than match, avoid large logos, and dress for comfort. Earth tones and blues work particularly well with our editing style." },
+              { q: 'When will we get our photos?', a: "Your full edited gallery is delivered within 3 weeks of your session. All images included — no choosing a limited set, no per-image charges." },
             ].map((faq, i) => (
               <div key={i} style={{ padding: '1.5rem 0', borderBottom: '1px solid #DDD5C0' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.6rem' }}>{faq.q}</p>
@@ -267,7 +285,7 @@ export default function FamiliesPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* ── CTA ── */}
       <section className="f-pad" style={{ backgroundColor: '#0d1b2a', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Ready?</p>

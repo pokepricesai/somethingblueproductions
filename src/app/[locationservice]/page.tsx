@@ -29,6 +29,25 @@ const serviceLinks: Record<string, string> = {
   commercial: '/commercial',
 };
 
+const portfolioLinks: Record<string, string> = {
+  family: '/portfolio',
+  newborn: '/portfolio',
+  wedding: '/portfolio',
+  commercial: '/portfolio',
+};
+
+// Services where a studio session can be booked online
+const hasStudioBooking: Record<string, boolean> = {
+  family: true,
+  newborn: false, // newborn is bespoke/enquire
+  wedding: false,
+  commercial: false,
+};
+
+const studioBookingLabel: Record<string, string> = {
+  family: 'Family Studio Session — from £99 · Book instantly online',
+};
+
 type FAQ = { q: string; a: string };
 
 export async function generateMetadata({ params }: { params: Promise<{ locationservice: string }> }): Promise<Metadata> {
@@ -97,6 +116,8 @@ export default async function LocationServicePage({ params }: { params: Promise<
   const serviceLabel = serviceLabels[page.service as string] || 'Photography';
   const heroColor = serviceColors[page.service as string] || '#2c2820';
   const serviceLink = serviceLinks[page.service as string] || '/';
+  const portfolioLink = portfolioLinks[page.service as string] || '/portfolio';
+  const canBookOnline = hasStudioBooking[page.service as string] || false;
 
   const bodyParagraphs: string[] = typeof page.body === 'string'
     ? page.body.split('\n\n').filter((p: string) => p.trim().length > 0)
@@ -187,6 +208,37 @@ export default async function LocationServicePage({ params }: { params: Promise<
               {para}
             </p>
           ))}
+        </div>
+      </section>
+
+      {/* ─── PRICING NUDGE ─── */}
+      <section style={{ backgroundColor: '#1B3A5C', padding: '2rem 1.5rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>
+              {canBookOnline ? 'Book instantly · Papworth Everard Studio' : 'Investment'}
+            </p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>
+              {canBookOnline
+                ? studioBookingLabel[page.service as string]
+                : `${serviceLabel} — bespoke packages available`}
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>
+              {canBookOnline
+                ? 'Bespoke outdoor and extended family sessions also available — enquire for a tailored quote.'
+                : 'Every session is tailored to you. See our full pricing on the packages page.'}
+            </p>
+          </div>
+          <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+            {canBookOnline && (
+              <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>
+                Book now →
+              </Link>
+            )}
+            <Link href="/packages" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              See all packages →
+            </Link>
+          </div>
         </div>
       </section>
 
@@ -293,8 +345,8 @@ export default async function LocationServicePage({ params }: { params: Promise<
             <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
               Start your enquiry
             </Link>
-            <Link href={serviceLink} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              About {serviceLabel}
+            <Link href={portfolioLink} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              See our work
             </Link>
           </div>
         </div>

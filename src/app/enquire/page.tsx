@@ -57,6 +57,7 @@ export default function EnquirePage() {
         body: JSON.stringify(formData),
       });
 
+      // TODO: create /thank-you page, or reuse /book/success
       window.location.href = '/thank-you';
     } catch {
       setStatus('error');
@@ -114,7 +115,7 @@ export default function EnquirePage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* ── HERO ── */}
       <section style={{ backgroundColor: '#0d1b2a' }}>
         <div className="eq-hero" style={{ maxWidth: '700px' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Get in touch</p>
@@ -128,7 +129,7 @@ export default function EnquirePage() {
         </div>
       </section>
 
-      {/* ─── CONTENT ─── */}
+      {/* ── CONTENT ── */}
       <section className="eq-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div className="eq-grid">
 
@@ -236,7 +237,7 @@ export default function EnquirePage() {
                 <label className="eq-label">Preferred date</label>
                 <input className="eq-input" type="text" value={formData.date}
                   onChange={e => setFormData({ ...formData, date: e.target.value })}
-                  placeholder="e.g. June 2025, or flexible" />
+                  placeholder="e.g. Summer 2026, or flexible" />
               </div>
 
               <div className="eq-field">
@@ -262,6 +263,7 @@ export default function EnquirePage() {
               </p>
             </form>
           </div>
+
         </div>
       </section>
     </>

@@ -114,7 +114,6 @@ export default function TestimonialsPage() {
         .t-pad { padding: 3rem 1.5rem; }
         .t-hero { padding: 8rem 1.5rem 4rem; }
         .t-grid { display: grid; grid-template-columns: 1fr; gap: 2px; }
-        .t-filter { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
         .t-cta-buttons { display: flex; flex-direction: column; gap: 0.75rem; }
         .t-cta-buttons a { text-align: center; }
 
@@ -133,12 +132,10 @@ export default function TestimonialsPage() {
         }
       `}</style>
 
-      {/* ─── HERO ─── */}
+      {/* ── HERO ── */}
       <section style={{ backgroundColor: '#0d1b2a' }}>
         <div className="t-hero" style={{ maxWidth: '700px' }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>
-            From our clients
-          </p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>From our clients</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4rem)', lineHeight: 1.1, color: '#E8DDB5', textTransform: 'none', marginBottom: '1.2rem' }}>
             What our clients{' '}
             <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)' }}>say.</span>
@@ -149,7 +146,7 @@ export default function TestimonialsPage() {
         </div>
       </section>
 
-      {/* ─── STATS ─── */}
+      {/* ── STATS ── */}
       <section className="t-pad" style={{ backgroundColor: '#1B3A5C' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '2px' }}>
           {[
@@ -166,7 +163,7 @@ export default function TestimonialsPage() {
         </div>
       </section>
 
-      {/* ─── WEDDINGS ─── */}
+      {/* ── WEDDINGS ── */}
       <section className="t-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem' }}>
@@ -188,7 +185,7 @@ export default function TestimonialsPage() {
         </div>
       </section>
 
-      {/* ─── FAMILIES ─── */}
+      {/* ── FAMILIES ── */}
       <section className="t-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem' }}>
@@ -210,7 +207,7 @@ export default function TestimonialsPage() {
         </div>
       </section>
 
-      {/* ─── NEWBORN ─── */}
+      {/* ── NEWBORN & MATERNITY ── */}
       <section className="t-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem' }}>
@@ -232,7 +229,7 @@ export default function TestimonialsPage() {
         </div>
       </section>
 
-      {/* ─── COMMERCIAL & STUDIO ─── */}
+      {/* ── COMMERCIAL & STUDIO ── */}
       <section className="t-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2rem' }}>
@@ -254,7 +251,7 @@ export default function TestimonialsPage() {
         </div>
       </section>
 
-      {/* ─── CTA ─── */}
+      {/* ── CTA ── */}
       <section className="t-pad" style={{ backgroundColor: '#F5F0E8', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Ready to get started?</p>
@@ -262,14 +259,14 @@ export default function TestimonialsPage() {
             Let&apos;s make something worth keeping
           </h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#9E9282', lineHeight: 1.8, marginBottom: '2rem' }}>
-            Get in touch and tell us what you&apos;re looking for. We&apos;ll come back to you within 24 hours.
+            Studio sessions from £99 — book instantly online. Or get in touch and we&apos;ll come back to you within 24 hours.
           </p>
           <div className="t-cta-buttons">
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              Start your enquiry
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#1B3A5C', color: '#F5F0E8', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              Book a studio session
             </Link>
-            <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
-              See the work
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(27,58,92,0.3)', color: '#1B3A5C', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>
+              Start your enquiry
             </Link>
           </div>
         </div>

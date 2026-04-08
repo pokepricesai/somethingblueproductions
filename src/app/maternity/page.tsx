@@ -46,7 +46,7 @@ export default function MaternityPage() {
         }
       `}</style>
 
-      {/* HERO */}
+      {/* ── HERO ── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#4a3c50', minHeight: '90svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.15) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.65) 100%)', zIndex: 1 }} />
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -67,7 +67,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* INTRO */}
+      {/* ── INTRO ── */}
       <section className="m-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="m-intro-grid">
@@ -93,12 +93,12 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* STUDIO / OUTDOOR SPLIT */}
+      {/* ── STUDIO / OUTDOOR SPLIT ── */}
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="m-split-grid" style={{ maxWidth: '1300px', margin: '0 auto' }}>
           {[
             { color: '#1b3a5c', img: 'maternity-studio-card.jpg', label: 'Studio', title: 'Studio Maternity', desc: 'Beautiful controlled light, warm temperature, and complete privacy. Our studios in Papworth Everard and Waterbeach are set up specifically to flatter and celebrate.' },
-            { color: '#3a4828', img: 'maternity-outdoor-card.jpg', label: 'Outdoors', title: 'Outdoor Maternity', desc: 'Cambridgeshire has beautiful natural settings for maternity sessions — meadows, woodland, riverside. Golden hour outdoor sessions have a warmth that\'s hard to replicate indoors.' },
+            { color: '#3a4828', img: 'maternity-outdoor-card.jpg', label: 'Outdoors', title: 'Outdoor Maternity', desc: "Cambridgeshire has beautiful natural settings for maternity sessions — meadows, woodland, riverside. Golden hour outdoor sessions have a warmth that's hard to replicate indoors." },
           ].map((card) => (
             <div key={card.title} style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: card.color, overflow: 'hidden' }}>
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
@@ -115,7 +115,8 @@ export default function MaternityPage() {
           ))}
         </div>
       </section>
-      {/* ─── BOOKING BAND ─── */}
+
+      {/* ── BOOKING BAND ── */}
       <section style={{ backgroundColor: '#1B3A5C', padding: '2rem 1.5rem' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
@@ -124,13 +125,13 @@ export default function MaternityPage() {
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>A maternity session makes a beautiful baby shower gift — someone else can book and pay, the mum-to-be chooses when.</p>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <a href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire now →</a>
-            <a href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Buy as a baby shower gift →</a>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire now →</Link>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Buy as a baby shower gift →</Link>
           </div>
         </div>
       </section>
 
-      {/* GALLERY STRIP */}
+      {/* ── GALLERY STRIP ── */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="m-gallery-strip-header" style={{ marginBottom: '1.5rem', padding: '0 1.5rem' }}>
           <div>
@@ -157,7 +158,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* TIMING GUIDE */}
+      {/* ── TIMING GUIDE ── */}
       <section className="m-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -184,7 +185,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* WHAT TO EXPECT */}
+      {/* ── WHAT TO EXPECT ── */}
       <section className="m-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -195,7 +196,7 @@ export default function MaternityPage() {
             {[
               { num: '01', title: 'We plan together', desc: "Before your session we talk through what you want — studio or outdoor, the mood you're after, whether to include a partner or children, and what to wear. We send a styling guide to all clients." },
               { num: '02', title: 'The session', desc: "Sessions run 1.5–2 hours and are entirely at your pace. We guide you gently through different positions and setups — nothing uncomfortable, nothing forced. Most clients tell us it felt much more relaxed than they expected." },
-              { num: '03', title: 'Your gallery', desc: "Delivered within 3 weeks. A carefully edited set of images ready to print, share, or frame. We recommend having a selection printed — these images are for your walls, not just your phone." },
+              { num: '03', title: 'Your gallery', desc: "Delivered within 3 weeks. A carefully edited set of images, all included — no per-image charges. Every edited image is yours to download, share and keep." },
             ].map((step) => (
               <div key={step.num} style={{ padding: '2rem 1.5rem', backgroundColor: '#F5F0E8' }}>
                 <div style={{ fontFamily: "'Stay Humble', cursive", fontSize: '2.8rem', color: '#DDD5C0', lineHeight: 1, marginBottom: '1rem' }}>{step.num}</div>
@@ -207,7 +208,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* ── TESTIMONIALS ── */}
       <section className="m-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
@@ -232,7 +233,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* PACKAGES */}
+      {/* ── PACKAGES ── */}
       <section className="m-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -262,16 +263,23 @@ export default function MaternityPage() {
               </div>
             ))}
           </div>
-          <div style={{ padding: '1.5rem 2rem', backgroundColor: '#E8DDB5', borderLeft: '3px solid #1B3A5C' }}>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.3rem' }}>Combined maternity & newborn packages available</p>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#5c5550', lineHeight: 1.65 }}>
-              Book both sessions together and save. Many families choose to document the whole journey — from pregnancy through to those first precious days. Ask us about combined pricing when you enquire.
-            </p>
+
+          {/* Combined package callout */}
+          <div style={{ padding: '1.5rem 2rem', backgroundColor: '#E8DDB5', borderLeft: '3px solid #1B3A5C', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+            <div>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.72rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.3rem' }}>Combined maternity & newborn packages available</p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#5c5550', lineHeight: 1.65 }}>
+                Book both sessions together and save. Many families choose to document the whole journey — from pregnancy through to those first precious days.
+              </p>
+            </div>
+            <Link href="/packages" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px', whiteSpace: 'nowrap' }}>
+              See Bump to Baby packages →
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* FAQs */}
+      {/* ── FAQs ── */}
       <section className="m-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div className="m-faqs">
           <div style={{ marginBottom: '2.5rem' }}>
@@ -285,7 +293,7 @@ export default function MaternityPage() {
               { q: 'Can my partner and children be included?', a: "Absolutely. We always recommend including your partner if you have one — couple portraits during pregnancy are beautiful and often under-appreciated. Children can be included for part of the session if they are old enough to cooperate briefly." },
               { q: 'Studio or outdoor — which do you recommend?', a: "Both produce stunning results. Studio gives you more control and is weather-proof. Outdoor has a natural, seasonal feel that many clients love. If you're unsure, we're happy to discuss what would suit you best." },
               { q: 'Do you offer maternity and newborn together?', a: "Yes — and we recommend it. Booking both together saves money, and having the same photographer for both sessions creates a beautifully consistent set of images from this whole chapter of your family's life." },
-              { q: 'How will I receive my images?', a: "Via a private online gallery, usually within 3 weeks. From there you can download your files, share with family, and order prints directly if you wish. We're also happy to guide you through print options." },
+              { q: 'How will I receive my images?', a: "Via a private online gallery, usually within 3 weeks. All edited images are included — no per-image charges, no selecting a limited set. Every edited image is yours to download and keep." },
             ].map((faq, i) => (
               <div key={i} style={{ padding: '1.5rem 0', borderBottom: '1px solid #DDD5C0' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.6rem' }}>{faq.q}</p>
@@ -296,7 +304,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* NEWBORN CROSSLINK */}
+      {/* ── NEWBORN CROSSLINK ── */}
       <section className="m-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr', gap: '2rem', alignItems: 'center' }}>
           <Link href="/newborn" className="zoom-card" style={{ display: 'block', aspectRatio: '16/7', backgroundColor: '#4a3830', textDecoration: 'none', position: 'relative' }}>
@@ -318,7 +326,7 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <section className="m-pad" style={{ backgroundColor: '#F5F0E8', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Book your session</p>

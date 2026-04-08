@@ -48,7 +48,7 @@ export default function NewbornPage() {
         }
       `}</style>
 
-      {/* HERO */}
+      {/* ── HERO ── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#4a3830', minHeight: '90svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.15) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.65) 100%)', zIndex: 1 }} />
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -69,7 +69,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* INTRO */}
+      {/* ── INTRO ── */}
       <section className="n-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="n-intro-grid">
@@ -94,8 +94,8 @@ export default function NewbornPage() {
           </div>
         </div>
       </section>
-      
-      {/* ─── BOOKING BAND ─── */}
+
+      {/* ── BOOKING BAND ── */}
       <section style={{ backgroundColor: '#1B3A5C', padding: '2rem 1.5rem' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
@@ -104,13 +104,13 @@ export default function NewbornPage() {
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>The perfect baby shower gift — buy a voucher and the new parents choose their own date. Valid 12 months.</p>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <a href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire about a session →</a>
-            <a href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Gift a newborn session →</a>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire about a session →</Link>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block' }}>Gift a newborn session →</Link>
           </div>
         </div>
       </section>
 
-      {/* TRUST SIGNALS */}
+      {/* ── TRUST SIGNALS ── */}
       <section className="n-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2px' }}>
@@ -130,7 +130,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* SESSION OPTIONS */}
+      {/* ── SESSION OPTIONS ── */}
       <section className="n-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -163,7 +163,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* GALLERY STRIP */}
+      {/* ── GALLERY STRIP ── */}
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="n-strip-header" style={{ marginBottom: '1.5rem', padding: '0 1.5rem' }}>
           <div>
@@ -191,7 +191,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* WHAT TO EXPECT */}
+      {/* ── WHAT TO EXPECT ── */}
       <section className="n-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -203,7 +203,7 @@ export default function NewbornPage() {
               { num: '01', title: 'Arrive and settle', desc: "Come when your baby is fed and sleepy if possible, but don't stress if the timing isn't perfect. We have everything you need and we're in no rush." },
               { num: '02', title: 'Baby portraits', desc: "We capture your baby wrapped, in props, and in natural positions. Nothing forced — we follow what your baby is comfortable with throughout." },
               { num: '03', title: 'Family portraits', desc: "Once we have the baby portraits, we bring you in for family images. Parent and baby, siblings, the whole family together — these are always our most requested." },
-              { num: '04', title: 'Your gallery', desc: "Delivered within 3 weeks. A curated set of edited images including baby portraits, detail shots, and family images — all ready to print and share." },
+              { num: '04', title: 'Your gallery', desc: "Delivered within 3 weeks. A curated set of edited images — baby portraits, detail shots, and family images. All images included, ready to download and keep." },
             ].map((step) => (
               <div key={step.num} style={{ padding: '2rem 1.5rem', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.08)' }}>
                 <div style={{ fontFamily: "'Stay Humble', cursive", fontSize: '2.8rem', color: 'rgba(168,202,236,0.2)', lineHeight: 1, marginBottom: '1rem' }}>{step.num}</div>
@@ -215,7 +215,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* ── TESTIMONIALS ── */}
       <section className="n-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
@@ -240,7 +240,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* PACKAGES */}
+      {/* ── PACKAGES ── */}
       <section className="n-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
@@ -276,7 +276,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* FAQs */}
+      {/* ── FAQs ── */}
       <section className="n-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div className="n-faqs">
           <div style={{ marginBottom: '2.5rem' }}>
@@ -291,18 +291,23 @@ export default function NewbornPage() {
               { q: 'Is it safe?', a: "Safety is our absolute first priority. We never place babies in positions they're not comfortable with. All posing is gentle, natural, and checked throughout. We have experience with babies of all sizes and temperaments." },
               { q: 'What should we bring?', a: "Just yourselves and your baby. We provide all props, wraps, and accessories. If you have a special item you'd like to include — a toy, a blanket, a letter — you're very welcome to bring it." },
               { q: 'Can siblings be included?', a: "Absolutely — and we recommend it. Sibling introduction portraits are some of the most treasured images from a newborn session. We allocate time for these in all our packages." },
-              { q: 'Do you offer combined newborn and maternity packages?', a: "Yes. Booking both together saves money and means we already know you before your baby arrives. Ask about our combined packages when you enquire." },
+              { q: 'Do you offer combined newborn and maternity packages?', a: "Yes. Booking both together saves money and means we already know you before your baby arrives. See our Bump to Baby packages for full details." },
             ].map((faq, i) => (
               <div key={i} style={{ padding: '1.5rem 0', borderBottom: '1px solid #DDD5C0' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.6rem' }}>{faq.q}</p>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', lineHeight: 1.75 }}>{faq.a}</p>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', lineHeight: 1.75 }}>
+                  {faq.q === 'Do you offer combined newborn and maternity packages?' ? (
+                    <>Yes. Booking both together saves money and means we already know you before your baby arrives.{' '}
+                    <Link href="/packages" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)' }}>See our Bump to Baby packages →</Link></>
+                  ) : faq.a}
+                </p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* MATERNITY CROSSLINK */}
+      {/* ── MATERNITY CROSSLINK ── */}
       <section className="n-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr', gap: '2rem', alignItems: 'center' }}>
           <Link href="/maternity" className="zoom-card" style={{ display: 'block', aspectRatio: '16/7', backgroundColor: '#4a3830', textDecoration: 'none', position: 'relative' }}>
@@ -324,7 +329,7 @@ export default function NewbornPage() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* ── CTA ── */}
       <section className="n-pad" style={{ backgroundColor: '#F5F0E8', textAlign: 'center' }}>
         <div style={{ maxWidth: '520px', margin: '0 auto' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Book your session</p>
