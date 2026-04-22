@@ -166,13 +166,6 @@ export default function BookPage() {
       });
       if (dbError) throw dbError;
 
-      // 2. Mark voucher as used
-      const { error: voucherError } = await supabase
-        .from('vouchers')
-        .update({ status: 'used', redeemed_at: new Date().toISOString() })
-        .eq('id', redeemedVoucher.id);
-      if (voucherError) throw voucherError;
-
       // 3. Send confirmation emails
       await fetch('/api/send-redeem-confirmation', {
         method: 'POST',
