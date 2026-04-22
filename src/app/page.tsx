@@ -35,11 +35,11 @@ export default function Home() {
         .home-cta-buttons a { text-align: center; }
         .home-portfolio-header { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
         .home-about-grid { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: center; }
+        .home-gifts-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; align-items: start; }
         .zoom-card { overflow: hidden; }
         .zoom-img { transition: transform 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important; }
         .zoom-card:hover .zoom-img { transform: scale(1.025) !important; }
 
-        /* Floating mobile CTA */
         .mobile-float {
           position: fixed; bottom: 0; left: 0; right: 0; z-index: 50;
           display: flex; gap: 1px;
@@ -78,6 +78,7 @@ export default function Home() {
           .home-cta-buttons a { text-align: left; }
           .home-portfolio-header { flex-direction: row; align-items: flex-end; }
           .home-about-grid { grid-template-columns: 1fr 1fr; gap: 4rem; }
+          .home-gifts-grid { grid-template-columns: 1fr 1fr; }
           .mobile-float { display: none; }
         }
       `}</style>
@@ -185,35 +186,31 @@ export default function Home() {
       </section>
 
       {/* ── STUDIO BOOKING CTA ── */}
-      <section style={{ backgroundColor: '#1B3A5C', padding: '0' }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr', maxWidth: '1400px', margin: '0 auto' }}>
-          <div style={{ padding: '3rem 2rem', borderRight: '1px solid rgba(168,202,236,0.1)' }}>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.75rem' }}>Book instantly online</p>
-            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.75rem', lineHeight: 1.2 }}>
-              Studio sessions from <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(1.6rem, 3vw, 2.2rem)' }}>£99.</span>
-            </h2>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(232,221,181,0.55)', lineHeight: 1.7, marginBottom: '1.5rem', maxWidth: '420px' }}>
-              Couple, maternity, newborn, family and headshot sessions at our Papworth Everard studio. All images included — we never charge per image. Pick your date and pay securely online.
-            </p>
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-              <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
-                Book a session →
-              </Link>
-              <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(232,221,181,0.25)', color: 'rgba(232,221,181,0.6)', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
-                About the studio
-              </Link>
-            </div>
+      <section style={{ backgroundColor: '#1B3A5C' }}>
+        <div style={{ maxWidth: '1400px', margin: '0 auto', padding: '3rem 2rem 2rem' }}>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.75rem' }}>Book instantly online</p>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.75rem', lineHeight: 1.2 }}>
+            Studio sessions from <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(1.6rem, 3vw, 2.2rem)' }}>£99.</span>
+          </h2>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(232,221,181,0.55)', lineHeight: 1.7, marginBottom: '1.5rem', maxWidth: '420px' }}>
+            Couple, maternity, newborn, family and headshot sessions at our Papworth Everard studio. All images included — we never charge per image. Pick your date and pay securely online.
+          </p>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+            <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
+              Book a session →
+            </Link>
+            <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(232,221,181,0.25)', color: 'rgba(232,221,181,0.6)', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
+              About the studio
+            </Link>
           </div>
         </div>
-
-        {/* Session types */}
         <div style={{ borderTop: '1px solid rgba(168,202,236,0.1)', display: 'flex', flexWrap: 'wrap' }}>
           {[
             { label: 'Studio Session', desc: '30 min · 1–2 people · 5–10 images', price: '£99' },
             { label: 'Family Session', desc: '60 min · 3+ people · 10–20 images', price: '£199' },
-            { label: 'Gift Vouchers', desc: 'Perfect for birthdays, baby showers & Christmas', price: 'From £99', href: '/book' },
+            { label: 'Gift Vouchers', desc: 'Perfect for birthdays, baby showers & Christmas', price: 'From £99' },
           ].map((s, i) => (
-            <Link key={i} href={s.href || '/book'} style={{ flex: '1', minWidth: '200px', padding: '1.5rem 2rem', borderRight: '1px solid rgba(168,202,236,0.08)', textDecoration: 'none', display: 'block' }}>
+            <Link key={i} href="/book" style={{ flex: '1', minWidth: '200px', padding: '1.5rem 2rem', borderRight: '1px solid rgba(168,202,236,0.08)', textDecoration: 'none', display: 'block' }}>
               <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.7rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.3rem' }}>{s.label}</p>
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(232,221,181,0.4)', marginBottom: '0.5rem', lineHeight: 1.5 }}>{s.desc}</p>
               <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#A8CAEC', fontWeight: 300 }}>{s.price}</p>
@@ -224,44 +221,44 @@ export default function Home() {
 
       {/* ── GIFT VOUCHERS ── */}
       <section className="home-section-pad" style={{ backgroundColor: '#0d1b2a' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr', gap: '2.5rem', alignItems: 'center' }}>
-          <div>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>The perfect gift</p>
-            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '1rem', lineHeight: 1.2 }}>
-              Give the gift of a{' '}
-              <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)' }}>session.</span>
-            </h2>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', color: 'rgba(245,240,232,0.5)', lineHeight: 1.8, marginBottom: '1.5rem', maxWidth: '480px' }}>
-              Gift vouchers for birthdays, baby showers, engagements, weddings or Christmas. The recipient chooses their own date and time — valid for 12 months. All images included, no per-image charges.
-            </p>
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '2rem' }}>
-              <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div className="home-gifts-grid">
+            <div>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>The perfect gift</p>
+              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '1rem', lineHeight: 1.2 }}>
+                Give the gift of a{' '}
+                <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)' }}>session.</span>
+              </h2>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', color: 'rgba(245,240,232,0.5)', lineHeight: 1.8, marginBottom: '1.5rem', maxWidth: '480px' }}>
+                Gift vouchers for birthdays, baby showers, engagements, weddings or Christmas. The recipient chooses their own date and time — valid for 12 months. All images included, no per-image charges.
+              </p>
+              <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#A8CAEC', color: '#0d1b2a', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block', marginBottom: '2rem' }}>
                 Buy a gift voucher →
               </Link>
-            </div>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-              {['Birthday', 'Baby Shower', 'Engagement', 'Wedding gift', 'Christmas', "Mother's Day", 'Just Because'].map(o => (
-                <span key={o} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.5)', border: '1px solid rgba(168,202,236,0.15)', padding: '0.25rem 0.6rem' }}>{o}</span>
-              ))}
-            </div>
-          </div>
-          <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.1)', padding: '2rem' }}>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1.5rem' }}>What&apos;s included</p>
-            {[
-              { title: 'Studio Session', desc: '30 min · 1–2 people · 5–10 images', price: '£99' },
-              { title: 'Family Session', desc: '60 min · 3+ people · 10–20 images', price: '£199' },
-            ].map(s => (
-              <div key={s.title} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 0', borderBottom: '1px solid rgba(168,202,236,0.08)' }}>
-                <div>
-                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>{s.title}</p>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.35)' }}>{s.desc}</p>
-                </div>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.2rem', color: '#A8CAEC', fontWeight: 300 }}>{s.price}</p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                {['Birthday', 'Baby Shower', 'Engagement', 'Wedding gift', 'Christmas', "Mother's Day", 'Just Because'].map(o => (
+                  <span key={o} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.5)', border: '1px solid rgba(168,202,236,0.15)', padding: '0.25rem 0.6rem' }}>{o}</span>
+                ))}
               </div>
-            ))}
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.3)', marginTop: '1rem', lineHeight: 1.7 }}>
-              Vouchers are emailed instantly. Valid for 12 months. Recipient books their own date online — no chasing needed.
-            </p>
+            </div>
+            <div style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.1)', padding: '2rem' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1.5rem' }}>What&apos;s included</p>
+              {[
+                { title: 'Studio Session', desc: '30 min · 1–2 people · 5–10 images', price: '£99' },
+                { title: 'Family Session', desc: '60 min · 3+ people · 10–20 images', price: '£199' },
+              ].map(s => (
+                <div key={s.title} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 0', borderBottom: '1px solid rgba(168,202,236,0.08)' }}>
+                  <div>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.78rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>{s.title}</p>
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.35)' }}>{s.desc}</p>
+                  </div>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.2rem', color: '#A8CAEC', fontWeight: 300 }}>{s.price}</p>
+                </div>
+              ))}
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.3)', marginTop: '1rem', lineHeight: 1.7 }}>
+                Vouchers are emailed instantly. Valid for 12 months. Recipient books their own date online — no chasing needed.
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -305,10 +302,10 @@ export default function Home() {
           </div>
           <div className="home-studios-grid">
             {[
-              { tag: 'Book online · From £99', name: 'Papworth Everard', desc: 'Our bookable studio for couple, maternity, newborn, family and headshot sessions. Choose your date and pay instantly online.', href: '/studio/papworth-everard', color: '#1b3a5c', img: 'studio-papworth-hero.jpg', cta: 'Book a session →', ctaHref: '/book' },
-              { tag: 'Enquire · Larger projects', name: 'Waterbeach', desc: 'Available for extended shoots, multiple outfits, outdoor combinations, video and bespoke commercial projects. Please get in touch to discuss.', href: '/studio/waterbeach', color: '#162d4a', img: 'studio-waterbeach-hero.jpg', cta: 'Enquire about Waterbeach →', ctaHref: '/enquire' },
+              { tag: 'Book online · From £99', name: 'Papworth Everard', desc: 'Our bookable studio for couple, maternity, newborn, family and headshot sessions. Choose your date and pay instantly online.', color: '#1b3a5c', img: 'studio-papworth-hero.jpg', cta: 'Book a session →', ctaHref: '/book' },
+              { tag: 'Enquire · Larger projects', name: 'Waterbeach', desc: 'Available for extended shoots, multiple outfits, outdoor combinations, video and bespoke commercial projects. Please get in touch to discuss.', color: '#162d4a', img: 'studio-waterbeach-hero.jpg', cta: 'Enquire about Waterbeach →', ctaHref: '/enquire' },
             ].map((studio) => (
-              <div key={studio.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '16/9', backgroundColor: studio.color }}>
+              <div key={studio.name} className="zoom-card" style={{ position: 'relative', aspectRatio: '16/9', backgroundColor: studio.color }}>
                 <Img src={`${STORAGE}/${studio.img}`} alt={`${studio.name} photography studio`} zoom />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.95) 0%, rgba(13,27,42,0.3) 60%, transparent 100%)', zIndex: 2 }} />
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 1.8rem', zIndex: 3 }}>
@@ -409,6 +406,24 @@ export default function Home() {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── PRINTS ── */}
+      <section style={{ backgroundColor: '#2C2820', padding: '2.5rem 1.5rem' }}>
+        <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>Prints &amp; framing</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.3rem' }}>
+              Put your images on the wall
+            </p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: 'rgba(232,221,181,0.4)', maxWidth: '480px', lineHeight: 1.65 }}>
+              Professional lustre prints and premium framing, produced by hand at our home studio. Package deals available — prints, frames, and digital files together. Available to all Something Blue clients after their session.
+            </p>
+          </div>
+          <Link href="/prints" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: 'transparent', color: 'rgba(232,221,181,0.7)', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', border: '1px solid rgba(232,221,181,0.2)', whiteSpace: 'nowrap', flexShrink: 0 }}>
+            Find out more →
+          </Link>
         </div>
       </section>
 
