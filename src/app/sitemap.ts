@@ -51,6 +51,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE}/journal`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
     { url: `${BASE}/locations`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE}/enquire`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+  { url: `${BASE}/packages`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
+{ url: `${BASE}/prints`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+{ url: `${BASE}/testimonials`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
   ];
 
   const locationPages: MetadataRoute.Sitemap = LOCATION_SLUGS.map((slug) => ({
