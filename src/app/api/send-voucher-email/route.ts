@@ -1,11 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
-async function sendEmail(to: {email: string, name: string}[], subject: string, htmlContent: string, sender = { name: 'Something Blue Productions', email: 'hello@something-blue-productions.com' }, replyTo?: {email: string, name: string}) {
+
+async function sendEmail(
+  to: { email: string; name: string }[],
+  subject: string,
+  htmlContent: string,
+  sender = { name: 'Something Blue Productions', email: 'hello@something-blue-productions.com' },
+  replyTo?: { email: string; name: string }
+) {
   const body: Record<string, unknown> = { sender, to, subject, htmlContent };
   if (replyTo) body.replyTo = replyTo;
   const res = await fetch('https://api.brevo.com/v3/smtp/email', {
     method: 'POST',
     headers: {
-      'Accept': 'application/json',
+      Accept: 'application/json',
       'Content-Type': 'application/json',
       'api-key': process.env.BREVO_API_KEY!,
     },
@@ -22,9 +29,17 @@ export async function POST(req: NextRequest) {
   try {
     const { meta, code } = await req.json();
 
-    const sessionLabel = meta.duration === '60' || meta.duration === 60 ? 'Family Session (60 min · 10–20 images)' : 'Studio Session (30 min · 5–10 images)';
-    const recipientEmail = meta.recipient_email || meta.buyer_email;
-    const recipientName = meta.recipient_name || meta.buyer_name;
+    const sessionLabel =
+      meta.duration === '60' || meta.duration === 60
+        ? 'Family Session (60 min · 10–20 images)'
+        : 'Studio Session (30 min · 5–10 images)';
+
+    // Only send to recipient if they have a real email address
+    const hasRecipientEmail = meta.recipient_email && meta.recipient_email.trim() !== '';
+    const recipientEmail = hasRecipientEmail ? meta.recipient_email.trim() : meta.buyer_email;
+    const recipientName = (meta.recipient_name && meta.recipient_name.trim() !== '')
+      ? meta.recipient_name.trim()
+      : meta.buyer_name;
 
     const voucherHtml = `
 <!DOCTYPE html>
@@ -48,7 +63,6 @@ export async function POST(req: NextRequest) {
       <p style="font-family:Georgia,serif;font-size:16px;color:#2C2820;line-height:1.7;margin:0 0 24px;">Dear ${recipientName},</p>
       <p style="font-family:Georgia,serif;font-size:16px;color:#2C2820;line-height:1.7;margin:0 0 32px;">You've been gifted a photography session at Something Blue Productions studio in Papworth Everard, Cambridgeshire. Choose your own date and time when you're ready to book.</p>
 
-      <!-- Voucher card -->
       <div style="background:#0d1b2a;padding:32px;margin-bottom:32px;text-align:center;">
         <p style="font-family:Georgia,serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#A8CAEC;margin:0 0 16px;">Gift Voucher</p>
         <p style="font-family:'Courier New',monospace;font-size:24px;font-weight:bold;color:#E8DDB5;letter-spacing:4px;margin:0 0 16px;">${code}</p>
@@ -93,17 +107,17 @@ export async function POST(req: NextRequest) {
 </body>
 </html>`;
 
-    // Send to recipient
+    // Always send to recipient
     await sendEmail(
       [{ email: recipientEmail, name: recipientName }],
       `Your gift voucher — Something Blue Productions`,
       voucherHtml
     );
 
-    // Send receipt to buyer if different from recipient
-    if (meta.buyer_email && meta.buyer_email !== recipientEmail) {
+    // Send receipt to buyer only if they have a different email from recipient
+    if (meta.buyer_email && meta.buyer_email.trim() !== '' && meta.buyer_email.trim() !== recipientEmail) {
       await sendEmail(
-        [{ email: meta.buyer_email, name: meta.buyer_name }],
+        [{ email: meta.buyer_email.trim(), name: meta.buyer_name }],
         `Gift voucher purchase confirmed — ${code}`,
         buyerHtml
       );
@@ -113,7 +127,15 @@ export async function POST(req: NextRequest) {
     await sendEmail(
       [{ email: 'hello@something-blue-productions.com', name: 'Samantha' }],
       `New gift voucher sold — ${code} · £${meta.price}`,
-      `<div style="font-family:Georgia,serif;padding:24px;max-width:500px;"><h2 style="font-weight:300;color:#1B3A5C;">New voucher sold</h2><p><strong>Code:</strong> ${code}</p><p><strong>From:</strong> ${meta.buyer_name} (${meta.buyer_email})</p><p><strong>To:</strong> ${recipientName} (${recipientEmail})</p><p><strong>Session:</strong> ${sessionLabel}</p><p><strong>Occasion:</strong> ${meta.occasion}</p><p><strong>Paid:</strong> £${meta.price}</p></div>`,
+      `<div style="font-family:Georgia,serif;padding:24px;max-width:500px;">
+        <h2 style="font-weight:300;color:#1B3A5C;">New voucher sold</h2>
+        <p><strong>Code:</strong> ${code}</p>
+        <p><strong>From:</strong> ${meta.buyer_name} (${meta.buyer_email})</p>
+        <p><strong>To:</strong> ${recipientName} (${recipientEmail})</p>
+        <p><strong>Session:</strong> ${sessionLabel}</p>
+        <p><strong>Occasion:</strong> ${meta.occasion}</p>
+        <p><strong>Paid:</strong> £${meta.price}</p>
+      </div>`,
       { name: 'Something Blue Bookings', email: 'hello@something-blue-productions.com' }
     );
 
