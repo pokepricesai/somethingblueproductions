@@ -133,6 +133,7 @@ export default function Footer() {
           <Link href="/commercial" className="footer-link">Commercial</Link>
           <Link href="/commercial/headshots" className="footer-link">Headshots</Link>
           <Link href="/commercial/performance" className="footer-link">Performance Photography</Link>
+          <Link href="/prints" className="footer-link">Prints</Link>
         </div>
 
         {/* ── Book & Information ── */}
