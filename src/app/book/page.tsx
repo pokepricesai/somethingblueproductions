@@ -3,14 +3,11 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { createClient } from '@supabase/supabase-js';
-import { loadStripe } from '@stripe/stripe-js';
 
 const supabase = createClient(
   'https://knwyfoqmlwbxtfhvkbmc.supabase.co',
   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y'
 );
-
-const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
@@ -58,25 +55,11 @@ function getUKDayOfWeek(date: Date): string {
   return date.toLocaleDateString('en-GB', { weekday: 'long', timeZone: 'Europe/London' }).toLowerCase();
 }
 
-function getNext6Months(): Date[] {
-  const days: Date[] = [];
-  const today = new Date();
-  const start = new Date(today);
-  start.setDate(start.getDate() + 1);
-  start.setHours(0, 0, 0, 0);
-  const end = new Date(today);
-  end.setMonth(end.getMonth() + 6);
-  const cursor = new Date(start);
-  while (cursor <= end) { days.push(new Date(cursor)); cursor.setDate(cursor.getDate() + 1); }
-  return days;
-}
-
 export default function BookPage() {
   const [mode, setMode] = useState<Mode>('choose');
   const [bookStep, setBookStep] = useState<BookingStep>('service');
   const [giftStep, setGiftStep] = useState<GiftStep>('occasion');
   const [availableSlots, setAvailableSlots] = useState<Slot[]>([]);
-  const [bookedSlots, setBookedSlots] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [voucherChecking, setVoucherChecking] = useState(false);
@@ -134,13 +117,12 @@ export default function BookPage() {
     const { data: defaults } = await supabase.from('availability_slots').select('slot_time').eq('day_of_week', dow).eq('is_active', true).is('specific_date', null);
     const { data: overrideData } = await supabase.from('slot_overrides').select('slot_time, type').eq('slot_date', date);
     const { data: existing } = await supabase.from('bookings').select('slot_time').eq('slot_date', date).eq('status', 'confirmed');
-    const finalTimes = new Set((defaults || []).map((s: {slot_time: string}) => s.slot_time));
+    const finalTimes = new Set((defaults || []).map((s: { slot_time: string }) => s.slot_time));
     for (const o of (overrideData || [])) { if (o.type === 'blocked') finalTimes.delete(o.slot_time); if (o.type === 'added') finalTimes.add(o.slot_time); }
-    const bookedTimes = new Set((existing || []).map((b: {slot_time: string}) => b.slot_time));
+    const bookedTimes = new Set((existing || []).map((b: { slot_time: string }) => b.slot_time));
     for (const t of bookedTimes) finalTimes.delete(t);
     const sortedSlots = Array.from(finalTimes).sort().map((slot_time, id) => ({ id, slot_time, day_of_week: dow }));
     setAvailableSlots(sortedSlots);
-    setBookedSlots(Array.from(bookedTimes));
   }
 
   async function checkVoucher() {
@@ -162,59 +144,68 @@ export default function BookPage() {
     setRedeemChecking(false);
   }
 
-async function handleRedeemBooking() {
-  if (!redeemedVoucher) return;
-  setLoading(true);
-  setError('');
-  try {
-    const { error: dbError } = await supabase.from('bookings').insert({
-      name: redeemBooking.name,
-      email: redeemBooking.email,
-      phone: redeemBooking.phone,
-      service_type: redeemedVoucher.session_type,
-      people_count: redeemedVoucher.session_duration === 60 ? 3 : 1,
-      session_duration: redeemedVoucher.session_duration,
-      session_price: 0,
-      slot_date: redeemBooking.date,
-      slot_time: redeemBooking.time,
-      voucher_code: redeemedVoucher.code,
-      notes: redeemBooking.notes,
-      status: 'confirmed',
-    });
-    if (dbError) throw dbError;
-
-    const { error: voucherError } = await supabase
-      .from('vouchers')
-      .update({ status: 'used', redeemed_at: new Date().toISOString() })
-      .eq('id', redeemedVoucher.id);
-    if (voucherError) throw voucherError;
-
-    await fetch('/api/send-redeem-confirmation', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+  async function handleRedeemBooking() {
+    if (!redeemedVoucher) return;
+    setLoading(true);
+    setError('');
+    try {
+      // 1. Save booking to Supabase
+      const { error: dbError } = await supabase.from('bookings').insert({
         name: redeemBooking.name,
         email: redeemBooking.email,
         phone: redeemBooking.phone,
-        date: redeemBooking.date,
-        time: redeemBooking.time,
+        service_type: redeemedVoucher.session_type,
+        people_count: redeemedVoucher.session_duration === 60 ? 3 : 1,
+        session_duration: redeemedVoucher.session_duration,
+        session_price: 0,
+        slot_date: redeemBooking.date,
+        slot_time: redeemBooking.time,
+        voucher_code: redeemedVoucher.code,
         notes: redeemBooking.notes,
-        voucher: redeemedVoucher,
-      }),
-    });
+        status: 'confirmed',
+      });
+      if (dbError) throw dbError;
 
-    setRedeemStep('confirm');
-  } catch {
-    setError('Something went wrong. Please try again or contact us.');
+      // 2. Mark voucher as used
+      const { error: voucherError } = await supabase
+        .from('vouchers')
+        .update({ status: 'used', redeemed_at: new Date().toISOString() })
+        .eq('id', redeemedVoucher.id);
+      if (voucherError) throw voucherError;
+
+      // 3. Send confirmation emails
+      await fetch('/api/send-redeem-confirmation', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: redeemBooking.name,
+          email: redeemBooking.email,
+          phone: redeemBooking.phone,
+          date: redeemBooking.date,
+          time: redeemBooking.time,
+          notes: redeemBooking.notes,
+          voucher: redeemedVoucher,
+        }),
+      });
+
+      setRedeemStep('confirm');
+    } catch {
+      setError('Something went wrong. Please try again or contact us.');
+    }
+    setLoading(false);
   }
-  setLoading(false);
-}
 
   async function handleBookingPayment() {
     setLoading(true); setError('');
     try {
       if (booking.voucherValid) {
-        const { error: dbError } = await supabase.from('bookings').insert({ name: booking.name, email: booking.email, phone: booking.phone, service_type: booking.service, people_count: booking.peopleCount, session_duration: booking.duration, session_price: booking.price, slot_date: booking.date, slot_time: booking.time, voucher_code: booking.voucherCode, status: 'confirmed' });
+        const { error: dbError } = await supabase.from('bookings').insert({
+          name: booking.name, email: booking.email, phone: booking.phone,
+          service_type: booking.service, people_count: booking.peopleCount,
+          session_duration: booking.duration, session_price: booking.price,
+          slot_date: booking.date, slot_time: booking.time,
+          voucher_code: booking.voucherCode, status: 'confirmed',
+        });
         if (dbError) throw dbError;
         await supabase.from('vouchers').update({ status: 'used', redeemed_at: new Date().toISOString() }).eq('code', booking.voucherCode.toUpperCase());
         await fetch('/api/send-booking-confirmation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ booking }) });
@@ -240,7 +231,6 @@ async function handleRedeemBooking() {
 
   const selectedService = SERVICES.find(s => s.key === booking.service);
 
-  // ── Shared calendar renderer ─────────────────────────────────────────────
   function renderCalendar(
     selectedDate: string,
     onSelectDate: (d: string) => void,
@@ -249,7 +239,7 @@ async function handleRedeemBooking() {
   ) {
     const year = calendarMonth.getFullYear();
     const month = calendarMonth.getMonth();
-    const today = new Date(); today.setHours(0,0,0,0);
+    const today = new Date(); today.setHours(0, 0, 0, 0);
     const maxMonth = new Date(); maxMonth.setMonth(maxMonth.getMonth() + 6);
     const canGoPrev = calendarMonth > new Date(today.getFullYear(), today.getMonth(), 1);
     const canGoNext = calendarMonth < new Date(maxMonth.getFullYear(), maxMonth.getMonth(), 1);
@@ -262,19 +252,16 @@ async function handleRedeemBooking() {
 
     return (
       <div>
-        {/* Month header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
           <button onClick={() => { const d = new Date(calendarMonth); d.setMonth(d.getMonth() - 1); setCalendarMonth(d); onSelectDate(''); onSelectTime(''); }} disabled={!canGoPrev} style={{ background: 'none', border: '1px solid #DDD5C0', color: canGoPrev ? '#1B3A5C' : '#DDD5C0', cursor: canGoPrev ? 'pointer' : 'default', padding: '0.4rem 0.75rem', fontFamily: "'Carose', sans-serif", fontSize: '0.7rem' }}>←</button>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.75rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C' }}>{firstDay.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })}</p>
           <button onClick={() => { const d = new Date(calendarMonth); d.setMonth(d.getMonth() + 1); setCalendarMonth(d); onSelectDate(''); onSelectTime(''); }} disabled={!canGoNext} style={{ background: 'none', border: '1px solid #DDD5C0', color: canGoNext ? '#1B3A5C' : '#DDD5C0', cursor: canGoNext ? 'pointer' : 'default', padding: '0.4rem 0.75rem', fontFamily: "'Carose', sans-serif", fontSize: '0.7rem' }}>→</button>
         </div>
-        {/* Day headers */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px', marginBottom: '2px' }}>
-          {['Mon','Tue','Wed','Thu','Fri','Sat','Sun'].map(d => (
+          {['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'].map(d => (
             <p key={d} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9E9282', textAlign: 'center', padding: '0.3rem 0' }}>{d}</p>
           ))}
         </div>
-        {/* Calendar grid */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '2px', marginBottom: '1.5rem' }}>
           {cells.map((d, i) => {
             if (!d) return <div key={`empty-${i}`} />;
@@ -292,7 +279,6 @@ async function handleRedeemBooking() {
             );
           })}
         </div>
-        {/* Inline time picker */}
         {selectedDate && selectedDate.startsWith(`${year}-${String(month + 1).padStart(2, '0')}`) && (
           <div style={{ borderTop: '1px solid #DDD5C0', paddingTop: '1.25rem', marginBottom: '1.5rem' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1B3A5C', marginBottom: '0.75rem' }}>
@@ -372,7 +358,6 @@ async function handleRedeemBooking() {
 
       {/* ── HERO BAND ── */}
       <section style={{ position: 'relative', backgroundColor: '#1B3A5C', overflow: 'hidden', minHeight: '220px', display: 'flex', alignItems: 'flex-end' }}>
-        {/* Background image */}
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.15)', textAlign: 'center' }}>studio-hero.jpg</span>
         </div>
@@ -403,8 +388,6 @@ async function handleRedeemBooking() {
           {/* ── CHOOSE MODE ── */}
           {mode === 'choose' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-
-              {/* Book */}
               <div onClick={() => setMode('book')} style={{ backgroundColor: '#1B3A5C', padding: '2.5rem 2rem', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}>
                 <img src={`${STORAGE}/studio-papworth-interior.jpg`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.12 }} />
                 <div style={{ position: 'relative', zIndex: 1 }}>
@@ -417,7 +400,6 @@ async function handleRedeemBooking() {
                 </div>
               </div>
 
-              {/* Gift */}
               <div onClick={() => setMode('gift')} style={{ backgroundColor: '#E8DDB5', padding: '2.5rem 2rem', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}>
                 <img src={`${STORAGE}/gift-voucher-hero.jpg`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.15 }} />
                 <div style={{ position: 'relative', zIndex: 1 }}>
@@ -430,7 +412,6 @@ async function handleRedeemBooking() {
                 </div>
               </div>
 
-              {/* Redeem */}
               <div onClick={() => setMode('redeem')} style={{ backgroundColor: '#FAF8F2', border: '1px solid #DDD5C0', borderLeft: '3px solid #A8CAEC', padding: '1.75rem 2rem', cursor: 'pointer' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>Have a voucher?</p>
                 <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.2rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.4rem' }}>Redeem a gift voucher</h2>
@@ -440,7 +421,6 @@ async function handleRedeemBooking() {
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px' }}>Redeem now →</span>
               </div>
 
-              {/* Trust signals */}
               <div style={{ padding: '1.5rem', background: '#0d1b2a' }}>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem 2rem' }}>
                   {['All images included — no per-image charges', 'Instant confirmation', 'Secure payment via Stripe', 'Free cancellation with 48hrs notice'].map(t => (
@@ -460,15 +440,14 @@ async function handleRedeemBooking() {
               <button className="back-link" onClick={() => { setMode('choose'); setBookStep('service'); }}>← Back</button>
               <div className="step-indicator">
                 {['service', 'datetime', 'details', 'payment'].map((s, i) => (
-                  <div key={s} className={`step-dot ${['service','datetime','details','payment','confirm'].indexOf(bookStep) >= i ? 'active' : ''}`} />
+                  <div key={s} className={`step-dot ${['service', 'datetime', 'details', 'payment', 'confirm'].indexOf(bookStep) >= i ? 'active' : ''}`} />
                 ))}
               </div>
 
-              {/* Step 1: Service */}
               {bookStep === 'service' && (
                 <div className="book-card">
                   <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.4rem' }}>What are you coming in for?</h2>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#9E9282', marginBottom: '1.5rem', lineHeight: 1.65 }}>Select your session type. Family sessions (3+ people) are 60 minutes and include a print.</p>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#9E9282', marginBottom: '1.5rem', lineHeight: 1.65 }}>Select your session type. Family sessions (3+ people) are 60 minutes.</p>
                   <div className="service-grid">
                     {SERVICES.map(s => (
                       <div key={s.key} className={`service-card ${booking.service === s.key ? 'selected' : ''}`} onClick={() => setBooking(prev => ({ ...prev, service: s.key, duration: s.duration, price: s.price }))}>
@@ -488,14 +467,12 @@ async function handleRedeemBooking() {
                     </div>
                   )}
 
-                  {/* Styling note */}
                   <div style={{ background: '#F5F0E8', padding: '1rem 1.2rem', marginBottom: '1rem', borderLeft: '3px solid #DDD5C0' }}>
                     <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#5c5550', lineHeight: 1.7 }}>
                       All outfits and styling are arranged by you — we&apos;ll send our style guide with your confirmation to help you prepare.
                     </p>
                   </div>
 
-                  {/* Bespoke nudge */}
                   <div style={{ background: '#E8DDB5', padding: '1rem 1.2rem', marginBottom: '1.5rem' }}>
                     <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#5c5550', lineHeight: 1.7 }}>
                       Need something more bespoke? For outdoor sessions, multiple outfits or video, <Link href="/enquire" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)' }}>get in touch</Link> and we&apos;ll build a package around you.
@@ -506,7 +483,7 @@ async function handleRedeemBooking() {
                     <div className="price-summary">
                       <div>
                         <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.2rem' }}>{selectedService?.label} · {booking.duration} min</p>
-                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.5)' }}>{booking.duration === 30 ? '5–10' : '15–20'} images included · No per-image charges</p>
+                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.5)' }}>{booking.duration === 30 ? '5–10' : '10–20'} images included · No per-image charges</p>
                       </div>
                       <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1.5rem', color: '#E8DDB5', fontWeight: 300 }}>£{booking.price}</p>
                     </div>
@@ -515,7 +492,6 @@ async function handleRedeemBooking() {
                 </div>
               )}
 
-              {/* Step 2: Date & Time */}
               {bookStep === 'datetime' && (
                 <div className="book-card">
                   <button className="back-link" onClick={() => setBookStep('service')}>← Back</button>
@@ -526,7 +502,6 @@ async function handleRedeemBooking() {
                 </div>
               )}
 
-              {/* Step 3: Details */}
               {bookStep === 'details' && (
                 <div className="book-card">
                   <button className="back-link" onClick={() => setBookStep('datetime')}>← Back</button>
@@ -564,13 +539,12 @@ async function handleRedeemBooking() {
                 </div>
               )}
 
-              {/* Confirm */}
               {bookStep === 'confirm' && (
                 <div className="book-card" style={{ textAlign: 'center' }}>
                   <p style={{ fontFamily: "'Stay Humble', cursive", fontSize: '3.5rem', color: '#1B3A5C', marginBottom: '0.5rem' }}>you&apos;re in.</p>
                   <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.2rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.75rem' }}>Booking confirmed.</h2>
                   <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#9E9282', lineHeight: 1.8, marginBottom: '1.5rem' }}>
-                    A confirmation has been sent to {booking.email} — including our style guide so you&apos;re prepared for the session.<br /><br />
+                    A confirmation has been sent to {booking.email}.<br /><br />
                     To make any changes, email <a href="mailto:hello@something-blue-productions.com" style={{ color: '#1B3A5C' }}>hello@something-blue-productions.com</a>.
                   </p>
                   <Link href="/" className="book-btn-secondary" style={{ display: 'inline-block', width: 'auto', padding: '0.85rem 2rem' }}>Back to home</Link>
@@ -585,7 +559,7 @@ async function handleRedeemBooking() {
               <button className="back-link" onClick={() => { setMode('choose'); setRedeemStep('enter'); setRedeemedVoucher(null); setRedeemCode(''); setRedeemError(''); }}>← Back</button>
               <div className="step-indicator">
                 {['enter', 'datetime', 'details'].map((s, i) => (
-                  <div key={s} className={`step-dot ${['enter','datetime','details','confirm'].indexOf(redeemStep) >= i ? 'active' : ''}`} />
+                  <div key={s} className={`step-dot ${['enter', 'datetime', 'details', 'confirm'].indexOf(redeemStep) >= i ? 'active' : ''}`} />
                 ))}
               </div>
 
@@ -612,7 +586,7 @@ async function handleRedeemBooking() {
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                       <div>
                         <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#1B3A5C', textTransform: 'none', fontWeight: 300 }}>{redeemedVoucher.session_duration === 60 ? 'Family Session' : 'Studio Session'}</p>
-                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9E9282' }}>{redeemedVoucher.session_duration} min · {redeemedVoucher.session_duration === 60 ? '15–20' : '5–10'} images included</p>
+                        <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9E9282' }}>{redeemedVoucher.session_duration} min · {redeemedVoucher.session_duration === 60 ? '10–20' : '5–10'} images included</p>
                         {redeemedVoucher.occasion && <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: '#9E9282', marginTop: '0.2rem' }}>{redeemedVoucher.occasion} gift from {redeemedVoucher.buyer_name}</p>}
                       </div>
                       <div style={{ textAlign: 'right' }}>
@@ -659,7 +633,7 @@ async function handleRedeemBooking() {
                   <p style={{ fontFamily: "'Stay Humble', cursive", fontSize: '3.5rem', color: '#1B3A5C', marginBottom: '0.5rem' }}>you&apos;re in.</p>
                   <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.2rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.75rem' }}>Booking confirmed.</h2>
                   <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#9E9282', lineHeight: 1.8, marginBottom: '1.5rem' }}>
-                    A confirmation has been sent to {redeemBooking.email} — including our style guide so you&apos;re prepared for the day.<br /><br />
+                    A confirmation has been sent to {redeemBooking.email}.<br /><br />
                     To make any changes, email <a href="mailto:hello@something-blue-productions.com" style={{ color: '#1B3A5C' }}>hello@something-blue-productions.com</a>.
                   </p>
                   <Link href="/" className="book-btn-secondary" style={{ display: 'inline-block', width: 'auto', padding: '0.85rem 2rem' }}>Back to home</Link>
@@ -674,7 +648,7 @@ async function handleRedeemBooking() {
               <button className="back-link" onClick={() => { setMode('choose'); setGiftStep('occasion'); }}>← Back</button>
               <div className="step-indicator">
                 {['occasion', 'details', 'payment'].map((s, i) => (
-                  <div key={s} className={`step-dot ${['occasion','details','payment','confirm'].indexOf(giftStep) >= i ? 'active' : ''}`} />
+                  <div key={s} className={`step-dot ${['occasion', 'details', 'payment', 'confirm'].indexOf(giftStep) >= i ? 'active' : ''}`} />
                 ))}
               </div>
 
@@ -692,7 +666,7 @@ async function handleRedeemBooking() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginBottom: '1.5rem' }}>
                     {[
                       { key: 'studio', label: 'Studio Session', desc: '30 minutes · 1–2 people · 5–10 images', duration: 30, price: 99 },
-                      { key: 'family', label: 'Family Session', desc: '60 minutes · 3+ people · 15–20 images + print', duration: 60, price: 199 },
+                      { key: 'family', label: 'Family Session', desc: '60 minutes · 3+ people · 10–20 images', duration: 60, price: 199 },
                     ].map(s => (
                       <div key={s.key} onClick={() => setGift(prev => ({ ...prev, serviceType: s.key, duration: s.duration, price: s.price }))}
                         style={{ padding: '1.5rem', border: gift.serviceType === s.key ? '1px solid #1B3A5C' : '1px solid #DDD5C0', background: gift.serviceType === s.key ? '#1B3A5C' : '#FAF8F2', cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
