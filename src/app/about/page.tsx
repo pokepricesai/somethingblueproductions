@@ -1,9 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "About | Something Blue Productions · Cambridge Wedding & Family Photographer",
   description: "Something Blue Productions is a photography and video studio based in Cambridgeshire. We shoot weddings, families, newborn and maternity — honestly, and without fuss.",
+  alternates: { canonical: "/about" },
+  openGraph: {
+    title: "About | Something Blue Productions",
+    description: "Photography and video studio based in Cambridgeshire — Samantha and Luke.",
+    url: "https://something-blue-productions.com/about",
+    type: "profile",
+  },
 };
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -44,7 +52,7 @@ export default function AboutPage() {
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', textAlign: 'center' }}>about-hero.jpg</span>
         </div>
-        <img src={`${STORAGE}/about-hero.jpg`} alt="Something Blue Productions" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }} />
+        <Image src={`${STORAGE}/about-hero.jpg`} alt="Something Blue Productions Cambridge photographer" fill priority sizes="100vw" style={{ objectFit: 'cover', opacity: 0.4 }} />
         <div className="a-hero-content" style={{ position: 'relative', zIndex: 1, maxWidth: '700px' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>About Something Blue</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4rem)', lineHeight: 1.1, color: '#E8DDB5', textTransform: 'none', marginBottom: '1.5rem' }}>
@@ -68,13 +76,13 @@ export default function AboutPage() {
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>about-samantha.jpg</span>
                 </div>
-                <img src={`${STORAGE}/about-samantha.jpg`} alt="Samantha Clark" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                <Image src={`${STORAGE}/about-samantha.jpg`} alt="Samantha Clark, photographer at Something Blue Productions" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
               </div>
               <div style={{ aspectRatio: '16/9', backgroundColor: '#3a5060', overflow: 'hidden', position: 'relative' }}>
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>about-behind-scenes-01.jpg</span>
                 </div>
-                <img src={`${STORAGE}/about-behind-scenes-01.jpg`} alt="Behind the scenes" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                <Image src={`${STORAGE}/about-behind-scenes-01.jpg`} alt="Behind the scenes of a Something Blue photography session" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
               </div>
             </div>
 
@@ -145,7 +153,7 @@ export default function AboutPage() {
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
                 </div>
-                <img src={`${STORAGE}/${item.img}`} alt="Behind the scenes" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                <Image src={`${STORAGE}/${item.img}`} alt={`Behind the scenes ${i + 1} — Something Blue Productions`} fill sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" style={{ objectFit: 'cover', zIndex: 1 }} />
               </div>
             ))}
           </div>

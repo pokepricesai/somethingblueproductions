@@ -1,9 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Fine Art Prints & Framing | Something Blue Productions Cambridge",
   description: "Professional lustre prints and premium framing from your photography session. Produced by hand at our home studio in Cambridgeshire. Package deals available.",
+  alternates: { canonical: "/prints" },
+  openGraph: {
+    title: "Fine Art Prints & Framing | Something Blue Productions",
+    description: "Professional lustre prints and premium framing from your photography session.",
+    url: "https://something-blue-productions.com/prints",
+    type: "website",
+  },
 };
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -45,7 +53,7 @@ export default function PrintsPage() {
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>prints-hero.jpg</span>
         </div>
-        <img src={`${STORAGE}/prints-hero.jpg`} alt="Fine art photographic prints" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+        <Image src={`${STORAGE}/prints-hero.jpg`} alt="Fine art photographic prints" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="pr-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Prints &amp; Framing · Cambridgeshire</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
@@ -80,7 +88,7 @@ export default function PrintsPage() {
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>prints-intro.jpg</span>
               </div>
-              <img src={`${STORAGE}/prints-intro.jpg`} alt="Fine art print detail" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'relative', zIndex: 1 }} />
+              <Image src={`${STORAGE}/prints-intro.jpg`} alt="Fine art print detail" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>

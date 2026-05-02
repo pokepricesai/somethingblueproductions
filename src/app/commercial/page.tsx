@@ -1,9 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Commercial Photography Cambridge | Something Blue Productions",
   description: "Brand photography, performance & show photography, and creative headshots across Cambridge and Cambridgeshire. Professional results for businesses, performers and creatives.",
+  alternates: { canonical: "/commercial" },
+  openGraph: {
+    title: "Commercial Photography Cambridge | Something Blue Productions",
+    description: "Brand, performance and headshot photography across Cambridge and Cambridgeshire.",
+    url: "https://something-blue-productions.com/commercial",
+    type: "website",
+  },
 };
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -43,7 +51,7 @@ export default function CommercialPage() {
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>commercial-hero.jpg</span>
         </div>
-        <img src={`${STORAGE}/commercial-hero.jpg`} alt="Commercial photography Cambridge" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+        <Image src={`${STORAGE}/commercial-hero.jpg`} alt="Commercial photography Cambridge" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="c-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Commercial Photography · Cambridge</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
@@ -106,7 +114,7 @@ export default function CommercialPage() {
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{service.img}</span>
               </div>
-              <img src={`${STORAGE}/${service.img}`} alt={service.title} className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${service.img}`} alt={service.title} fill sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" className="zoom-img" style={{ objectFit: 'cover', zIndex: 1 }} />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 50%)', zIndex: 2 }} />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.8rem 2rem', zIndex: 3 }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.45)', marginBottom: '0.5rem' }}>{service.label}</p>
@@ -142,7 +150,7 @@ export default function CommercialPage() {
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
               </div>
-              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${item.img}`} alt={`Commercial photography Cambridge ${i + 1}`} fill sizes="320px" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>

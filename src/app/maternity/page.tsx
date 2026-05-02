@@ -1,9 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Maternity Photography Cambridge & Cambridgeshire | Something Blue Productions",
   description: "Beautiful, elegant maternity photography at our studios in Papworth Everard and Waterbeach, or outdoors across Cambridgeshire. Book between 28–36 weeks for the best results.",
+  alternates: { canonical: "/maternity" },
+  openGraph: {
+    title: "Maternity Photography Cambridge & Cambridgeshire | Something Blue Productions",
+    description: "Beautiful, elegant maternity photography across Cambridgeshire.",
+    url: "https://something-blue-productions.com/maternity",
+    type: "website",
+  },
 };
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -52,7 +60,7 @@ export default function MaternityPage() {
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>maternity-hero.jpg</span>
         </div>
-        <img src={`${STORAGE}/maternity-hero.jpg`} alt="Maternity photography Cambridgeshire" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+        <Image src={`${STORAGE}/maternity-hero.jpg`} alt="Maternity photography Cambridgeshire" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="m-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Maternity Photography · Cambridgeshire</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
@@ -87,7 +95,7 @@ export default function MaternityPage() {
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>maternity-intro.jpg</span>
               </div>
-              <img src={`${STORAGE}/maternity-intro.jpg`} alt="Maternity session" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'relative', zIndex: 1 }} />
+              <Image src={`${STORAGE}/maternity-intro.jpg`} alt="Maternity studio session" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>
@@ -104,7 +112,7 @@ export default function MaternityPage() {
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{card.img}</span>
               </div>
-              <img src={`${STORAGE}/${card.img}`} alt={card.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${card.img}`} alt={card.title} fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)', zIndex: 2 }} />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem', zIndex: 3 }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>{card.label}</p>
@@ -152,7 +160,7 @@ export default function MaternityPage() {
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
               </div>
-              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${item.img}`} alt={`Maternity photography Cambridgeshire ${i + 1}`} fill sizes="300px" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>
@@ -311,7 +319,7 @@ export default function MaternityPage() {
             <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>newborn-hero.jpg</span>
             </div>
-            <img src={`${STORAGE}/newborn-hero.jpg`} alt="Newborn photography" className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+            <Image src={`${STORAGE}/newborn-hero.jpg`} alt="Newborn photography Cambridgeshire" fill sizes="(max-width: 900px) 100vw, 1100px" className="zoom-img" style={{ objectFit: 'cover', zIndex: 1 }} />
           </Link>
           <div>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>What comes next</p>

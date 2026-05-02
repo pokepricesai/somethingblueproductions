@@ -1,9 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Studio Photography Sessions Cambridge | Something Blue Productions",
   description: "Two warm, professional photography studios in Papworth Everard and Waterbeach. Newborn, family, maternity, headshots and brand photography — indoors, whatever the weather.",
+  alternates: { canonical: "/studio" },
+  openGraph: {
+    title: "Studio Photography Sessions Cambridge | Something Blue Productions",
+    description: "Two warm, professional photography studios in Papworth Everard and Waterbeach.",
+    url: "https://something-blue-productions.com/studio",
+    type: "website",
+  },
 };
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -50,7 +58,7 @@ export default function StudioPage() {
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>studio-hero.jpg</span>
         </div>
-        <img src={`${STORAGE}/studio-hero.jpg`} alt="Studio photography Cambridge" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+        <Image src={`${STORAGE}/studio-hero.jpg`} alt="Studio photography Cambridge" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="s-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Studio Photography · Cambridgeshire</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
@@ -90,7 +98,7 @@ export default function StudioPage() {
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{studio.img}</span>
                 </div>
-                <img src={`${STORAGE}/${studio.img}`} alt={studio.name} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                <Image src={`${STORAGE}/${studio.img}`} alt={studio.name} fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
               </div>
               <div style={{ padding: '2rem' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>{studio.tag}</p>
@@ -161,7 +169,7 @@ export default function StudioPage() {
                   <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{session.img}</span>
                   </div>
-                  <img src={`${STORAGE}/${session.img}`} alt={session.title} className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                  <Image src={`${STORAGE}/${session.img}`} alt={session.title} fill sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" className="zoom-img" style={{ objectFit: 'cover', zIndex: 1 }} />
                 </div>
                 <h3 style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.88rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.4rem' }}>{session.title}</h3>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#5c5550', lineHeight: 1.65 }}>{session.desc}</p>
@@ -193,7 +201,7 @@ export default function StudioPage() {
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
               </div>
-              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${item.img}`} alt={`Studio photography Cambridgeshire ${i + 1}`} fill sizes="280px" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>

@@ -1,9 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Journal | Something Blue Productions · Photography Tips & Guides",
   description: "Photography guides, location ideas, wedding planning tips and session advice from Something Blue Productions. Based in Cambridge and Cambridgeshire.",
+  alternates: { canonical: "/journal" },
+  openGraph: {
+    title: "Journal | Something Blue Productions",
+    description: "Photography guides, location ideas, wedding planning tips and session advice.",
+    url: "https://something-blue-productions.com/journal",
+    type: "website",
+  },
 };
 
 const supabaseUrl = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co';
@@ -59,12 +67,14 @@ function readTime(body: string | null): string {
 function PostImage({ post, aspectRatio, featured = false }: { post: Post; aspectRatio: string; featured?: boolean }) {
   const color = categoryColors[post.category] || '#2c2820';
   return (
-    <div style={{ aspectRatio, overflow: 'hidden', marginBottom: featured ? '1.2rem' : '1rem' }}>
+    <div style={{ aspectRatio, overflow: 'hidden', marginBottom: featured ? '1.2rem' : '1rem', position: 'relative' }}>
       {post.image_url ? (
-        <img
+        <Image
           src={post.image_url}
           alt={post.title}
-          style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)', display: 'block' }}
+          fill
+          sizes={featured ? "(max-width: 900px) 100vw, 800px" : "(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw"}
+          style={{ objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94)' }}
           className="post-img-inner"
         />
       ) : (
@@ -152,9 +162,9 @@ export default async function JournalPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                 {secondary.map(post => (
                   <Link key={post.slug} href={`/journal/${post.slug}`} className="j-post-link" style={{ display: 'flex', gap: '1rem', alignItems: 'flex-start' }}>
-                    <div style={{ width: '90px', flexShrink: 0, aspectRatio: '1/1', overflow: 'hidden' }}>
+                    <div style={{ width: '90px', flexShrink: 0, aspectRatio: '1/1', overflow: 'hidden', position: 'relative' }}>
                       {post.image_url ? (
-                        <img src={post.image_url} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <Image src={post.image_url} alt={post.title} fill sizes="90px" style={{ objectFit: 'cover' }} />
                       ) : (
                         <div style={{ width: '100%', height: '100%', backgroundColor: categoryColors[post.category] || '#2c2820' }} />
                       )}

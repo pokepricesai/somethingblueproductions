@@ -8,29 +8,6 @@ const supabase = createClient(
 
 const BASE = 'https://something-blue-productions.com';
 
-const LOCATION_SLUGS = [
-  'cambridge', 'st-neots', 'huntingdon', 'st-ives', 'ely',
-  'newmarket', 'peterborough', 'bedford', 'cambourne', 'waterbeach',
-  'papworth-everard', 'soham', 'royston', 'biggleswade', 'sawston',
-];
-
-const SERVICE_PAGE_SLUGS = [
-  'bedford-family-photographer', 'bedford-newborn-photographer', 'bedford-wedding-photographer', 'bedford-commercial-photographer',
-  'biggleswade-family-photographer', 'biggleswade-newborn-photographer', 'biggleswade-wedding-photographer', 'biggleswade-commercial-photographer',
-  'cambourne-family-photographer', 'cambourne-newborn-photographer', 'cambourne-wedding-photographer', 'cambourne-commercial-photographer',
-  'cambridge-family-photographer', 'cambridge-newborn-photographer', 'cambridge-wedding-photographer', 'cambridge-commercial-photographer',
-  'ely-family-photographer', 'ely-newborn-photographer', 'ely-wedding-photographer', 'ely-commercial-photographer',
-  'huntingdon-family-photographer', 'huntingdon-newborn-photographer', 'huntingdon-wedding-photographer', 'huntingdon-commercial-photographer',
-  'newmarket-family-photographer', 'newmarket-newborn-photographer', 'newmarket-wedding-photographer', 'newmarket-commercial-photographer',
-  'papworth-everard-family-photographer', 'papworth-everard-newborn-photographer', 'papworth-everard-wedding-photographer', 'papworth-everard-commercial-photographer',
-  'peterborough-family-photographer', 'peterborough-newborn-photographer', 'peterborough-wedding-photographer', 'peterborough-commercial-photographer',
-  'royston-family-photographer', 'royston-newborn-photographer', 'royston-wedding-photographer', 'royston-commercial-photographer',
-  'sawston-family-photographer', 'sawston-newborn-photographer', 'sawston-wedding-photographer', 'sawston-commercial-photographer',
-  'soham-family-photographer', 'soham-newborn-photographer', 'soham-wedding-photographer', 'soham-commercial-photographer',
-  'st-ives-family-photographer', 'st-ives-newborn-photographer', 'st-ives-wedding-photographer', 'st-ives-commercial-photographer',
-  'st-neots-family-photographer', 'st-neots-newborn-photographer', 'st-neots-wedding-photographer', 'st-neots-commercial-photographer',
-  'waterbeach-family-photographer', 'waterbeach-newborn-photographer', 'waterbeach-wedding-photographer', 'waterbeach-commercial-photographer',
-];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
@@ -56,15 +33,20 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 { url: `${BASE}/testimonials`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
   ];
 
-  const locationPages: MetadataRoute.Sitemap = LOCATION_SLUGS.map((slug) => ({
-    url: `${BASE}/locations/${slug}`,
+  const { data: locations } = await supabase.from('locations').select('slug');
+  const locationPages: MetadataRoute.Sitemap = (locations || []).map((loc: { slug: string }) => ({
+    url: `${BASE}/locations/${loc.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
   }));
 
-  const serviceLocationPages: MetadataRoute.Sitemap = SERVICE_PAGE_SLUGS.map((slug) => ({
-    url: `${BASE}/${slug}`,
+  const { data: locationServicePages } = await supabase
+    .from('location_pages')
+    .select('slug')
+    .eq('published', true);
+  const serviceLocationPages: MetadataRoute.Sitemap = (locationServicePages || []).map((p: { slug: string }) => ({
+    url: `${BASE}/${p.slug}`,
     lastModified: new Date(),
     changeFrequency: 'monthly' as const,
     priority: 0.6,

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 
@@ -68,9 +69,27 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params;
   const post = await getPost(slug);
   if (!post) return { title: 'Post not found' };
+  const url = `https://something-blue-productions.com/journal/${slug}`;
+  const description = post.meta_description || post.excerpt;
   return {
     title: `${post.title} | Something Blue Productions`,
-    description: post.meta_description || post.excerpt,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'article',
+      title: post.title,
+      description,
+      url,
+      publishedTime: post.published_at,
+      authors: ['Samantha Clark'],
+      images: post.image_url ? [{ url: post.image_url, alt: post.title }] : undefined,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: post.title,
+      description,
+      images: post.image_url ? [post.image_url] : undefined,
+    },
   };
 }
 
@@ -96,8 +115,61 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
   const readTime = Math.max(3, Math.ceil((post.body || '').split(' ').length / 200));
   const dateStr = new Date(post.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 
+  const postUrl = `https://something-blue-productions.com/journal/${slug}`;
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    mainEntityOfPage: { '@type': 'WebPage', '@id': postUrl },
+    headline: post.title,
+    description: post.meta_description || post.excerpt,
+    image: post.image_url ? [post.image_url] : undefined,
+    datePublished: post.published_at,
+    dateModified: post.published_at,
+    author: { '@type': 'Person', name: 'Samantha Clark', url: 'https://something-blue-productions.com/about' },
+    publisher: {
+      '@type': 'Organization',
+      name: 'Something Blue Productions',
+      logo: { '@type': 'ImageObject', url: 'https://something-blue-productions.com/logo.png' },
+    },
+    articleSection: post.category,
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://something-blue-productions.com' },
+      { '@type': 'ListItem', position: 2, name: 'Journal', item: 'https://something-blue-productions.com/journal' },
+      { '@type': 'ListItem', position: 3, name: post.title, item: postUrl },
+    ],
+  };
+
+  const faqSchema = faqs.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  } : null;
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <style>{`
         .post-pad { padding: 3rem 1.5rem; }
         .post-hero { padding: 8rem 1.5rem 3rem; }
@@ -146,9 +218,9 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
       </section>
 
       {/* ── HERO IMAGE ── */}
-      <div style={{ width: '100%', aspectRatio: '16/7', maxHeight: '500px', overflow: 'hidden', backgroundColor: heroColor, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <div style={{ width: '100%', aspectRatio: '16/7', maxHeight: '500px', overflow: 'hidden', backgroundColor: heroColor, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
         {post.image_url ? (
-          <img src={post.image_url} alt={post.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+          <Image src={post.image_url} alt={post.title} fill priority sizes="100vw" style={{ objectFit: 'cover' }} />
         ) : (
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>
             {post.image_tag ? `${post.image_tag}-hero.jpg` : 'journal-hero.jpg'}
@@ -205,9 +277,9 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
             <div className="post-related-grid">
               {related.map(rel => (
                 <Link key={rel.slug} href={`/journal/${rel.slug}`} className="post-related-link">
-                  <div className="post-related-img" style={{ aspectRatio: '3/2' }}>
+                  <div className="post-related-img" style={{ aspectRatio: '3/2', position: 'relative' }}>
                     {rel.image_url ? (
-                      <img src={rel.image_url} alt={rel.title} className="post-related-img-inner" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <Image src={rel.image_url} alt={rel.title} fill sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" className="post-related-img-inner" style={{ objectFit: 'cover' }} />
                     ) : (
                       <div className="post-related-img-inner" style={{ width: '100%', height: '100%', backgroundColor: categoryColors[rel.category] || '#2c2820', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.2)', textAlign: 'center' }}>

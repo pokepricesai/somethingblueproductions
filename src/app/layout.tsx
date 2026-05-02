@@ -26,6 +26,9 @@ export const metadata: Metadata = {
   authors: [{ name: "Something Blue Productions" }],
   creator: "Something Blue Productions",
   metadataBase: new URL("https://something-blue-productions.com"),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
     type: "website",
     locale: "en_GB",
@@ -34,12 +37,23 @@ export const metadata: Metadata = {
     title: "Something Blue Productions | Wedding & Family Photography Cambridge",
     description:
       "Photography and videography studio in Cambridgeshire. Weddings, family, newborn, maternity, headshots and commercial. Studio sessions from £99.",
+    images: [
+      {
+        url: "https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images/hero-main.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Something Blue Productions — wedding and family photography Cambridge",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Something Blue Productions",
     description:
       "Photography and videography studio in Cambridgeshire. Studio sessions from £99. All images included.",
+    images: [
+      "https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images/hero-main.jpg",
+    ],
   },
   robots: {
     index: true,

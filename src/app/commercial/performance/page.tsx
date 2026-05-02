@@ -1,9 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Performance & Show Photography Cambridge | Something Blue Productions",
   description: "Theatre, dance, music and live performance photography across Cambridge and Cambridgeshire. Fast, discreet, and designed to capture energy and emotion.",
+  alternates: { canonical: "/commercial/performance" },
+  openGraph: {
+    title: "Performance & Show Photography Cambridge | Something Blue Productions",
+    description: "Theatre, dance and live performance photography across Cambridge and Cambridgeshire.",
+    url: "https://something-blue-productions.com/commercial/performance",
+    type: "website",
+  },
 };
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -41,7 +49,7 @@ export default function PerformancePage() {
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>commercial-performance-hero.jpg</span>
         </div>
-        <img src={`${STORAGE}/commercial-performance-hero.jpg`} alt="Performance photography Cambridge" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+        <Image src={`${STORAGE}/commercial-performance-hero.jpg`} alt="Performance photography Cambridge" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="p-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Performance & Show Photography · Cambridge</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
@@ -76,7 +84,7 @@ export default function PerformancePage() {
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>commercial-performance-intro.jpg</span>
               </div>
-              <img src={`${STORAGE}/commercial-performance-intro.jpg`} alt="Performance photography" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/commercial-performance-intro.jpg`} alt="Live performance photography Cambridge" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>
@@ -143,7 +151,7 @@ export default function PerformancePage() {
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
               </div>
-              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${item.img}`} alt={`Performance photography Cambridge ${i + 1}`} fill sizes="320px" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>

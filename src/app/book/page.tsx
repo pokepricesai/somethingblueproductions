@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(
@@ -354,7 +355,7 @@ export default function BookPage() {
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.15)', textAlign: 'center' }}>studio-hero.jpg</span>
         </div>
-        <img src={`${STORAGE}/studio-papworth-hero.jpg`} alt="Papworth Everard Studio" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.25 }} />
+        <Image src={`${STORAGE}/studio-papworth-hero.jpg`} alt="Papworth Everard Studio" fill priority sizes="100vw" style={{ objectFit: 'cover', opacity: 0.25 }} />
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to right, rgba(13,27,42,0.6) 0%, rgba(13,27,42,0.2) 100%)' }} />
         <div style={{ position: 'relative', zIndex: 1, padding: '3rem 1.5rem 2.5rem', maxWidth: '660px', margin: '0 auto', width: '100%' }}>
           <Link href="/" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', textDecoration: 'none', display: 'inline-block', marginBottom: '1.25rem' }}>
@@ -382,7 +383,7 @@ export default function BookPage() {
           {mode === 'choose' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
               <div onClick={() => setMode('book')} style={{ backgroundColor: '#1B3A5C', padding: '2.5rem 2rem', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}>
-                <img src={`${STORAGE}/studio-papworth-interior.jpg`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.12 }} />
+                <Image src={`${STORAGE}/studio-papworth-interior.jpg`} alt="Papworth Everard studio interior" fill sizes="100vw" style={{ objectFit: 'cover', opacity: 0.12 }} />
                 <div style={{ position: 'relative', zIndex: 1 }}>
                   <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.6rem' }}>For you</p>
                   <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 3vw, 1.8rem)', color: '#F5F0E8', textTransform: 'none', marginBottom: '0.6rem' }}>Book a studio session</h2>
@@ -394,7 +395,7 @@ export default function BookPage() {
               </div>
 
               <div onClick={() => setMode('gift')} style={{ backgroundColor: '#E8DDB5', padding: '2.5rem 2rem', cursor: 'pointer', position: 'relative', overflow: 'hidden' }}>
-                <img src={`${STORAGE}/gift-voucher-hero.jpg`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.15 }} />
+                <Image src={`${STORAGE}/gift-voucher-hero.jpg`} alt="Photography session gift voucher" fill sizes="100vw" style={{ objectFit: 'cover', opacity: 0.15 }} />
                 <div style={{ position: 'relative', zIndex: 1 }}>
                   <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.6rem' }}>For someone special</p>
                   <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 3vw, 1.8rem)', color: '#2C2820', textTransform: 'none', marginBottom: '0.6rem' }}>Buy a gift voucher</h2>

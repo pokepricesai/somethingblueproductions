@@ -1,9 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Waterbeach Photography Studio Near Cambridge | Something Blue Productions",
   description: "Our professional photography studio in Waterbeach, minutes from Cambridge city centre. Newborn, family, maternity, headshots and brand photography. Easy access via A10.",
+  alternates: { canonical: "/studio/waterbeach" },
+  openGraph: {
+    title: "Waterbeach Photography Studio Near Cambridge | Something Blue Productions",
+    description: "Our professional photography studio in Waterbeach, minutes from Cambridge.",
+    url: "https://something-blue-productions.com/studio/waterbeach",
+    type: "website",
+  },
 };
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -38,7 +46,7 @@ export default function WaterbeachStudioPage() {
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>studio-waterbeach-hero.jpg</span>
         </div>
-        <img src={`${STORAGE}/studio-waterbeach-hero.jpg`} alt="Waterbeach photography studio" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+        <Image src={`${STORAGE}/studio-waterbeach-hero.jpg`} alt="Waterbeach photography studio" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="wb-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Studio · Waterbeach · CB25</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
@@ -75,7 +83,7 @@ export default function WaterbeachStudioPage() {
                   <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{img}</span>
                   </div>
-                  <img src={`${STORAGE}/${img}`} alt="Studio interior" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                  <Image src={`${STORAGE}/${img}`} alt="Waterbeach studio interior" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
                 </div>
               ))}
             </div>
@@ -166,7 +174,7 @@ export default function WaterbeachStudioPage() {
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(27,58,92,0.4)', textAlign: 'center' }}>studio-waterbeach-location.jpg</span>
               </div>
-              <img src={`${STORAGE}/studio-waterbeach-location.jpg`} alt="Waterbeach location" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/studio-waterbeach-location.jpg`} alt="Waterbeach location map" fill sizes="(max-width: 900px) 100vw, 600px" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>

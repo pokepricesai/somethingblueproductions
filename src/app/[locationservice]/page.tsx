@@ -50,6 +50,14 @@ const studioBookingLabel: Record<string, string> = {
 
 type FAQ = { q: string; a: string };
 
+export async function generateStaticParams() {
+  const { data } = await supabase
+    .from('location_pages')
+    .select('slug')
+    .eq('published', true);
+  return (data || []).map((p: { slug: string }) => ({ locationservice: p.slug }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ locationservice: string }> }): Promise<Metadata> {
   const { locationservice } = await params;
   const { data: page } = await supabase
@@ -58,9 +66,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locations
     .eq('slug', locationservice)
     .single();
   if (!page) return { title: 'Page not found' };
+  const url = `https://something-blue-productions.com/${locationservice}`;
   return {
     title: page.title,
     description: page.meta_description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: page.title,
+      description: page.meta_description,
+      url,
+      type: 'website',
+    },
   };
 }
 
@@ -127,8 +143,56 @@ export default async function LocationServicePage({ params }: { params: Promise<
     ? location.shoot_spots.split(',').map((s: string) => s.trim()).filter(Boolean)
     : [];
 
+  const pageUrl = `https://something-blue-productions.com/${locationservice}`;
+
+  const serviceSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    serviceType: serviceLabel,
+    provider: { '@id': 'https://something-blue-productions.com/#organization' },
+    areaServed: { '@type': 'City', name: location.name, containedInPlace: { '@type': 'AdministrativeArea', name: location.county || 'Cambridgeshire' } },
+    name: page.title,
+    description: page.meta_description || page.intro,
+    url: pageUrl,
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://something-blue-productions.com' },
+      { '@type': 'ListItem', position: 2, name: 'Locations', item: 'https://something-blue-productions.com/locations' },
+      { '@type': 'ListItem', position: 3, name: location.name, item: `https://something-blue-productions.com/locations/${location.slug}` },
+      { '@type': 'ListItem', position: 4, name: serviceLabel, item: pageUrl },
+    ],
+  };
+
+  const faqSchema = faqs.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map((f) => ({
+      '@type': 'Question',
+      name: f.q,
+      acceptedAnswer: { '@type': 'Answer', text: f.a },
+    })),
+  } : null;
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {faqSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+        />
+      )}
       <style>{`
         .lsp-pad { padding: 3rem 1.5rem; }
         .lsp-hero-content { padding: 0 1.5rem 6rem; }

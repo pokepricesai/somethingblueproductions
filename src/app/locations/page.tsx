@@ -1,10 +1,18 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 import { createClient } from '@supabase/supabase-js';
 
 export const metadata: Metadata = {
   title: "Photography Locations | Something Blue Productions Cambridge",
   description: "Wedding, family, newborn and commercial photography across Cambridgeshire and surrounding areas. Based in Cambridge with studios in Papworth Everard and Waterbeach.",
+  alternates: { canonical: "/locations" },
+  openGraph: {
+    title: "Photography Locations | Something Blue Productions",
+    description: "Wedding, family, newborn and commercial photography across Cambridgeshire.",
+    url: "https://something-blue-productions.com/locations",
+    type: "website",
+  },
 };
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -129,7 +137,7 @@ export default async function LocationsPage() {
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{s.img}</span>
                 </div>
-                <img src={`${STORAGE}/${s.img}`} alt={s.title} className="zoom-img" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+                <Image src={`${STORAGE}/${s.img}`} alt={s.title} fill sizes="(max-width: 640px) 50vw, (max-width: 900px) 50vw, 25vw" className="zoom-img" style={{ objectFit: 'cover', zIndex: 1 }} />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 60%)', zIndex: 2 }} />
                 <div style={{ position: 'relative', zIndex: 3 }}>
                   <h3 style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.88rem', color: '#ffffff', textTransform: 'none', marginBottom: '0.3rem' }}>{s.title}</h3>

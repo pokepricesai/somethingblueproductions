@@ -32,13 +32,27 @@ const serviceHeroImages: Record<string, string> = {
   commercial: 'commercial-brand-card.jpg',
 };
 
+export async function generateStaticParams() {
+  const { data } = await supabase.from('locations').select('slug');
+  return (data || []).map((l: { slug: string }) => ({ slug: l.slug }));
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const { data: location } = await supabase.from('locations').select('*').eq('slug', slug).single();
   if (!location) return { title: 'Location not found' };
+  const url = `https://something-blue-productions.com/locations/${slug}`;
+  const description = `Wedding, family, newborn and commercial photography in ${location.name}, ${location.county}. Something Blue Productions — based in Cambridgeshire.`;
   return {
     title: `Photography in ${location.name} | Something Blue Productions`,
-    description: `Wedding, family, newborn and commercial photography in ${location.name}, ${location.county}. Something Blue Productions — based in Cambridgeshire.`,
+    description,
+    alternates: { canonical: url },
+    openGraph: {
+      title: `Photography in ${location.name} | Something Blue Productions`,
+      description,
+      url,
+      type: 'website',
+    },
   };
 }
 
@@ -63,8 +77,39 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
 
   const locationHeroImg = `${STORAGE}/location-${location.slug}.jpg`;
 
+  const locationUrl = `https://something-blue-productions.com/locations/${slug}`;
+  const placeSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Place',
+    name: location.name,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: location.name,
+      addressRegion: location.county || 'Cambridgeshire',
+      addressCountry: 'GB',
+    },
+    url: locationUrl,
+  };
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://something-blue-productions.com' },
+      { '@type': 'ListItem', position: 2, name: 'Locations', item: 'https://something-blue-productions.com/locations' },
+      { '@type': 'ListItem', position: 3, name: location.name, item: locationUrl },
+    ],
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(placeSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <style>{`
         .lp-pad { padding: 3rem 1.5rem; }
         .lp-hero { padding: 8rem 1.5rem 4rem; }

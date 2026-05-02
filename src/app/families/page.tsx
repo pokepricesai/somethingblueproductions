@@ -1,9 +1,17 @@
 import Link from "next/link";
+import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Family Photography Cambridge & Cambridgeshire | Something Blue Productions",
   description: "Natural, relaxed family photography across Cambridge and Cambridgeshire. Outdoor lifestyle sessions and studio shoots. No stiff poses — just your family as they really are.",
+  alternates: { canonical: "/families" },
+  openGraph: {
+    title: "Family Photography Cambridge & Cambridgeshire | Something Blue Productions",
+    description: "Natural, relaxed family photography across Cambridge and Cambridgeshire.",
+    url: "https://something-blue-productions.com/families",
+    type: "website",
+  },
 };
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -54,7 +62,7 @@ export default function FamiliesPage() {
       {/* ── HERO ── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#3a4828', minHeight: '90svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.15) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.65) 100%)', zIndex: 1 }} />
-        <img src={`${STORAGE}/families-hero.jpg`} alt="Family photography Cambridgeshire" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 0 }} />
+        <Image src={`${STORAGE}/families-hero.jpg`} alt="Family photography Cambridgeshire" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="f-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Family Photography · Cambridge</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
@@ -99,7 +107,7 @@ export default function FamiliesPage() {
               </p>
             </div>
             <div style={{ aspectRatio: '4/3', backgroundColor: '#a08870', overflow: 'hidden', position: 'relative' }}>
-              <img src={`${STORAGE}/families-intro.jpg`} alt="Family outdoor session" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+              <Image src={`${STORAGE}/families-intro.jpg`} alt="Family outdoor photography session in Cambridgeshire" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover' }} />
             </div>
           </div>
         </div>
@@ -131,7 +139,7 @@ export default function FamiliesPage() {
             { color: '#1b3a5c', img: 'families-studio-card.jpg', label: 'Studio · Book online from £199', title: 'Studio Sessions', desc: 'Our Papworth Everard studio offers beautiful controlled light, whatever the weather. Book a 60 min family session online and pay securely.', href: '/book', cta: 'Book a session →' },
           ].map((card) => (
             <div key={card.title} style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: card.color, overflow: 'hidden' }}>
-              <img src={`${STORAGE}/${card.img}`} alt={card.title} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${card.img}`} alt={card.title} fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 55%)', zIndex: 2 }} />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem', zIndex: 3 }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.4rem' }}>{card.label}</p>
@@ -162,7 +170,7 @@ export default function FamiliesPage() {
             { w: '200px', aspect: '2/3', color: '#887868', img: 'families-portfolio-05.jpg' },
           ].map((item, i) => (
             <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
-              <img src={`${STORAGE}/${item.img}`} alt="" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${item.img}`} alt={`Family photography Cambridgeshire ${i + 1}`} fill sizes="320px" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>

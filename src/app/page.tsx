@@ -3,13 +3,13 @@ import Image from "next/image";
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
-function Img({ src, alt, zoom = false, priority = false }: { src: string; alt: string; zoom?: boolean; priority?: boolean }) {
+function Img({ src, alt, zoom = false, priority = false, sizes = "100vw" }: { src: string; alt: string; zoom?: boolean; priority?: boolean; sizes?: string }) {
   return (
     <>
       <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
         <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)', textAlign: 'center', padding: '0 1rem' }}>{src.split('/').pop()}</span>
       </div>
-      <Image src={src} alt={alt} fill sizes="100vw" priority={priority} className={zoom ? 'zoom-img' : undefined} style={{ objectFit: 'cover', zIndex: 1 }} />
+      <Image src={src} alt={alt} fill sizes={sizes} priority={priority} className={zoom ? 'zoom-img' : undefined} style={{ objectFit: 'cover', zIndex: 1 }} />
     </>
   );
 }
@@ -135,7 +135,7 @@ export default function Home() {
             { label: 'Papworth & Waterbeach', title: 'Studio Sessions', href: '/studio', color: '#1b3a5c', img: 'services-studio.jpg' },
           ].map((service) => (
             <Link key={service.href} href={service.href} className="home-service-card zoom-card" style={{ position: 'relative', display: 'block', backgroundColor: service.color, textDecoration: 'none' }}>
-              <Img src={`${STORAGE}/${service.img}`} alt={`${service.title} photography Cambridgeshire`} zoom />
+              <Img src={`${STORAGE}/${service.img}`} alt={`${service.title} photography Cambridgeshire`} zoom sizes="(max-width: 640px) 50vw, (max-width: 900px) 50vw, 25vw" />
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, transparent 55%)', zIndex: 2 }} />
               <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1rem 1.2rem', zIndex: 3 }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)', marginBottom: '0.3rem' }}>{service.label}</p>
@@ -306,7 +306,7 @@ export default function Home() {
               { tag: 'Enquire · Larger projects', name: 'Waterbeach', desc: 'Available for extended shoots, multiple outfits, outdoor combinations, video and bespoke commercial projects. Please get in touch to discuss.', color: '#162d4a', img: 'studio-waterbeach-hero.jpg', cta: 'Enquire about Waterbeach →', ctaHref: '/enquire' },
             ].map((studio) => (
               <div key={studio.name} className="zoom-card" style={{ position: 'relative', aspectRatio: '16/9', backgroundColor: studio.color }}>
-                <Img src={`${STORAGE}/${studio.img}`} alt={`${studio.name} photography studio`} zoom />
+                <Img src={`${STORAGE}/${studio.img}`} alt={`${studio.name} photography studio`} zoom sizes="(max-width: 900px) 100vw, 50vw" />
                 <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.95) 0%, rgba(13,27,42,0.3) 60%, transparent 100%)', zIndex: 2 }} />
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 1.8rem', zIndex: 3 }}>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', display: 'block', marginBottom: '0.4rem' }}>{studio.tag}</span>

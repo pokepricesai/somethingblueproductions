@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 const navLinks = [
   { label: 'Weddings', href: '/weddings' },
@@ -172,7 +173,7 @@ export default function Nav() {
 
         {/* Logo */}
         <Link href="/" style={{ textDecoration: 'none', display: 'block', lineHeight: 0 }}>
-          <img src="/logo.png" alt="Something Blue Productions" className={`nav-logo ${scrolled ? 'nav-logo-scrolled' : 'nav-logo-top'}`} />
+          <Image src="/logo.png" alt="Something Blue Productions" width={180} height={36} priority className={`nav-logo ${scrolled ? 'nav-logo-scrolled' : 'nav-logo-top'}`} />
         </Link>
 
         {/* Desktop links */}
