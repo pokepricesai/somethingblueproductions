@@ -272,7 +272,7 @@ export default function Home() {
           </div>
           <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px', alignSelf: 'flex-end' }}>View all work</Link>
         </div>
-        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', padding: '0 1.5rem', justifyContent: 'safe center' }}>
           {[
             { w: '180px', aspect: '2/3', color: '#8a6848', img: 'portfolio-strip-01.jpg', sizes: '180px' },
             { w: '280px', aspect: '3/2', color: '#a08870', img: 'portfolio-strip-02.jpg', sizes: '280px' },

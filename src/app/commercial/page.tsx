@@ -138,7 +138,7 @@ export default function CommercialPage() {
           </div>
           <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all</Link>
         </div>
-        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', padding: '0 1.5rem', justifyContent: 'safe center' }}>
           {[
             { w: '220px', aspect: '2/3', color: '#3a3020', img: 'commercial-portfolio-01.jpg' },
             { w: '320px', aspect: '3/2', color: '#1b2a3a', img: 'commercial-portfolio-02.jpg' },

@@ -122,7 +122,7 @@ export default function WeddingsPage() {
           </div>
           <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all weddings</Link>
         </div>
-        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', padding: '0 1.5rem', justifyContent: 'safe center' }}>
           {[
             { w: '200px', aspect: '2/3', color: '#8a6848', img: 'weddings-portfolio-01.jpg' },
             { w: '320px', aspect: '3/2', color: '#a08070', img: 'weddings-portfolio-02.jpg' },

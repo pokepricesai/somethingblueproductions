@@ -139,7 +139,7 @@ export default function PerformancePage() {
 
       {/* ── GALLERY STRIP ── */}
       <section style={{ padding: '3rem 0', backgroundColor: '#F5F0E8' }}>
-        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', padding: '0 1.5rem', justifyContent: 'safe center' }}>
           {[
             { w: '220px', aspect: '2/3', color: '#1b2a3a', img: 'commercial-performance-portfolio-01.jpg' },
             { w: '320px', aspect: '3/2', color: '#243040', img: 'commercial-performance-portfolio-02.jpg' },

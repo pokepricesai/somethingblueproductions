@@ -148,7 +148,7 @@ export default function MaternityPage() {
           </div>
           <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all maternity sessions</Link>
         </div>
-        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', paddingLeft: '1.5rem' }}>
+        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', padding: '0 1.5rem', justifyContent: 'safe center' }}>
           {[
             { w: '200px', aspect: '3/4', color: '#c0a8b0', img: 'maternity-portfolio-01.jpg' },
             { w: '300px', aspect: '4/3', color: '#b0a8b8', img: 'maternity-portfolio-02.jpg' },
