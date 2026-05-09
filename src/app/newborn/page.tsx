@@ -16,9 +16,54 @@ export const metadata: Metadata = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const NEWBORN_FAQS = [
+  { q: 'When should we book?', a: "During pregnancy, ideally around 20–30 weeks. We provisionally hold your date and confirm the actual session time once your baby arrives. This ensures you get the best timing — ideally within the first two weeks." },
+  { q: 'What is the best age for newborn photos?', a: "The first 5–14 days are ideal. Babies sleep more deeply at this age which makes the session calmer. That said, we have photographed babies up to 4 weeks with beautiful results — it's always worth getting in touch." },
+  { q: 'How long does a session take?', a: "Allow 2–3 hours. There's no fixed end time — we work at your baby's pace. Feeds, nappy changes, and settling time are all built in naturally." },
+  { q: 'Is it safe?', a: "Safety is our absolute first priority. We never place babies in positions they're not comfortable with. All posing is gentle, natural, and checked throughout. We have experience with babies of all sizes and temperaments." },
+  { q: 'What should we bring?', a: "Just yourselves and your baby. We provide all props, wraps, and accessories. If you have a special item you'd like to include — a toy, a blanket, a letter — you're very welcome to bring it." },
+  { q: 'Can siblings be included?', a: "Absolutely — and we recommend it. Sibling introduction portraits are some of the most treasured images from a newborn session. We allocate time for these in all our packages." },
+  { q: 'Do you offer combined newborn and maternity packages?', a: "Yes. Booking both together saves money and means we already know you before your baby arrives. See our Bump to Baby packages for full details." },
+];
+
+const newbornServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://something-blue-productions.com/newborn#service',
+  serviceType: 'Newborn Photography',
+  name: 'Newborn Photography Cambridge & Cambridgeshire',
+  description: 'Gentle, unhurried newborn photography in our Papworth Everard and Waterbeach studios, or in your home. Baby-led sessions in a calm, warm environment.',
+  provider: { '@id': 'https://something-blue-productions.com/#organization' },
+  areaServed: [
+    { '@type': 'City', name: 'Cambridge' },
+    { '@type': 'City', name: 'Ely' },
+    { '@type': 'City', name: 'Huntingdon' },
+    { '@type': 'AdministrativeArea', name: 'Cambridgeshire' },
+  ],
+  url: 'https://something-blue-productions.com/newborn',
+};
+
+const newbornFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: NEWBORN_FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
 export default function NewbornPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(newbornServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(newbornFaqSchema) }}
+      />
       <style>{`
         .n-pad { padding: 3rem 1.5rem; }
         .n-hero-content { padding: 0 1.5rem 6rem; }
@@ -292,15 +337,7 @@ export default function NewbornPage() {
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Newborn photography FAQs</h2>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {[
-              { q: 'When should we book?', a: "During pregnancy, ideally around 20–30 weeks. We provisionally hold your date and confirm the actual session time once your baby arrives. This ensures you get the best timing — ideally within the first two weeks." },
-              { q: 'What is the best age for newborn photos?', a: "The first 5–14 days are ideal. Babies sleep more deeply at this age which makes the session calmer. That said, we have photographed babies up to 4 weeks with beautiful results — it's always worth getting in touch." },
-              { q: 'How long does a session take?', a: "Allow 2–3 hours. There's no fixed end time — we work at your baby's pace. Feeds, nappy changes, and settling time are all built in naturally." },
-              { q: 'Is it safe?', a: "Safety is our absolute first priority. We never place babies in positions they're not comfortable with. All posing is gentle, natural, and checked throughout. We have experience with babies of all sizes and temperaments." },
-              { q: 'What should we bring?', a: "Just yourselves and your baby. We provide all props, wraps, and accessories. If you have a special item you'd like to include — a toy, a blanket, a letter — you're very welcome to bring it." },
-              { q: 'Can siblings be included?', a: "Absolutely — and we recommend it. Sibling introduction portraits are some of the most treasured images from a newborn session. We allocate time for these in all our packages." },
-              { q: 'Do you offer combined newborn and maternity packages?', a: "Yes. Booking both together saves money and means we already know you before your baby arrives. See our Bump to Baby packages for full details." },
-            ].map((faq, i) => (
+            {NEWBORN_FAQS.map((faq, i) => (
               <div key={i} style={{ padding: '1.5rem 0', borderBottom: '1px solid #DDD5C0' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.6rem' }}>{faq.q}</p>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', lineHeight: 1.75 }}>

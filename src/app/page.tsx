@@ -199,6 +199,9 @@ export default function Home() {
             <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
               Book a session →
             </Link>
+            <Link href="/packages" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(232,221,181,0.25)', color: 'rgba(232,221,181,0.6)', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
+              See all packages
+            </Link>
             <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(232,221,181,0.25)', color: 'rgba(232,221,181,0.6)', padding: '0.9rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
               About the studio
             </Link>
@@ -274,15 +277,15 @@ export default function Home() {
         </div>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', padding: '0 1.5rem', justifyContent: 'safe center' }}>
           {[
-            { w: '180px', aspect: '2/3', color: '#8a6848', img: 'portfolio-strip-01.jpg', sizes: '180px' },
-            { w: '280px', aspect: '3/2', color: '#a08870', img: 'portfolio-strip-02.jpg', sizes: '280px' },
-            { w: '180px', aspect: '2/3', color: '#6a9090', img: 'portfolio-strip-03.jpg', sizes: '180px' },
-            { w: '230px', aspect: '4/3', color: '#b0a090', img: 'portfolio-strip-04.jpg', sizes: '230px' },
-            { w: '180px', aspect: '2/3', color: '#8090a0', img: 'portfolio-strip-05.jpg', sizes: '180px' },
-            { w: '230px', aspect: '4/3', color: '#a09080', img: 'portfolio-strip-06.jpg', sizes: '230px' },
+            { w: '180px', aspect: '2/3', color: '#8a6848', img: 'portfolio-strip-01.jpg', sizes: '180px', alt: 'Wedding photography Cambridge — couple portrait' },
+            { w: '280px', aspect: '3/2', color: '#a08870', img: 'portfolio-strip-02.jpg', sizes: '280px', alt: 'Family photography Cambridgeshire — natural lifestyle session' },
+            { w: '180px', aspect: '2/3', color: '#6a9090', img: 'portfolio-strip-03.jpg', sizes: '180px', alt: 'Newborn photography Papworth Everard studio' },
+            { w: '230px', aspect: '4/3', color: '#b0a090', img: 'portfolio-strip-04.jpg', sizes: '230px', alt: 'Maternity photography Cambridgeshire' },
+            { w: '180px', aspect: '2/3', color: '#8090a0', img: 'portfolio-strip-05.jpg', sizes: '180px', alt: 'Wedding day candid moment — Cambridge' },
+            { w: '230px', aspect: '4/3', color: '#a09080', img: 'portfolio-strip-06.jpg', sizes: '230px', alt: 'Family portrait outdoors — Cambridgeshire' },
           ].map((item, i) => (
             <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
-              <Image src={`${STORAGE}/${item.img}`} alt="Something Blue Productions portfolio" fill sizes={item.sizes} style={{ objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${item.img}`} alt={item.alt} fill sizes={item.sizes} style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>
@@ -300,6 +303,10 @@ export default function Home() {
               A warm, controlled indoor space changes what&apos;s possible.
             </p>
           </div>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(232,221,181,0.5)', lineHeight: 1.75, maxWidth: '720px', marginBottom: '2rem' }}>
+            We work out of two studios in Cambridgeshire — Papworth Everard and Waterbeach — and travel for weddings and outdoor sessions across{' '}
+            <Link href="/locations" style={{ color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)' }}>Cambridge, Ely, Huntingdon and beyond</Link>.
+          </p>
           <div className="home-studios-grid">
             {[
               { tag: 'Book online · From £99', name: 'Papworth Everard', desc: 'Our bookable studio for couple, maternity, newborn, family and headshot sessions. Choose your date and pay instantly online.', color: '#1b3a5c', img: 'studio-papworth-hero.jpg', cta: 'Book a session →', ctaHref: '/book' },

@@ -145,15 +145,15 @@ export default function AboutPage() {
           </div>
           <div className="a-bts-grid" style={{ marginBottom: '2rem' }}>
             {[
-              { img: 'about-behind-scenes-01.jpg', color: '#4a6070' },
-              { img: 'about-behind-scenes-02.jpg', color: '#3a5060' },
-              { img: 'about-behind-scenes-03.jpg', color: '#506070' },
+              { img: 'about-behind-scenes-01.jpg', color: '#4a6070', alt: 'Samantha photographing a wedding in Cambridgeshire' },
+              { img: 'about-behind-scenes-02.jpg', color: '#3a5060', alt: 'Behind the scenes at the Papworth Everard photography studio' },
+              { img: 'about-behind-scenes-03.jpg', color: '#506070', alt: 'Luke filming a wedding ceremony in Cambridge' },
             ].map((item, i) => (
               <div key={i} style={{ aspectRatio: '4/3', backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
                 <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
                 </div>
-                <Image src={`${STORAGE}/${item.img}`} alt={`Behind the scenes ${i + 1} — Something Blue Productions`} fill sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" style={{ objectFit: 'cover', zIndex: 1 }} />
+                <Image src={`${STORAGE}/${item.img}`} alt={item.alt} fill sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" style={{ objectFit: 'cover', zIndex: 1 }} />
               </div>
             ))}
           </div>

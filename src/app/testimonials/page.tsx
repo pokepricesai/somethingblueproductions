@@ -114,9 +114,26 @@ const testimonials = [
   },
 ];
 
+const testimonialsSchema = testimonials.map((t) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Review',
+  reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5' },
+  author: { '@type': 'Person', name: t.name },
+  reviewBody: t.quote,
+  itemReviewed: {
+    '@type': 'Service',
+    name: t.service,
+    provider: { '@id': 'https://something-blue-productions.com/#organization' },
+  },
+}));
+
 export default function TestimonialsPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(testimonialsSchema) }}
+      />
       <style>{`
         .t-pad { padding: 3rem 1.5rem; }
         .t-hero { padding: 8rem 1.5rem 4rem; }

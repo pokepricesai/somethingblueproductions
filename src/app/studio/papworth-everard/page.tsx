@@ -16,9 +16,50 @@ export const metadata: Metadata = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const papworthLocalBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'PhotographyBusiness',
+  '@id': 'https://something-blue-productions.com/studio/papworth-everard#localbusiness',
+  name: 'Something Blue Productions — Papworth Everard Studio',
+  parentOrganization: { '@id': 'https://something-blue-productions.com/#organization' },
+  url: 'https://something-blue-productions.com/studio/papworth-everard',
+  image: 'https://something-blue-productions.com/logo.png',
+  telephone: '+447765253340',
+  email: 'hello@something-blue-productions.com',
+  priceRange: '££',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Papworth Everard',
+    addressLocality: 'Cambridge',
+    addressRegion: 'Cambridgeshire',
+    postalCode: 'CB23',
+    addressCountry: 'GB',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 52.2436,
+    longitude: -0.1088,
+  },
+  areaServed: [
+    { '@type': 'City', name: 'Cambridge' },
+    { '@type': 'City', name: 'Huntingdon' },
+    { '@type': 'City', name: 'St Neots' },
+    { '@type': 'AdministrativeArea', name: 'Cambridgeshire' },
+  ],
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday'], opens: '19:00', closes: '22:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Thursday', 'Friday'], opens: '09:00', closes: '22:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '10:00', closes: '22:00' },
+  ],
+};
+
 export default function PapworthStudioPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(papworthLocalBusinessSchema) }}
+      />
       <style>{`
         .pe-pad { padding: 3rem 1.5rem; }
         .pe-hero-content { padding: 0 1.5rem 6rem; }

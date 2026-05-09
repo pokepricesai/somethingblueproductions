@@ -16,9 +16,40 @@ export const metadata: Metadata = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const commercialServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://something-blue-productions.com/commercial#service',
+  serviceType: 'Commercial Photography',
+  name: 'Commercial Photography Cambridge',
+  description: 'Brand photography, performance & show photography, and creative headshots across Cambridge and Cambridgeshire. Professional results for businesses, performers and creatives.',
+  provider: { '@id': 'https://something-blue-productions.com/#organization' },
+  areaServed: [
+    { '@type': 'City', name: 'Cambridge' },
+    { '@type': 'City', name: 'Ely' },
+    { '@type': 'City', name: 'Huntingdon' },
+    { '@type': 'City', name: 'Peterborough' },
+    { '@type': 'AdministrativeArea', name: 'Cambridgeshire' },
+  ],
+  url: 'https://something-blue-productions.com/commercial',
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Commercial Services',
+    itemListElement: [
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Brand Photography', url: 'https://something-blue-productions.com/commercial/brand' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Performance Photography', url: 'https://something-blue-productions.com/commercial/performance' } },
+      { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Headshot Photography', url: 'https://something-blue-productions.com/commercial/headshots' } },
+    ],
+  },
+};
+
 export default function CommercialPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(commercialServiceSchema) }}
+      />
       <style>{`
         .c-pad { padding: 3rem 1.5rem; }
         .c-hero-content { padding: 0 1.5rem 6rem; }
@@ -88,7 +119,7 @@ export default function CommercialPage() {
               Every commercial project is quoted individually
             </p>
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>
-              Tell us your brief and we'll come back with a clear, itemised quote. No surprises.
+              Tell us your brief and we&apos;ll come back with a clear, itemised quote. No surprises.
             </p>
           </div>
           <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>

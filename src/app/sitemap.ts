@@ -8,62 +8,96 @@ const supabase = createClient(
 
 const BASE = 'https://something-blue-productions.com';
 
+// Bump when the static page in question is meaningfully updated.
+// Honest lastModified dates help Google's freshness signal — generating
+// `new Date()` on every build looks like spam and slows crawl.
+const PAGE_LAST_MODIFIED: Record<string, string> = {
+  '/': '2026-05-09',
+  '/weddings': '2026-05-09',
+  '/packages': '2026-05-09',
+  '/families': '2026-05-01',
+  '/newborn': '2026-05-01',
+  '/maternity': '2026-05-01',
+  '/studio': '2026-05-01',
+  '/studio/papworth-everard': '2026-05-01',
+  '/studio/waterbeach': '2026-05-01',
+  '/commercial': '2026-05-01',
+  '/commercial/brand': '2026-05-01',
+  '/commercial/performance': '2026-05-01',
+  '/commercial/headshots': '2026-05-01',
+  '/portfolio': '2026-05-01',
+  '/about': '2026-05-01',
+  '/journal': '2026-05-01',
+  '/locations': '2026-05-01',
+  '/enquire': '2026-05-01',
+  '/prints': '2026-05-01',
+  '/testimonials': '2026-05-01',
+};
+
+const lm = (path: string) => new Date(PAGE_LAST_MODIFIED[path] ?? '2026-05-01');
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticPages: MetadataRoute.Sitemap = [
-    { url: BASE, lastModified: new Date(), changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${BASE}/weddings`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${BASE}/families`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${BASE}/newborn`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.9 },
-    { url: `${BASE}/maternity`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE}/studio`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE}/studio/papworth-everard`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE}/studio/waterbeach`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE}/commercial`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${BASE}/commercial/brand`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${BASE}/commercial/performance`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${BASE}/commercial/headshots`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${BASE}/portfolio`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.8 },
-    { url: `${BASE}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${BASE}/journal`, lastModified: new Date(), changeFrequency: 'weekly', priority: 0.7 },
-    { url: `${BASE}/locations`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.7 },
-    { url: `${BASE}/enquire`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-  { url: `${BASE}/packages`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.8 },
-{ url: `${BASE}/prints`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
-{ url: `${BASE}/testimonials`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.6 },
+    { url: BASE, lastModified: lm('/'), changeFrequency: 'weekly', priority: 1.0 },
+    { url: `${BASE}/weddings`, lastModified: lm('/weddings'), changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${BASE}/families`, lastModified: lm('/families'), changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${BASE}/newborn`, lastModified: lm('/newborn'), changeFrequency: 'monthly', priority: 0.9 },
+    { url: `${BASE}/maternity`, lastModified: lm('/maternity'), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/studio`, lastModified: lm('/studio'), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/studio/papworth-everard`, lastModified: lm('/studio/papworth-everard'), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/studio/waterbeach`, lastModified: lm('/studio/waterbeach'), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/commercial`, lastModified: lm('/commercial'), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/commercial/brand`, lastModified: lm('/commercial/brand'), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/commercial/performance`, lastModified: lm('/commercial/performance'), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/commercial/headshots`, lastModified: lm('/commercial/headshots'), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/portfolio`, lastModified: lm('/portfolio'), changeFrequency: 'weekly', priority: 0.8 },
+    { url: `${BASE}/about`, lastModified: lm('/about'), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/journal`, lastModified: lm('/journal'), changeFrequency: 'weekly', priority: 0.7 },
+    { url: `${BASE}/locations`, lastModified: lm('/locations'), changeFrequency: 'monthly', priority: 0.7 },
+    { url: `${BASE}/enquire`, lastModified: lm('/enquire'), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${BASE}/packages`, lastModified: lm('/packages'), changeFrequency: 'monthly', priority: 0.8 },
+    { url: `${BASE}/prints`, lastModified: lm('/prints'), changeFrequency: 'monthly', priority: 0.6 },
+    { url: `${BASE}/testimonials`, lastModified: lm('/testimonials'), changeFrequency: 'monthly', priority: 0.6 },
   ];
 
+  const fallback = new Date('2026-05-01');
+
   const { data: locations } = await supabase.from('locations').select('slug');
-  const locationPages: MetadataRoute.Sitemap = (locations || []).map((loc: { slug: string }) => ({
-    url: `${BASE}/locations/${loc.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.7,
-  }));
+  const locationPages: MetadataRoute.Sitemap = (locations || []).map(
+    (loc: { slug: string }) => ({
+      url: `${BASE}/locations/${loc.slug}`,
+      lastModified: fallback,
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })
+  );
 
   const { data: locationServicePages } = await supabase
     .from('location_pages')
     .select('slug')
     .eq('published', true);
-  const serviceLocationPages: MetadataRoute.Sitemap = (locationServicePages || []).map((p: { slug: string }) => ({
-    url: `${BASE}/${p.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
+  const serviceLocationPages: MetadataRoute.Sitemap = (locationServicePages || []).map(
+    (p: { slug: string }) => ({
+      url: `${BASE}/${p.slug}`,
+      lastModified: fallback,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })
+  );
 
-  // Journal posts from Supabase
   const { data: posts } = await supabase
     .from('posts')
     .select('slug, published_at')
     .eq('published', true);
 
-  const journalPages: MetadataRoute.Sitemap = (posts || []).map((post) => ({
-    url: `${BASE}/journal/${post.slug}`,
-    lastModified: post.published_at ? new Date(post.published_at) : new Date(),
-    changeFrequency: 'monthly' as const,
-    priority: 0.6,
-  }));
+  const journalPages: MetadataRoute.Sitemap = (posts || []).map(
+    (post: { slug: string; published_at?: string | null }) => ({
+      url: `${BASE}/journal/${post.slug}`,
+      lastModified: post.published_at ? new Date(post.published_at) : fallback,
+      changeFrequency: 'monthly' as const,
+      priority: 0.6,
+    })
+  );
 
   return [...staticPages, ...locationPages, ...serviceLocationPages, ...journalPages];
 }

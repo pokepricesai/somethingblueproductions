@@ -65,6 +65,20 @@ async function getRelatedPosts(category: string, currentSlug: string): Promise<P
   }
 }
 
+export async function generateStaticParams() {
+  try {
+    const res = await fetch(
+      `${supabaseUrl}/rest/v1/posts?select=slug&published=eq.true`,
+      { headers: { apikey: supabaseKey, Authorization: `Bearer ${supabaseKey}` } }
+    );
+    if (!res.ok) return [];
+    const posts: { slug: string }[] = await res.json();
+    return posts.map((p) => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
+}
+
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
   const { slug } = await params;
   const post = await getPost(slug);

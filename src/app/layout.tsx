@@ -116,6 +116,13 @@ const organizationSchema = {
   sameAs: [
     'https://www.instagram.com/somethingblue.productions',
   ],
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '5.0',
+    reviewCount: '14',
+    bestRating: '5',
+    worstRating: '5',
+  },
   openingHoursSpecification: [
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday'], opens: '19:00', closes: '22:00' },
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Thursday', 'Friday'], opens: '09:00', closes: '22:00' },

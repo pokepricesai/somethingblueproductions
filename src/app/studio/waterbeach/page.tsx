@@ -16,9 +16,50 @@ export const metadata: Metadata = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const waterbeachLocalBusinessSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'PhotographyBusiness',
+  '@id': 'https://something-blue-productions.com/studio/waterbeach#localbusiness',
+  name: 'Something Blue Productions — Waterbeach Studio',
+  parentOrganization: { '@id': 'https://something-blue-productions.com/#organization' },
+  url: 'https://something-blue-productions.com/studio/waterbeach',
+  image: 'https://something-blue-productions.com/logo.png',
+  telephone: '+447765253340',
+  email: 'hello@something-blue-productions.com',
+  priceRange: '££',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Waterbeach',
+    addressLocality: 'Cambridge',
+    addressRegion: 'Cambridgeshire',
+    postalCode: 'CB25',
+    addressCountry: 'GB',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 52.2683,
+    longitude: 0.1933,
+  },
+  areaServed: [
+    { '@type': 'City', name: 'Cambridge' },
+    { '@type': 'City', name: 'Ely' },
+    { '@type': 'City', name: 'Waterbeach' },
+    { '@type': 'AdministrativeArea', name: 'Cambridgeshire' },
+  ],
+  openingHoursSpecification: [
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday'], opens: '19:00', closes: '22:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Thursday', 'Friday'], opens: '09:00', closes: '22:00' },
+    { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Saturday', 'Sunday'], opens: '10:00', closes: '22:00' },
+  ],
+};
+
 export default function WaterbeachStudioPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(waterbeachLocalBusinessSchema) }}
+      />
       <style>{`
         .wb-pad { padding: 3rem 1.5rem; }
         .wb-hero-content { padding: 0 1.5rem 6rem; }

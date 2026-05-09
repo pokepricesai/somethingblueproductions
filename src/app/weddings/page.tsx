@@ -16,9 +16,60 @@ export const metadata: Metadata = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const WEDDING_FAQS = [
+  { q: 'How far in advance should we book?', a: "Most couples book 9–18 months in advance, particularly for summer dates. That said, we do sometimes have availability at shorter notice — it's always worth getting in touch." },
+  { q: 'Do you travel outside Cambridgeshire?', a: "Yes. We cover weddings across the UK and occasionally internationally. Travel costs are discussed transparently at enquiry stage — there are no surprises." },
+  { q: 'How long until we receive our photos?', a: "Your full edited gallery is delivered within 6 weeks of your wedding. We also send a small selection of highlights within 48 hours so you have something to share straight away." },
+  { q: 'Can we have both photography and video?', a: "Yes — Samantha shoots photography and Luke shoots video. We offer combined packages that work out better value than booking separately, and mean both work as a coordinated team on the day." },
+  { q: 'Do you do engagement or pre-wedding shoots?', a: "Yes, and we recommend them. It's a chance to get comfortable with us before the wedding day — and they're included free with both our Half Day and Full Day wedding packages." },
+  { q: 'Are you insured?', a: "Yes. We carry full professional indemnity and public liability insurance. Venue documentation available on request." },
+];
+
+const weddingServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://something-blue-productions.com/weddings#service',
+  serviceType: 'Wedding Photography & Videography',
+  name: 'Wedding Photography & Videography Cambridge',
+  description: 'Natural, documentary-style wedding photography and cinematic videography across Cambridge, Cambridgeshire and the UK. Half Day from £600, Full Day from £900.',
+  provider: { '@id': 'https://something-blue-productions.com/#organization' },
+  areaServed: [
+    { '@type': 'City', name: 'Cambridge' },
+    { '@type': 'City', name: 'Ely' },
+    { '@type': 'City', name: 'Huntingdon' },
+    { '@type': 'City', name: 'Peterborough' },
+    { '@type': 'City', name: 'Bedford' },
+    { '@type': 'City', name: 'St Neots' },
+    { '@type': 'AdministrativeArea', name: 'Cambridgeshire' },
+  ],
+  url: 'https://something-blue-productions.com/weddings',
+  offers: [
+    { '@type': 'Offer', name: 'Half Day Wedding', price: '600', priceCurrency: 'GBP', url: 'https://something-blue-productions.com/weddings' },
+    { '@type': 'Offer', name: 'Full Day Wedding', price: '900', priceCurrency: 'GBP', url: 'https://something-blue-productions.com/weddings' },
+  ],
+};
+
+const weddingFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: WEDDING_FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
 export default function WeddingsPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(weddingServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(weddingFaqSchema) }}
+      />
       <style>{`
         .w-pad { padding: 3rem 1.5rem; }
         .w-services-grid { display: grid; grid-template-columns: 1fr; gap: 2px; }
@@ -124,17 +175,17 @@ export default function WeddingsPage() {
         </div>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', padding: '0 1.5rem', justifyContent: 'safe center' }}>
           {[
-            { w: '200px', aspect: '2/3', color: '#8a6848', img: 'weddings-portfolio-01.jpg' },
-            { w: '320px', aspect: '3/2', color: '#a08070', img: 'weddings-portfolio-02.jpg' },
-            { w: '200px', aspect: '2/3', color: '#7a5848', img: 'weddings-portfolio-03.jpg' },
-            { w: '260px', aspect: '4/3', color: '#906858', img: 'weddings-portfolio-04.jpg' },
-            { w: '200px', aspect: '2/3', color: '#8a7060', img: 'weddings-portfolio-05.jpg' },
+            { w: '200px', aspect: '2/3', color: '#8a6848', img: 'weddings-portfolio-01.jpg', alt: 'Cambridge wedding photography — couple portrait' },
+            { w: '320px', aspect: '3/2', color: '#a08070', img: 'weddings-portfolio-02.jpg', alt: 'Cambridgeshire wedding ceremony — natural documentary photography' },
+            { w: '200px', aspect: '2/3', color: '#7a5848', img: 'weddings-portfolio-03.jpg', alt: 'Wedding day candid moment — Something Blue Productions' },
+            { w: '260px', aspect: '4/3', color: '#906858', img: 'weddings-portfolio-04.jpg', alt: 'Wedding reception photography Cambridge' },
+            { w: '200px', aspect: '2/3', color: '#8a7060', img: 'weddings-portfolio-05.jpg', alt: 'Bridal portrait — natural wedding photography Cambridgeshire' },
           ].map((item, i) => (
             <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
               <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
               </div>
-              <Image src={`${STORAGE}/${item.img}`} alt={`Wedding photography ${i + 1}`} fill sizes="320px" style={{ objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/${item.img}`} alt={item.alt} fill sizes="320px" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           ))}
         </div>
@@ -278,14 +329,7 @@ export default function WeddingsPage() {
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Wedding FAQs</h2>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {[
-              { q: 'How far in advance should we book?', a: "Most couples book 9–18 months in advance, particularly for summer dates. That said, we do sometimes have availability at shorter notice — it's always worth getting in touch." },
-              { q: 'Do you travel outside Cambridgeshire?', a: "Yes. We cover weddings across the UK and occasionally internationally. Travel costs are discussed transparently at enquiry stage — there are no surprises." },
-              { q: 'How long until we receive our photos?', a: "Your full edited gallery is delivered within 6 weeks of your wedding. We also send a small selection of highlights within 48 hours so you have something to share straight away." },
-              { q: 'Can we have both photography and video?', a: "Yes — Samantha shoots photography and Luke shoots video. We offer combined packages that work out better value than booking separately, and mean both work as a coordinated team on the day." },
-              { q: 'Do you do engagement or pre-wedding shoots?', a: "Yes, and we recommend them. It's a chance to get comfortable with us before the wedding day — and they're included free with both our Half Day and Full Day wedding packages." },
-              { q: 'Are you insured?', a: "Yes. We carry full professional indemnity and public liability insurance. Venue documentation available on request." },
-            ].map((faq, i) => (
+            {WEDDING_FAQS.map((faq, i) => (
               <div key={i} style={{ padding: '1.5rem 0', borderBottom: '1px solid #DDD5C0' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.6rem' }}>{faq.q}</p>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', lineHeight: 1.75 }}>{faq.a}</p>

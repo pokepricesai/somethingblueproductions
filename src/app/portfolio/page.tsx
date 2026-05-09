@@ -146,7 +146,7 @@ export default function PortfolioPage() {
         <div onClick={closeLightbox} style={{ position: 'fixed', inset: 0, zIndex: 999, backgroundColor: 'rgba(13,27,42,0.97)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
           <button onClick={closeLightbox} style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: 'rgba(245,240,232,0.6)', fontSize: '1.8rem', cursor: 'pointer', lineHeight: 1, padding: '0.5rem' }}>×</button>
           <div onClick={e => e.stopPropagation()} style={{ position: 'relative', width: '90vw', height: '80vh', maxWidth: '1200px' }}>
-            <Image src={lightbox.src} alt={lightbox.label} fill sizes="90vw" style={{ objectFit: 'contain' }} />
+            <Image src={lightbox.src} alt={`${lightbox.label} photography in ${lightbox.location} by Something Blue Productions`} fill sizes="90vw" style={{ objectFit: 'contain' }} />
           </div>
           <div onClick={e => e.stopPropagation()} style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', marginTop: '1.5rem' }}>
             <button className="lightbox-btn" onClick={goPrev} disabled={currentIndex <= 0}>←</button>
@@ -169,6 +169,22 @@ export default function PortfolioPage() {
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.95rem', lineHeight: 1.8, color: 'rgba(245,240,232,0.55)', maxWidth: '500px' }}>
             Weddings, families, newborn, maternity, and commercial work across Cambridge and Cambridgeshire. Every image is a real session, with real people.
+          </p>
+        </div>
+      </section>
+
+      {/* ── INTRO ── */}
+      <section className="port-pad" style={{ backgroundColor: '#F5F0E8' }}>
+        <div style={{ maxWidth: '720px', margin: '0 auto' }}>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>Our approach</p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1rem, 1.5vw, 1.2rem)', lineHeight: 1.9, color: '#2C2820', textTransform: 'none', marginBottom: '1.5rem' }}>
+            We document the day, we don&apos;t direct it. The work below is a cross-section of how we shoot — quietly, naturally, and with an eye for the moments people don&apos;t notice they&apos;re making.
+          </p>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1rem' }}>
+            Most of these images are from sessions in and around Cambridgeshire — weddings in Ely and Cambridge, family sessions in Huntingdon and St Ives, newborn and maternity work in our Papworth Everard and Waterbeach studios, and commercial shoots across the county. Click any image to see it full-size, or filter by category below.
+          </p>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550' }}>
+            Every session here was photographed by Samantha Clark, with film work by Luke Pierce. These are real clients, in real moments — never staged for the camera.
           </p>
         </div>
       </section>
@@ -227,6 +243,27 @@ export default function PortfolioPage() {
               </Link>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* ── LOCATIONS SERVED ── */}
+      <section className="port-pad" style={{ backgroundColor: '#F5F0E8' }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.75rem' }}>Where we work</p>
+          <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none', marginBottom: '1.2rem' }}>Cambridge, Cambridgeshire and beyond</h2>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.9rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1rem' }}>
+            Most of the work shown here is from sessions in{' '}
+            <Link href="/locations/cambridge" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Cambridge</Link>,{' '}
+            <Link href="/locations/ely" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Ely</Link>,{' '}
+            <Link href="/locations/huntingdon" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Huntingdon</Link>, St Ives, Newmarket and Peterborough — plus our two photography studios in{' '}
+            <Link href="/studio/papworth-everard" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Papworth Everard</Link>{' '}and{' '}
+            <Link href="/studio/waterbeach" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Waterbeach</Link>. We travel anywhere in the UK for weddings and commercial work, and reach internationally for select projects.
+          </p>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.9rem', lineHeight: 1.85, color: '#5c5550' }}>
+            Want to see more? Read our journal, browse{' '}
+            <Link href="/locations" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>locations we cover</Link>, or check our{' '}
+            <Link href="/packages" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>packages page</Link> for pricing.
+          </p>
         </div>
       </section>
 

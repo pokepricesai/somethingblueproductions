@@ -16,9 +16,53 @@ export const metadata: Metadata = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const MATERNITY_FAQS = [
+  { q: 'When is the best time to book?', a: "We recommend booking between 20–28 weeks to secure your preferred date and give us time to plan properly. Sessions themselves work best at 28–36 weeks." },
+  { q: 'What should I wear?', a: "We send all clients a full styling guide when they book. In general: flowing fabrics, neutral tones, and anything that makes you feel confident and comfortable. Many clients choose to hire maternity gowns for studio sessions — we can recommend suppliers." },
+  { q: 'Can my partner and children be included?', a: "Absolutely. We always recommend including your partner if you have one — couple portraits during pregnancy are beautiful and often under-appreciated. Children can be included for part of the session if they are old enough to cooperate briefly." },
+  { q: 'Studio or outdoor — which do you recommend?', a: "Both produce stunning results. Studio gives you more control and is weather-proof. Outdoor has a natural, seasonal feel that many clients love. If you're unsure, we're happy to discuss what would suit you best." },
+  { q: 'Do you offer maternity and newborn together?', a: "Yes — and we recommend it. Booking both together saves money, and having the same photographer for both sessions creates a beautifully consistent set of images from this whole chapter of your family's life." },
+  { q: 'How will I receive my images?', a: "Via a private online gallery, usually within 3 weeks. All edited images are included — no per-image charges, no selecting a limited set. Every edited image is yours to download and keep." },
+];
+
+const maternityServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://something-blue-productions.com/maternity#service',
+  serviceType: 'Maternity Photography',
+  name: 'Maternity Photography Cambridge & Cambridgeshire',
+  description: 'Beautiful, elegant maternity photography in our Papworth Everard and Waterbeach studios, or outdoors across Cambridgeshire. Best between 28–36 weeks.',
+  provider: { '@id': 'https://something-blue-productions.com/#organization' },
+  areaServed: [
+    { '@type': 'City', name: 'Cambridge' },
+    { '@type': 'City', name: 'Ely' },
+    { '@type': 'City', name: 'Huntingdon' },
+    { '@type': 'AdministrativeArea', name: 'Cambridgeshire' },
+  ],
+  url: 'https://something-blue-productions.com/maternity',
+};
+
+const maternityFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: MATERNITY_FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
 export default function MaternityPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(maternityServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(maternityFaqSchema) }}
+      />
       <style>{`
         .m-pad { padding: 3rem 1.5rem; }
         .m-hero-content { padding: 0 1.5rem 6rem; }
@@ -295,14 +339,7 @@ export default function MaternityPage() {
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Maternity FAQs</h2>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {[
-              { q: 'When is the best time to book?', a: "We recommend booking between 20–28 weeks to secure your preferred date and give us time to plan properly. Sessions themselves work best at 28–36 weeks." },
-              { q: 'What should I wear?', a: "We send all clients a full styling guide when they book. In general: flowing fabrics, neutral tones, and anything that makes you feel confident and comfortable. Many clients choose to hire maternity gowns for studio sessions — we can recommend suppliers." },
-              { q: 'Can my partner and children be included?', a: "Absolutely. We always recommend including your partner if you have one — couple portraits during pregnancy are beautiful and often under-appreciated. Children can be included for part of the session if they are old enough to cooperate briefly." },
-              { q: 'Studio or outdoor — which do you recommend?', a: "Both produce stunning results. Studio gives you more control and is weather-proof. Outdoor has a natural, seasonal feel that many clients love. If you're unsure, we're happy to discuss what would suit you best." },
-              { q: 'Do you offer maternity and newborn together?', a: "Yes — and we recommend it. Booking both together saves money, and having the same photographer for both sessions creates a beautifully consistent set of images from this whole chapter of your family's life." },
-              { q: 'How will I receive my images?', a: "Via a private online gallery, usually within 3 weeks. All edited images are included — no per-image charges, no selecting a limited set. Every edited image is yours to download and keep." },
-            ].map((faq, i) => (
+            {MATERNITY_FAQS.map((faq, i) => (
               <div key={i} style={{ padding: '1.5rem 0', borderBottom: '1px solid #DDD5C0' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.6rem' }}>{faq.q}</p>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', lineHeight: 1.75 }}>{faq.a}</p>

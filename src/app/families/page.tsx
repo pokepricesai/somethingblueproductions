@@ -16,9 +16,57 @@ export const metadata: Metadata = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const FAMILY_FAQS = [
+  { q: "What if my kids won't cooperate?", a: "They almost always do — eventually. We're used to it. The uncooperative moments often make the best images. We never force anything and we never rush." },
+  { q: 'What age works best for family sessions?', a: "All ages work well. Newborns are a special case (see our newborn page). For family sessions with young children, 18 months+ is generally easiest, but we've successfully photographed every age." },
+  { q: 'Indoor or outdoor — which is better?', a: "Both have their strengths. Outdoor sessions have more space and natural movement. Studio sessions give beautiful controlled light and are weather-proof. Our Papworth Everard studio can be booked online from £199 for 3+ people." },
+  { q: 'How long does a session take?', a: "Studio family sessions are 60 minutes. Outdoor sessions typically run 90 minutes to 2 hours. We build in time for a slow start — no one needs to be ready the moment we arrive." },
+  { q: 'What should we wear?', a: "We send all booked clients a full styling guide with their confirmation. Generally: coordinate rather than match, avoid large logos, and dress for comfort. Earth tones and blues work particularly well with our editing style." },
+  { q: 'When will we get our photos?', a: "Your full edited gallery is delivered within 3 weeks of your session. All images included — no choosing a limited set, no per-image charges." },
+];
+
+const familyServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://something-blue-productions.com/families#service',
+  serviceType: 'Family Photography',
+  name: 'Family Photography Cambridge & Cambridgeshire',
+  description: 'Natural, relaxed family photography across Cambridge and Cambridgeshire. Outdoor lifestyle sessions and studio shoots from £199. All images included.',
+  provider: { '@id': 'https://something-blue-productions.com/#organization' },
+  areaServed: [
+    { '@type': 'City', name: 'Cambridge' },
+    { '@type': 'City', name: 'Ely' },
+    { '@type': 'City', name: 'Huntingdon' },
+    { '@type': 'AdministrativeArea', name: 'Cambridgeshire' },
+  ],
+  url: 'https://something-blue-productions.com/families',
+  offers: [
+    { '@type': 'Offer', name: 'Family Studio Session', price: '199', priceCurrency: 'GBP', url: 'https://something-blue-productions.com/book' },
+    { '@type': 'Offer', name: 'Family Outdoor Session', price: '250', priceCurrency: 'GBP', url: 'https://something-blue-productions.com/enquire' },
+  ],
+};
+
+const familyFaqSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAMILY_FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
 export default function FamiliesPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(familyServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(familyFaqSchema) }}
+      />
       <style>{`
         .f-pad { padding: 3rem 1.5rem; }
         .f-hero-content { padding: 0 1.5rem 6rem; }
@@ -276,14 +324,7 @@ export default function FamiliesPage() {
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Family session FAQs</h2>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            {[
-              { q: "What if my kids won't cooperate?", a: "They almost always do — eventually. We're used to it. The uncooperative moments often make the best images. We never force anything and we never rush." },
-              { q: 'What age works best for family sessions?', a: "All ages work well. Newborns are a special case (see our newborn page). For family sessions with young children, 18 months+ is generally easiest, but we've successfully photographed every age." },
-              { q: 'Indoor or outdoor — which is better?', a: "Both have their strengths. Outdoor sessions have more space and natural movement. Studio sessions give beautiful controlled light and are weather-proof. Our Papworth Everard studio can be booked online from £199 for 3+ people." },
-              { q: 'How long does a session take?', a: "Studio family sessions are 60 minutes. Outdoor sessions typically run 90 minutes to 2 hours. We build in time for a slow start — no one needs to be ready the moment we arrive." },
-              { q: 'What should we wear?', a: "We send all booked clients a full styling guide with their confirmation. Generally: coordinate rather than match, avoid large logos, and dress for comfort. Earth tones and blues work particularly well with our editing style." },
-              { q: 'When will we get our photos?', a: "Your full edited gallery is delivered within 3 weeks of your session. All images included — no choosing a limited set, no per-image charges." },
-            ].map((faq, i) => (
+            {FAMILY_FAQS.map((faq, i) => (
               <div key={i} style={{ padding: '1.5rem 0', borderBottom: '1px solid #DDD5C0' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.6rem' }}>{faq.q}</p>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', lineHeight: 1.75 }}>{faq.a}</p>
