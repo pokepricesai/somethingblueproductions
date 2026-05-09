@@ -147,7 +147,7 @@ export default function WeddingsPage() {
             <div>
               <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.3rem' }}>Before the wedding</p>
               <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.05rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.3rem' }}>Engagement sessions</p>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', lineHeight: 1.65, maxWidth: '400px' }}>Get comfortable in front of the camera before your wedding day. Engagement sessions are included in our Full Day and Full Day with Film packages, or available to add to any package.</p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#9E9282', lineHeight: 1.65, maxWidth: '400px' }}>Get comfortable in front of the camera before your wedding day. Engagement sessions are included free with both our Half Day and Full Day packages, or available to add as a standalone session.</p>
             </div>
             <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', background: '#1B3A5C', color: '#E8DDB5', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', flexShrink: 0 }}>Enquire about an engagement shoot →</Link>
           </div>
@@ -222,22 +222,22 @@ export default function WeddingsPage() {
               {
                 name: 'Half Day',
                 price: 'From £600',
-                priceSub: 'Photos only £600 · Photos + Video £800',
-                includes: ['Up to 5 hours coverage', 'Fully edited photos', 'Free engagement shoot', 'Optional cinematic video'],
+                priceSub: 'Photo £600 · Video £800 · Both £1,200',
+                includes: ['Up to 5 hours coverage', 'Fully edited photos or film', 'Free engagement shoot', 'Choose photo, video or both'],
                 highlight: false,
               },
               {
                 name: 'Full Day',
                 price: 'From £900',
-                priceSub: 'Photos only £900 · Photos + Video £1,200',
-                includes: ['Getting ready to first dance', 'Fully edited photos', 'Optional cinematic video', 'Free engagement shoot'],
+                priceSub: 'Photo £900 · Video £1,200 · Both £1,800',
+                includes: ['Getting ready to first dance', 'Fully edited photos or film', 'Free engagement shoot', 'Choose photo, video or both'],
                 highlight: true,
               },
               {
-                name: 'Full Day with Film',
-                price: '£2,000',
-                priceSub: 'Photos + Video included',
-                includes: ['Getting ready to first dance', 'Fully edited photos', '10-minute cinematic film', '1-minute social media cut', 'Free engagement shoot'],
+                name: 'Extras & Add-Ons',
+                price: 'Tailored',
+                priceSub: 'Built around your day',
+                includes: ['Extended editing & longer films', 'Drone footage', 'Additional camera operators', 'Second shooter coverage', 'Albums & fine art prints'],
                 highlight: false,
               },
             ].map((pkg) => (
@@ -283,7 +283,7 @@ export default function WeddingsPage() {
               { q: 'Do you travel outside Cambridgeshire?', a: "Yes. We cover weddings across the UK and occasionally internationally. Travel costs are discussed transparently at enquiry stage — there are no surprises." },
               { q: 'How long until we receive our photos?', a: "Your full edited gallery is delivered within 6 weeks of your wedding. We also send a small selection of highlights within 48 hours so you have something to share straight away." },
               { q: 'Can we have both photography and video?', a: "Yes — Samantha shoots photography and Luke shoots video. We offer combined packages that work out better value than booking separately, and mean both work as a coordinated team on the day." },
-              { q: 'Do you do engagement or pre-wedding shoots?', a: "Yes, and we recommend them. It's a chance to get comfortable with us before the wedding day — and they're included free with our Full Day and Full Day with Film packages." },
+              { q: 'Do you do engagement or pre-wedding shoots?', a: "Yes, and we recommend them. It's a chance to get comfortable with us before the wedding day — and they're included free with both our Half Day and Full Day wedding packages." },
               { q: 'Are you insured?', a: "Yes. We carry full professional indemnity and public liability insurance. Venue documentation available on request." },
             ].map((faq, i) => (
               <div key={i} style={{ padding: '1.5rem 0', borderBottom: '1px solid #DDD5C0' }}>
