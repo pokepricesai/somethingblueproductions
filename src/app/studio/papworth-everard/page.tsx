@@ -3,12 +3,12 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Papworth Everard Photography Studio | Something Blue Productions",
-  description: "Our warm, professional photography studio in Papworth Everard, Cambridgeshire. Newborn, family, maternity, headshots and brand photography. Easy access from Cambridge, Huntingdon and the A14.",
+  title: "Photography Studio in Papworth Everard, Cambridgeshire | Something Blue Productions",
+  description: "Our photography studio in Papworth Everard (CB23) — facilities, parking, access from Cambridge and the A14, and the session types we host here. Book from £99.",
   alternates: { canonical: "/studio/papworth-everard" },
   openGraph: {
-    title: "Papworth Everard Photography Studio | Something Blue Productions",
-    description: "Our warm, professional photography studio in Papworth Everard, Cambridgeshire.",
+    title: "Photography Studio in Papworth Everard, Cambridgeshire | Something Blue Productions",
+    description: "Facilities, parking, access, and studio session types at our Papworth Everard photography studio.",
     url: "https://something-blue-productions.com/studio/papworth-everard",
     type: "website",
   },
@@ -92,12 +92,13 @@ export default function PapworthStudioPage() {
         </div>
         <Image src={`${STORAGE}/studio-papworth-hero.jpg`} alt="Papworth Everard photography studio" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="pe-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Studio · Papworth Everard · CB23</p>
-          <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Papworth Everard{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>Studio.</span>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>The studio · Papworth Everard · CB23</p>
+          <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '760px' }}>
+            <span aria-hidden="true">Papworth Everard{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>Studio.</span></span>
+            <span style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Photography studio in Papworth Everard, Cambridgeshire</span>
           </h1>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '440px' }}>
-            Our main studio in Cambridgeshire. Warm, airy, and set up for newborn, family and maternity sessions. Accessible from Cambridge, Huntingdon and the A14 corridor.
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '480px' }}>
+            Our photography studio in Papworth Everard, Cambridgeshire — a warm, private, purpose-built space for newborn, family, maternity, couples and headshot sessions. Easy access from Cambridge, Huntingdon and the A14.
           </p>
           <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.85)', textDecoration: 'none', borderBottom: '1px solid rgba(245,240,232,0.35)', paddingBottom: '3px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             Book a session →
@@ -233,12 +234,12 @@ export default function PapworthStudioPage() {
           </div>
           <div className="pe-sessions-grid" style={{ gap: '2px' }}>
             {[
-              { title: 'Newborn Photography', desc: 'Baby-led sessions in our warm studio. Most popular use of this space.', href: '/newborn' },
+              { title: 'Newborn Photography', desc: 'Baby-led sessions in the warm studio. Most popular use of this space.', href: '/newborn' },
               { title: 'Family Photography', desc: 'Beautiful indoor family sessions. Great for winter and younger children.', href: '/families' },
               { title: 'Maternity Photography', desc: 'Elegant maternity portraits in a private, comfortable space.', href: '/maternity' },
+              { title: 'Couples & Engagement', desc: 'Relaxed studio portraits for couples and engagement sessions.', href: '/engagement' },
               { title: 'Headshots', desc: 'Professional headshots for individuals and small teams.', href: '/commercial/headshots' },
               { title: 'Brand Photography', desc: 'Product and brand photography for local businesses.', href: '/commercial/brand' },
-              { title: 'Mini Sessions', desc: 'Seasonal shorter sessions at a reduced rate.', href: '/enquire' },
             ].map((s) => (
               <Link key={s.title} href={s.href} style={{ padding: '1.8rem', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.08)', textDecoration: 'none', display: 'block' }}>
                 <h3 style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.85rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.5rem' }}>{s.title}</h3>

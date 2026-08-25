@@ -129,10 +129,11 @@ export default function Footer() {
           <Link href="/families" className="footer-link">Family Photography</Link>
           <Link href="/newborn" className="footer-link">Newborn Photography</Link>
           <Link href="/maternity" className="footer-link">Maternity Photography</Link>
+          <Link href="/engagement" className="footer-link">Engagement &amp; Couples</Link>
           <Link href="/studio" className="footer-link">Studio Sessions</Link>
+          <Link href="/gift-vouchers" className="footer-link">Gift Vouchers</Link>
           <Link href="/commercial" className="footer-link">Commercial</Link>
           <Link href="/commercial/headshots" className="footer-link">Headshots</Link>
-          <Link href="/commercial/performance" className="footer-link">Performance Photography</Link>
           <Link href="/prints" className="footer-link">Prints</Link>
         </div>
 

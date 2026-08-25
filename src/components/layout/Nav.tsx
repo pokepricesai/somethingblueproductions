@@ -13,14 +13,26 @@ const navLinks = [
       { label: 'Family Photography', href: '/families' },
       { label: 'Newborn Photography', href: '/newborn' },
       { label: 'Maternity Photography', href: '/maternity' },
+      { label: 'Engagement & Couples', href: '/engagement' },
     ],
   },
   {
     label: 'Studio',
     href: '/studio',
     dropdown: [
-      { label: 'About the studio', href: '/studio/papworth-everard' },
+      { label: 'Studio sessions', href: '/studio' },
+      { label: 'Papworth Everard studio', href: '/studio/papworth-everard' },
       { label: 'Book a session', href: '/book' },
+    ],
+  },
+  {
+    label: 'Gifts',
+    href: '/gift-vouchers',
+    dropdown: [
+      { label: 'All gift vouchers', href: '/gift-vouchers' },
+      { label: 'Newborn gift', href: '/gift-vouchers/newborn' },
+      { label: 'Family gift', href: '/gift-vouchers/family' },
+      { label: 'Couples gift', href: '/gift-vouchers/engagement' },
     ],
   },
   {

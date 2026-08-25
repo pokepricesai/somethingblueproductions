@@ -3,12 +3,12 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Studio Photography Sessions Cambridge | Something Blue Productions",
-  description: "Warm, professional photography studio in Papworth Everard, near Cambridge. Newborn, family, maternity, headshots and brand photography — indoors, whatever the weather. Book from £99.",
+  title: "Studio Photography Sessions | Something Blue Productions",
+  description: "Newborn, family, maternity, couples, headshots and brand studio photography sessions with Something Blue Productions. Session types, what's included, and how to choose. Book from £99.",
   alternates: { canonical: "/studio" },
   openGraph: {
-    title: "Studio Photography Sessions Cambridge | Something Blue Productions",
-    description: "Warm, professional photography studio in Papworth Everard, near Cambridge.",
+    title: "Studio Photography Sessions | Something Blue Productions",
+    description: "Session types, what's included, and how to choose your studio photography session.",
     url: "https://something-blue-productions.com/studio",
     type: "website",
   },
@@ -60,12 +60,13 @@ export default function StudioPage() {
         </div>
         <Image src={`${STORAGE}/studio-hero.jpg`} alt="Studio photography Cambridge" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="s-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Studio Photography · Papworth Everard</p>
-          <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Warm, private,{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>and yours.</span>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Studio Photography Sessions</p>
+          <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '760px' }}>
+            <span aria-hidden="true">Warm, private,{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>and yours.</span></span>
+            <span style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Studio photography sessions with Something Blue Productions</span>
           </h1>
-          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '440px' }}>
-            Our studio in Papworth Everard, Cambridgeshire. Newborn, family, maternity, headshots and brand photography — indoors, whatever the weather.
+          <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '520px' }}>
+            Newborn, family, maternity, couples, headshots and brand sessions in our Papworth Everard studio. Beautiful controlled light, warm all year round, and unhurried — whatever the weather.
           </p>
           <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.85)', textDecoration: 'none', borderBottom: '1px solid rgba(245,240,232,0.35)', paddingBottom: '3px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             Book a studio session →
@@ -86,30 +87,19 @@ export default function StudioPage() {
         </div>
       </section>
 
-      {/* ── STUDIO SPOTLIGHT ── */}
+      {/* ── STUDIO LOCATION LINK ── */}
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          <div style={{ backgroundColor: '#0d1b2a', overflow: 'hidden' }}>
-            <div style={{ aspectRatio: '16/9', backgroundColor: '#1b3a5c', position: 'relative', overflow: 'hidden' }}>
-              <Image src={`${STORAGE}/studio-papworth-interior-01.jpg`} alt="Papworth Everard photography studio interior" fill sizes="(max-width: 900px) 100vw, 1100px" style={{ objectFit: 'cover', zIndex: 1 }} />
+          <Link href="/studio/papworth-everard" style={{ display: 'block', backgroundColor: '#0d1b2a', overflow: 'hidden', textDecoration: 'none', padding: '2.5rem 2rem' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', maxWidth: '640px' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>The studio · Papworth Everard · CB23</p>
+              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.75rem' }}>Papworth Everard Studio</h2>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.65)', lineHeight: 1.75, marginBottom: '1.2rem' }}>Facilities, access, parking, travel times and studio imagery — full details on the studio location page.</p>
+              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#A8CAEC', borderBottom: '1px solid rgba(168,202,236,0.3)', paddingBottom: '2px', display: 'inline-flex', width: 'fit-content' }}>
+                Visit the studio page →
+              </span>
             </div>
-            <div style={{ padding: '2rem' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Papworth Everard · CB23</p>
-              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.7rem' }}>Our studio</h2>
-              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.55)', lineHeight: 1.75, marginBottom: '1.2rem', maxWidth: '640px' }}>Warm, airy, and set up for newborn, family and maternity sessions. Accessible from Cambridge, Huntingdon and the A14 corridor.</p>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.5rem 1rem', marginBottom: '1.5rem' }}>
-                {['Heated for newborn sessions', 'Natural and artificial lighting', 'Parking directly outside', 'Accessible from A14 and Cambridge', 'Props and backdrops provided', 'Private — no other clients during your session'].map((f) => (
-                  <div key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                    <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#A8CAEC', flexShrink: 0, display: 'inline-block' }} />
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'rgba(245,240,232,0.55)' }}>{f}</p>
-                  </div>
-                ))}
-              </div>
-              <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)', paddingBottom: '2px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                Full studio details →
-              </Link>
-            </div>
-          </div>
+          </Link>
         </div>
       </section>
 
@@ -149,12 +139,12 @@ export default function StudioPage() {
           </div>
           <div className="s-sessions-grid">
             {[
-              { title: 'Newborn', desc: 'Baby-led sessions in our warm, calm studio. The most popular use of our studio spaces.', href: '/newborn', color: '#c8b8a0', img: 'studio-session-newborn.jpg' },
+              { title: 'Newborn', desc: 'Baby-led studio sessions in a warm, calm space. The most popular use of the studio.', href: '/newborn', color: '#c8b8a0', img: 'studio-session-newborn.jpg' },
               { title: 'Family', desc: 'Indoor family sessions with beautiful controlled light. Great for winter and younger children.', href: '/families', color: '#a0b0a0', img: 'studio-session-family.jpg' },
-              { title: 'Maternity', desc: 'Elegant maternity portraits. Studio light flatters beautifully and sessions are private and comfortable.', href: '/maternity', color: '#b0a8b8', img: 'studio-session-maternity.jpg' },
+              { title: 'Maternity', desc: 'Elegant maternity portraits. Studio light flatters beautifully; sessions are private and comfortable.', href: '/maternity', color: '#b0a8b8', img: 'studio-session-maternity.jpg' },
+              { title: 'Couples & Engagement', desc: 'Relaxed studio portraits for couples and engagement sessions. Simple, natural, unhurried.', href: '/engagement', color: '#b8a0b0', img: 'studio-session-mini.jpg' },
               { title: 'Headshots', desc: 'Professional headshots for individuals and teams. Clean, modern results in a relaxed environment.', href: '/commercial/headshots', color: '#a8b8c8', img: 'studio-session-headshots.jpg' },
               { title: 'Brand & Small Business', desc: 'Product, brand and business photography. Consistent, commercial-quality results.', href: '/commercial/brand', color: '#b8a898', img: 'studio-session-brand.jpg' },
-              { title: 'Mini Sessions', desc: 'Shorter, seasonal sessions at a reduced rate. Perfect for quick updates or gifts.', href: '/enquire', color: '#c0b8a8', img: 'studio-session-mini.jpg' },
             ].map((session) => (
               <Link key={session.title} href={session.href} className="zoom-card" style={{ textDecoration: 'none', display: 'block' }}>
                 <div style={{ aspectRatio: '3/2', backgroundColor: session.color, marginBottom: '1rem', position: 'relative' }}>
@@ -175,7 +165,7 @@ export default function StudioPage() {
       <section style={{ padding: '0 0 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="s-strip-header" style={{ marginBottom: '1.5rem', padding: '0 1.5rem' }}>
           <div>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>From the studios</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.4rem' }}>From the studio</p>
             <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#2C2820', textTransform: 'none' }}>Studio work</h2>
           </div>
           <Link href="/portfolio" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', textDecoration: 'none', borderBottom: '1px solid #DDD5C0', paddingBottom: '2px' }}>View all studio work</Link>
@@ -208,10 +198,10 @@ export default function StudioPage() {
           </div>
           <div className="s-features-grid" style={{ gap: '2px' }}>
             {[
-              { title: 'Heated throughout', desc: "Both studios are kept warm — especially important for newborn sessions. You'll be comfortable from the moment you arrive." },
-              { title: 'Natural & studio lighting', desc: "We have both large windows for soft natural light and professional studio lighting for complete control in any conditions." },
+              { title: 'Heated throughout', desc: "The studio is kept warm year-round — especially important for newborn sessions. You'll be comfortable from the moment you arrive." },
+              { title: 'Natural & studio lighting', desc: "Large windows for soft natural light and a full studio lighting setup for complete control in any conditions." },
               { title: 'Props & backdrops', desc: "A full range of props, wraps, backdrops and accessories are provided. You don't need to bring anything beyond yourselves." },
-              { title: 'Private & relaxed', desc: "Both studios are private spaces. No other clients, no rushing between bookings. Your session is yours from start to finish." },
+              { title: 'Private & relaxed', desc: "The studio is a private space. No other clients, no rushing between bookings. Your session is yours from start to finish." },
             ].map((item) => (
               <div key={item.title} style={{ padding: '2rem 1.5rem', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.08)' }}>
                 <div style={{ width: '24px', height: '1px', backgroundColor: '#A8CAEC', marginBottom: '1.2rem' }} />
