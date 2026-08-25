@@ -46,10 +46,7 @@ export default function BrandPage() {
       {/* ── HERO ── */}
       <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#3a3020', minHeight: '80svh' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>commercial-brand-hero.jpg</span>
-        </div>
-        <Image src={`${STORAGE}/commercial-brand-hero.jpg`} alt="Brand photography Cambridge" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
+        <Image src={`${STORAGE}/commercial-hero.jpg`} alt="Something Blue Productions commercial photography" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="b-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Brand & Business Photography · Cambridge</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
@@ -74,14 +71,11 @@ export default function BrandPage() {
                 Small businesses, independent brands, and local businesses who need photography that actually represents what they do — not generic stock images or rushed phone shots.
               </p>
               <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550' }}>
-                We work with product businesses, service businesses, hospitality, retail, creative studios, and anyone who needs consistent, professional images for their website, social media, or marketing. We can also use both studio spaces for product and brand work.
+                We work with product businesses, service businesses, hospitality, retail, creative studios, and anyone who needs consistent, professional images for their website, social media, or marketing. We can also use our studio for product and brand work.
               </p>
             </div>
             <div style={{ aspectRatio: '4/3', backgroundColor: '#3a3020', overflow: 'hidden', position: 'relative' }}>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>commercial-brand-intro.jpg</span>
-              </div>
-              <Image src={`${STORAGE}/commercial-brand-intro.jpg`} alt="Brand photography Cambridge example" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
+              <Image src={`${STORAGE}/commercial-brand-card.jpg`} alt="Something Blue Productions brand photography" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>

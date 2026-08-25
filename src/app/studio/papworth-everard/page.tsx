@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
   },
 };
 
-const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
 const papworthLocalBusinessSchema = {
   '@context': 'https://schema.org',
@@ -85,12 +83,8 @@ export default function PapworthStudioPage() {
       `}</style>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#1b3a5c', minHeight: '75svh' }}>
+      <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#1b3a5c', minHeight: '75svh', backgroundImage: 'radial-gradient(ellipse at 25% 35%, rgba(168,202,236,0.18) 0%, transparent 55%), radial-gradient(ellipse at 75% 70%, rgba(232,221,181,0.08) 0%, transparent 55%)' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>studio-papworth-hero.jpg</span>
-        </div>
-        <Image src={`${STORAGE}/studio-papworth-hero.jpg`} alt="Papworth Everard photography studio" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="pe-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>The studio · Papworth Everard · CB23</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '760px' }}>
@@ -123,12 +117,15 @@ export default function PapworthStudioPage() {
               </p>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              {['studio-papworth-room-01.jpg', 'studio-papworth-room-02.jpg'].map((img) => (
-                <div key={img} style={{ aspectRatio: '4/3', backgroundColor: '#1b3a5c', position: 'relative', overflow: 'hidden' }}>
-                  <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{img}</span>
+              {[
+                { label: 'Natural light', tag: 'Large windows' },
+                { label: 'Studio lighting', tag: 'Full setup available' },
+              ].map((tile) => (
+                <div key={tile.label} style={{ aspectRatio: '4/3', backgroundColor: '#1b3a5c', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem', backgroundImage: 'radial-gradient(ellipse at 30% 30%, rgba(232,221,181,0.10) 0%, transparent 55%), radial-gradient(ellipse at 70% 70%, rgba(168,202,236,0.10) 0%, transparent 55%)' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.7)', marginBottom: '0.6rem' }}>{tile.label}</p>
+                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.7rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(232,221,181,0.55)' }}>{tile.tag}</p>
                   </div>
-                  <Image src={`${STORAGE}/${img}`} alt="Papworth Everard studio interior" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
                 </div>
               ))}
             </div>
@@ -215,11 +212,23 @@ export default function PapworthStudioPage() {
                 ))}
               </div>
             </div>
-            <div style={{ aspectRatio: '16/9', backgroundColor: '#a8b8c8', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(27,58,92,0.4)', textAlign: 'center' }}>studio-papworth-location.jpg</span>
+            <div style={{ backgroundColor: '#FAF8F2', border: '1px solid #DDD5C0', padding: '2rem' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.8rem' }}>Address · CB23</p>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '1.5rem' }}>Papworth Everard, Cambridgeshire</p>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', lineHeight: 1.8, marginBottom: '1.5rem' }}>
+                Full address, postcode and directions are shared by email when your session is confirmed. Parking is directly outside the studio.
+              </p>
+              <div style={{ borderTop: '1px solid #DDD5C0', paddingTop: '1.5rem' }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.6rem' }}>Good to know</p>
+                <ul style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: '0.55rem' }}>
+                  {['Free parking directly outside', 'Kept warm year-round', 'Private — no other clients during your session', 'Props, wraps and backdrops provided'].map((item) => (
+                    <li key={item} style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', display: 'flex', alignItems: 'flex-start', gap: '0.6rem' }}>
+                      <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#1B3A5C', display: 'inline-block', marginTop: '0.55rem', flexShrink: 0 }} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
               </div>
-              <Image src={`${STORAGE}/studio-papworth-location.jpg`} alt="Papworth Everard location map" fill sizes="(max-width: 900px) 100vw, 600px" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>

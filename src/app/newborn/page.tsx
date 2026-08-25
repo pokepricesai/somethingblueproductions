@@ -193,15 +193,14 @@ export default function NewbornPage() {
           </div>
           <div className="n-options-grid" style={{ marginBottom: '1rem' }}>
             {[
-              { title: 'Papworth Everard Studio', sub: 'Cambridgeshire · CB23', desc: 'Our warm, airy studio space near Cambridge. Accessible from Huntingdon, the A14 corridor, and Cambridge city. The most popular option for newborn sessions.', href: '/studio/papworth-everard', color: '#1b3a5c', img: 'studio-papworth-hero.jpg' },
-              { title: 'Your Home', sub: 'Cambridgeshire & surrounding areas', desc: 'Prefer to stay at home? We can come to you. Home sessions have a beautiful natural feel — your own light, your own surroundings. Available within Cambridgeshire.', href: '/enquire', color: '#4a3830', img: 'newborn-home-card.jpg' },
+              { title: 'Papworth Everard Studio', sub: 'Cambridgeshire · CB23', desc: 'Our warm, airy studio space near Cambridge. Accessible from Huntingdon, the A14 corridor, and Cambridge city. The most popular option for newborn sessions.', href: '/studio/papworth-everard', color: '#1b3a5c', img: null },
+              { title: 'Your Home', sub: 'Cambridgeshire & surrounding areas', desc: 'Prefer to stay at home? We can come to you. Home sessions have a beautiful natural feel — your own light, your own surroundings. Available within Cambridgeshire.', href: '/enquire', color: '#4a3830', img: 'newborn-portfolio-04.jpg' },
             ].map((opt) => (
-              <Link key={opt.title} href={opt.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '4/3', backgroundColor: opt.color, textDecoration: 'none' }}>
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 0 }}>
-                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{opt.img}</span>
-                </div>
-                <Image src={`${STORAGE}/${opt.img}`} alt={opt.title} fill sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" className="zoom-img" style={{ objectFit: 'cover', zIndex: 1 }} />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 55%)', zIndex: 2 }} />
+              <Link key={opt.title} href={opt.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '4/3', backgroundColor: opt.color, textDecoration: 'none', backgroundImage: opt.img ? undefined : 'radial-gradient(ellipse at 30% 40%, rgba(168,202,236,0.15) 0%, transparent 55%), radial-gradient(ellipse at 70% 70%, rgba(232,221,181,0.08) 0%, transparent 55%)' }}>
+                {opt.img && (
+                  <Image src={`${STORAGE}/${opt.img}`} alt={`Something Blue Productions — ${opt.title.toLowerCase()}`} fill sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" className="zoom-img" style={{ objectFit: 'cover', zIndex: 1 }} />
+                )}
+                <div style={{ position: 'absolute', inset: 0, background: opt.img ? 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, transparent 55%)' : 'linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 70%)', zIndex: 2 }} />
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 2rem', zIndex: 3 }}>
                   <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.7)', marginBottom: '0.3rem' }}>{opt.sub}</p>
                   <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1rem, 2vw, 1.4rem)', color: '#ffffff', textTransform: 'none', marginBottom: '0.6rem' }}>{opt.title}</h3>

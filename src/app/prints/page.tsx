@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
   },
 };
 
-const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
 export default function PrintsPage() {
   return (
@@ -48,12 +46,8 @@ export default function PrintsPage() {
       `}</style>
 
       {/* ── HERO ── */}
-      <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#2C2820', minHeight: '75svh' }}>
+      <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#2C2820', minHeight: '75svh', backgroundImage: 'radial-gradient(ellipse at 30% 40%, rgba(232,221,181,0.10) 0%, transparent 55%), radial-gradient(ellipse at 70% 65%, rgba(158,146,130,0.10) 0%, transparent 55%)' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.15) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>prints-hero.jpg</span>
-        </div>
-        <Image src={`${STORAGE}/prints-hero.jpg`} alt="Fine art photographic prints" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="pr-hero-content" style={{ position: 'relative', zIndex: 2 }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Prints &amp; Framing · Cambridgeshire</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
@@ -84,11 +78,12 @@ export default function PrintsPage() {
                 Prints are available to all Something Blue clients after their session — studio, wedding, family, newborn and maternity.
               </p>
             </div>
-            <div style={{ aspectRatio: '4/3', backgroundColor: '#2C2820', overflow: 'hidden', position: 'relative' }}>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>prints-intro.jpg</span>
+            <div style={{ aspectRatio: '4/3', backgroundColor: '#2C2820', overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem', backgroundImage: 'radial-gradient(ellipse at 30% 30%, rgba(232,221,181,0.10) 0%, transparent 55%), radial-gradient(ellipse at 70% 70%, rgba(158,146,130,0.08) 0%, transparent 55%)' }}>
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(232,221,181,0.55)', marginBottom: '0.8rem' }}>Handmade prints</p>
+                <p style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', color: '#E8DDB5', lineHeight: 1 }}>Lustre paper</p>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(232,221,181,0.4)', marginTop: '0.6rem' }}>Produced at our home studio</p>
               </div>
-              <Image src={`${STORAGE}/prints-intro.jpg`} alt="Fine art print detail" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
           </div>
         </div>

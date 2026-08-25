@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -14,7 +13,6 @@ export const metadata: Metadata = {
   },
 };
 
-const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
 export default function AboutPage() {
   return (
@@ -48,11 +46,7 @@ export default function AboutPage() {
       `}</style>
 
       {/* ── HERO ── */}
-      <section style={{ backgroundColor: '#0d1b2a', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.2)', textAlign: 'center' }}>about-hero.jpg</span>
-        </div>
-        <Image src={`${STORAGE}/about-hero.jpg`} alt="Something Blue Productions Cambridge photographer" fill priority sizes="100vw" style={{ objectFit: 'cover', opacity: 0.4 }} />
+      <section style={{ backgroundColor: '#0d1b2a', position: 'relative', overflow: 'hidden', backgroundImage: 'radial-gradient(ellipse at 20% 30%, rgba(168,202,236,0.12) 0%, transparent 55%), radial-gradient(ellipse at 80% 70%, rgba(232,221,181,0.06) 0%, transparent 55%)' }}>
         <div className="a-hero-content" style={{ position: 'relative', zIndex: 1, maxWidth: '700px' }}>
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>About Something Blue</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4rem)', lineHeight: 1.1, color: '#E8DDB5', textTransform: 'none', marginBottom: '1.5rem' }}>
@@ -70,19 +64,19 @@ export default function AboutPage() {
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="a-intro-grid">
 
-            {/* Photos */}
+            {/* Photos — decorative placeholders until portrait imagery is uploaded */}
             <div>
-              <div style={{ aspectRatio: '3/4', backgroundColor: '#4a6070', overflow: 'hidden', position: 'relative', marginBottom: '2px' }}>
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>about-samantha.jpg</span>
+              <div style={{ aspectRatio: '3/4', backgroundColor: '#4a6070', overflow: 'hidden', position: 'relative', marginBottom: '2px', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem', backgroundImage: 'radial-gradient(ellipse at 30% 30%, rgba(232,221,181,0.10) 0%, transparent 60%), radial-gradient(ellipse at 70% 75%, rgba(168,202,236,0.08) 0%, transparent 60%)' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(232,221,181,0.6)', marginBottom: '0.9rem' }}>Founder</p>
+                  <p style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2rem, 3.5vw, 2.8rem)', color: '#E8DDB5', lineHeight: 1 }}>Samantha</p>
                 </div>
-                <Image src={`${STORAGE}/about-samantha.jpg`} alt="Samantha Clark, photographer at Something Blue Productions" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
               </div>
-              <div style={{ aspectRatio: '16/9', backgroundColor: '#3a5060', overflow: 'hidden', position: 'relative' }}>
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>about-behind-scenes-01.jpg</span>
+              <div style={{ aspectRatio: '16/9', backgroundColor: '#3a5060', overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem', backgroundImage: 'radial-gradient(ellipse at 25% 40%, rgba(232,221,181,0.10) 0%, transparent 55%), radial-gradient(ellipse at 75% 65%, rgba(168,202,236,0.08) 0%, transparent 55%)' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(232,221,181,0.55)' }}>Something Blue Productions</p>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(232,221,181,0.4)', marginTop: '0.4rem' }}>Papworth Everard · Cambridgeshire</p>
                 </div>
-                <Image src={`${STORAGE}/about-behind-scenes-01.jpg`} alt="Behind the scenes of a Something Blue photography session" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
               </div>
             </div>
 
@@ -145,15 +139,15 @@ export default function AboutPage() {
           </div>
           <div className="a-bts-grid" style={{ marginBottom: '2rem' }}>
             {[
-              { img: 'about-behind-scenes-01.jpg', color: '#4a6070', alt: 'Samantha photographing a wedding in Cambridgeshire' },
-              { img: 'about-behind-scenes-02.jpg', color: '#3a5060', alt: 'Behind the scenes at the Papworth Everard photography studio' },
-              { img: 'about-behind-scenes-03.jpg', color: '#506070', alt: 'Luke filming a wedding ceremony in Cambridge' },
+              { color: '#4a6070', label: 'On location', tag: 'Weddings & families' },
+              { color: '#3a5060', label: 'In studio', tag: 'Newborn · maternity · headshots' },
+              { color: '#506070', label: 'On set', tag: 'Wedding video & commercial' },
             ].map((item, i) => (
-              <div key={i} style={{ aspectRatio: '4/3', backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
+              <div key={i} style={{ aspectRatio: '4/3', backgroundColor: item.color, overflow: 'hidden', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1.5rem', backgroundImage: 'radial-gradient(ellipse at 30% 30%, rgba(232,221,181,0.10) 0%, transparent 60%), radial-gradient(ellipse at 70% 75%, rgba(255,255,255,0.05) 0%, transparent 60%)' }}>
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(232,221,181,0.6)', marginBottom: '0.6rem' }}>{item.label}</p>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.7rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)' }}>{item.tag}</p>
                 </div>
-                <Image src={`${STORAGE}/${item.img}`} alt={item.alt} fill sizes="(max-width: 640px) 100vw, (max-width: 900px) 50vw, 33vw" style={{ objectFit: 'cover', zIndex: 1 }} />
               </div>
             ))}
           </div>

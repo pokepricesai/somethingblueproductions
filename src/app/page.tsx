@@ -164,11 +164,13 @@ export default function Home() {
       <section className="home-section-pad" style={{ backgroundColor: '#E8DDB5' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div className="home-about-grid">
-            <div style={{ aspectRatio: '4/3', backgroundColor: '#1b3a5c', position: 'relative', overflow: 'hidden' }}>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>about-samantha-luke.jpg</span>
+            <div style={{ aspectRatio: '4/3', backgroundColor: '#1b3a5c', position: 'relative', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+              <div style={{ textAlign: 'center' }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.28em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.7)', marginBottom: '1rem' }}>Behind the camera</p>
+                <p style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.2rem, 4vw, 3.2rem)', color: '#E8DDB5', lineHeight: 1, marginBottom: '1rem' }}>Samantha &amp; Luke</p>
+                <div style={{ width: '48px', height: '1px', backgroundColor: 'rgba(168,202,236,0.4)', margin: '0 auto 1rem' }} />
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.5)' }}>Papworth Everard · Cambridgeshire</p>
               </div>
-              <Image src={`${STORAGE}/about-samantha-luke.jpg`} alt="Samantha and Luke — Something Blue Productions" fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
             <div>
               <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.5rem' }}>Behind the camera</p>
@@ -278,12 +280,12 @@ export default function Home() {
         </div>
         <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', padding: '0 1.5rem', justifyContent: 'safe center' }}>
           {[
-            { w: '180px', aspect: '2/3', color: '#8a6848', img: 'portfolio-strip-01.jpg', sizes: '180px', alt: 'Wedding photography Cambridge — couple portrait' },
-            { w: '280px', aspect: '3/2', color: '#a08870', img: 'portfolio-strip-02.jpg', sizes: '280px', alt: 'Family photography Cambridgeshire — natural lifestyle session' },
-            { w: '180px', aspect: '2/3', color: '#6a9090', img: 'portfolio-strip-03.jpg', sizes: '180px', alt: 'Newborn photography Papworth Everard studio' },
-            { w: '230px', aspect: '4/3', color: '#b0a090', img: 'portfolio-strip-04.jpg', sizes: '230px', alt: 'Maternity photography Cambridgeshire' },
-            { w: '180px', aspect: '2/3', color: '#8090a0', img: 'portfolio-strip-05.jpg', sizes: '180px', alt: 'Wedding day candid moment — Cambridge' },
-            { w: '230px', aspect: '4/3', color: '#a09080', img: 'portfolio-strip-06.jpg', sizes: '230px', alt: 'Family portrait outdoors — Cambridgeshire' },
+            { w: '180px', aspect: '2/3', color: '#8a6848', img: 'weddings-portfolio-01.jpg', sizes: '180px', alt: 'Something Blue Productions portfolio — wedding photography' },
+            { w: '280px', aspect: '3/2', color: '#a08870', img: 'families-portfolio-02.jpg', sizes: '280px', alt: 'Something Blue Productions portfolio — family photography' },
+            { w: '180px', aspect: '2/3', color: '#6a9090', img: 'newborn-portfolio-01.jpg', sizes: '180px', alt: 'Something Blue Productions portfolio — newborn photography' },
+            { w: '230px', aspect: '4/3', color: '#b0a090', img: 'maternity-portfolio-03.jpg', sizes: '230px', alt: 'Something Blue Productions portfolio — maternity photography' },
+            { w: '180px', aspect: '2/3', color: '#8090a0', img: 'studio-portfolio-04.jpg', sizes: '180px', alt: 'Something Blue Productions portfolio — studio photography' },
+            { w: '230px', aspect: '4/3', color: '#a09080', img: 'weddings-portfolio-05.jpg', sizes: '230px', alt: 'Something Blue Productions portfolio — wedding photography' },
           ].map((item, i) => (
             <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
               <Image src={`${STORAGE}/${item.img}`} alt={item.alt} fill sizes={item.sizes} style={{ objectFit: 'cover', zIndex: 1 }} />
@@ -308,9 +310,8 @@ export default function Home() {
             Our studio is in Papworth Everard, Cambridgeshire — easy access from Cambridge, Huntingdon and the A14. We also travel for weddings and outdoor sessions across{' '}
             <Link href="/locations" style={{ color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)' }}>Cambridge, Ely, Huntingdon and beyond</Link>.
           </p>
-          <div className="zoom-card" style={{ position: 'relative', aspectRatio: '16/9', backgroundColor: '#1b3a5c' }}>
-            <Img src={`${STORAGE}/studio-papworth-hero.jpg`} alt="Papworth Everard photography studio near Cambridge" zoom sizes="100vw" />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.95) 0%, rgba(13,27,42,0.3) 60%, transparent 100%)', zIndex: 2 }} />
+          <div style={{ position: 'relative', aspectRatio: '16/9', backgroundColor: '#1b3a5c', backgroundImage: 'radial-gradient(ellipse at 30% 40%, rgba(168,202,236,0.15) 0%, transparent 55%), radial-gradient(ellipse at 70% 70%, rgba(232,221,181,0.08) 0%, transparent 55%)' }}>
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.85) 0%, rgba(13,27,42,0.35) 60%, transparent 100%)', zIndex: 2 }} />
             <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 1.8rem', zIndex: 3 }}>
               <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', display: 'block', marginBottom: '0.4rem' }}>Book online · From £99</span>
               <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.1rem, 2vw, 1.6rem)', color: '#E8DDB5', lineHeight: 1.2, marginBottom: '0.5rem', textTransform: 'none' }}>Papworth Everard</h3>
@@ -394,9 +395,9 @@ export default function Home() {
           </div>
           <div className="home-journal-grid">
             {[
-              { href: '/journal/what-to-expect-newborn-session', cat: 'Newborn', title: 'What to expect from your newborn photography session', excerpt: 'Everything you need to know before you come to the studio — timings, feeds, what to bring.', color: '#a08870', img: 'journal-hero-newborn-guide.jpg' },
-              { href: '/journal/best-places-family-photos-cambridge', cat: 'Families · Cambridge', title: 'The best places for family photography around Cambridge', excerpt: 'From the Backs to Wicken Fen — our honest guide to outdoor locations across Cambridgeshire.', color: '#7a9878', img: 'journal-hero-cambridge-locations.jpg' },
-              { href: '/journal/wedding-videography-worth-it', cat: 'Weddings', title: 'Is wedding videography worth it? Our honest answer', excerpt: "We're photographers and filmmakers. Here's what we actually think.", color: '#9088a8', img: 'journal-hero-wedding-video.jpg' },
+              { href: '/journal/what-to-expect-newborn-session', cat: 'Newborn', title: 'What to expect from your newborn photography session', excerpt: 'Everything you need to know before you come to the studio — timings, feeds, what to bring.', color: '#a08870', img: 'newborn-hero.jpg' },
+              { href: '/journal/best-places-family-photos-cambridge', cat: 'Families · Cambridge', title: 'The best places for family photography around Cambridge', excerpt: 'From the Backs to Wicken Fen — our honest guide to outdoor locations across Cambridgeshire.', color: '#7a9878', img: 'families-hero.jpg' },
+              { href: '/journal/wedding-videography-worth-it', cat: 'Weddings', title: 'Is wedding videography worth it? Our honest answer', excerpt: "We're photographers and filmmakers. Here's what we actually think.", color: '#9088a8', img: 'weddings-hero.jpg' },
             ].map((post) => (
               <Link key={post.href} href={post.href} className="zoom-card" style={{ textDecoration: 'none', display: 'block' }}>
                 <div style={{ aspectRatio: '3/2', backgroundColor: post.color, marginBottom: '1rem', position: 'relative' }}>

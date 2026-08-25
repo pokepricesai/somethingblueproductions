@@ -117,24 +117,18 @@ export default function HeadshotsPage() {
         </div>
       </section>
 
-      {/* GALLERY STRIP */}
-      <section style={{ padding: '3rem 0', backgroundColor: '#F5F0E8' }}>
-        <div style={{ display: 'flex', gap: '2px', overflowX: 'auto', scrollbarWidth: 'none', cursor: 'grab', padding: '0 1.5rem', maxWidth: '1100px', margin: '0 auto 1.5rem', justifyContent: 'safe center' }}>
-          {[
-            { w: '200px', aspect: '3/4', color: '#2a2030', img: 'commercial-headshots-portfolio-01.jpg' },
-            { w: '200px', aspect: '3/4', color: '#302830', img: 'commercial-headshots-portfolio-02.jpg' },
-            { w: '200px', aspect: '3/4', color: '#281828', img: 'commercial-headshots-portfolio-03.jpg' },
-            { w: '320px', aspect: '4/3', color: '#1b2a3a', img: 'commercial-headshots-portfolio-04.jpg' },
-            { w: '200px', aspect: '3/4', color: '#2a2838', img: 'commercial-headshots-portfolio-05.jpg' },
-            { w: '200px', aspect: '3/4', color: '#282030', img: 'commercial-headshots-portfolio-06.jpg' },
-          ].map((item, i) => (
-            <div key={i} style={{ flexShrink: 0, width: item.w, aspectRatio: item.aspect, backgroundColor: item.color, overflow: 'hidden', position: 'relative' }}>
-              <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center', padding: '0 0.5rem' }}>{item.img}</span>
-              </div>
-              <Image src={`${STORAGE}/${item.img}`} alt={`Creative headshot Cambridge ${i + 1}`} fill sizes="320px" style={{ objectFit: 'cover', zIndex: 1 }} />
-            </div>
-          ))}
+      {/* WHO WE PHOTOGRAPH */}
+      <section style={{ padding: '3rem 1.5rem', backgroundColor: '#F5F0E8' }}>
+        <div style={{ maxWidth: '900px', margin: '0 auto', textAlign: 'center' }}>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1.25rem' }}>Who we photograph</p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', justifyContent: 'center', marginBottom: '1.5rem' }}>
+            {['Actors', 'Performers', 'Models', 'Musicians', 'Dancers', 'Creatives', 'Business owners', 'Small teams'].map((who) => (
+              <span key={who} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.7rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#1B3A5C', backgroundColor: '#FAF8F2', border: '1px solid #DDD5C0', padding: '0.5rem 1rem' }}>{who}</span>
+            ))}
+          </div>
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', lineHeight: 1.75, maxWidth: '620px', margin: '0 auto' }}>
+            Recent headshot work is available on request — get in touch and we&apos;ll send examples relevant to what you&apos;re after.
+          </p>
         </div>
       </section>
 

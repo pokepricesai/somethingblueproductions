@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 import { notFound } from 'next/navigation';
 import { supabase, SUPABASE_URL } from '@/lib/supabase';
+import { getLocationHeroImage } from '@/lib/bucket-images';
 
 const STORAGE = `${SUPABASE_URL}/storage/v1/object/public/site-images`;
 
@@ -72,7 +73,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
     .order('name')
     .limit(8);
 
-  const locationHeroImg = `${STORAGE}/location-${location.slug}.jpg`;
+  const locationHero = await getLocationHeroImage(location.slug, location.name);
 
   const locationUrl = `https://something-blue-productions.com/locations/${slug}`;
   const placeSchema = {
@@ -152,10 +153,7 @@ export default async function LocationPage({ params }: { params: Promise<{ slug:
 
       {/* ── LOCATION IMAGE ── */}
       <div style={{ width: '100%', aspectRatio: '16/6', maxHeight: '400px', overflow: 'hidden', backgroundColor: '#1b3a5c', position: 'relative' }}>
-        <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(168,202,236,0.3)', textAlign: 'center' }}>location-{location.slug}.jpg</span>
-        </div>
-        <Image src={locationHeroImg} alt={`Photography in ${location.name}`} fill sizes="100vw" style={{ objectFit: 'cover' }} />
+        <Image src={locationHero.src} alt={locationHero.alt} fill sizes="100vw" style={{ objectFit: 'cover' }} />
       </div>
 
       {/* ── INTRO ── */}
