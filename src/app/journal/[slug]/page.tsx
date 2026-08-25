@@ -269,11 +269,37 @@ export default async function JournalPostPage({ params }: { params: Promise<{ sl
             </div>
           )}
 
+          {/* Category → primary service page link */}
+          {(() => {
+            const CATEGORY_SERVICE: Record<string, { href: string; label: string; blurb: string }> = {
+              Weddings: { href: '/weddings', label: 'Wedding Photography', blurb: 'Documentary wedding photography and videography across Cambridge and Cambridgeshire.' },
+              Families: { href: '/families', label: 'Family Photography', blurb: 'Natural, relaxed family sessions in studio or across Cambridgeshire.' },
+              Newborn: { href: '/newborn', label: 'Newborn Photography', blurb: 'Gentle, unhurried newborn sessions at our Papworth Everard studio or in your home.' },
+              Maternity: { href: '/maternity', label: 'Maternity Photography', blurb: 'Beautiful maternity portraits — studio or outdoor across Cambridgeshire.' },
+              Studio: { href: '/studio', label: 'Studio Sessions', blurb: 'Studio sessions from £99 at our Papworth Everard studio.' },
+              Commercial: { href: '/commercial', label: 'Commercial Photography', blurb: 'Brand, headshots and performance photography for Cambridgeshire businesses.' },
+              Locations: { href: '/locations', label: 'Areas We Cover', blurb: 'Photography across Cambridge, Cambridgeshire and the surrounding region.' },
+            };
+            const svc = CATEGORY_SERVICE[post.category];
+            if (!svc) return null;
+            return (
+              <div style={{ marginTop: '3rem', padding: '1.75rem 1.5rem', backgroundColor: '#E8DDB5', borderLeft: '3px solid #1B3A5C' }}>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>More on this</p>
+                <Link href={svc.href} style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#1B3A5C', textDecoration: 'none', lineHeight: 1.3, display: 'block', marginBottom: '0.5rem' }}>
+                  {svc.label} →
+                </Link>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', lineHeight: 1.7 }}>
+                  {svc.blurb}
+                </p>
+              </div>
+            );
+          })()}
+
           {/* Post footer */}
           <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid #DDD5C0' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '0.5rem' }}>Something Blue Productions</p>
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#9E9282', lineHeight: 1.7, marginBottom: '1.2rem' }}>
-              Photography and video for weddings, families, newborn and maternity. Two studios in Cambridgeshire. Studio sessions from £99 — all images included.
+              Photography and video for weddings, families, newborn and maternity. Studio in Papworth Everard, Cambridgeshire. Studio sessions from £99 — all images included.
             </p>
             <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
               Get in touch →

@@ -3,12 +3,12 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Newborn Photography Cambridge & Cambridgeshire | Something Blue Productions",
-  description: "Gentle, unhurried newborn photography at our Papworth Everard studio near Cambridge, or in your home. Baby-led sessions in a calm, warm environment.",
+  title: { absolute: "Newborn & Baby Photography Cambridgeshire | Something Blue" },
+  description: "Gentle, unhurried newborn and baby photography across Cambridgeshire. Sessions at our Papworth Everard studio (near Cambridge) or in your home. Baby-led, warm, and calm.",
   alternates: { canonical: "/newborn" },
   openGraph: {
-    title: "Newborn Photography Cambridge & Cambridgeshire | Something Blue Productions",
-    description: "Gentle, unhurried newborn photography at our Papworth Everard studio near Cambridge.",
+    title: "Newborn & Baby Photography Cambridgeshire | Something Blue",
+    description: "Gentle, unhurried newborn and baby photography across Cambridgeshire — studio or home sessions.",
     url: "https://something-blue-productions.com/newborn",
     type: "website",
   },
@@ -23,16 +23,16 @@ const NEWBORN_FAQS = [
   { q: 'Is it safe?', a: "Safety is our absolute first priority. We never place babies in positions they're not comfortable with. All posing is gentle, natural, and checked throughout. We have experience with babies of all sizes and temperaments." },
   { q: 'What should we bring?', a: "Just yourselves and your baby. We provide all props, wraps, and accessories. If you have a special item you'd like to include — a toy, a blanket, a letter — you're very welcome to bring it." },
   { q: 'Can siblings be included?', a: "Absolutely — and we recommend it. Sibling introduction portraits are some of the most treasured images from a newborn session. We allocate time for these in all our packages." },
-  { q: 'Do you offer combined newborn and maternity packages?', a: "Yes. Booking both together saves money and means we already know you before your baby arrives. See our Bump to Baby packages for full details." },
+  { q: 'Do you offer maternity and newborn together?', a: "Yes — many families choose to have both. Booking together means we already know you and your family before baby arrives, and the two sets of images work beautifully as a single visual story from bump to newborn. Get in touch and we can plan it around your due date." },
 ];
 
 const newbornServiceSchema = {
   '@context': 'https://schema.org',
   '@type': 'Service',
   '@id': 'https://something-blue-productions.com/newborn#service',
-  serviceType: 'Newborn Photography',
-  name: 'Newborn Photography Cambridge & Cambridgeshire',
-  description: 'Gentle, unhurried newborn photography in our Papworth Everard studio near Cambridge, or in your home. Baby-led sessions in a calm, warm environment.',
+  serviceType: 'Newborn & Baby Photography',
+  name: 'Newborn & Baby Photography Cambridgeshire',
+  description: 'Gentle, unhurried newborn and baby photography across Cambridgeshire. Sessions at our Papworth Everard studio (near Cambridge) or in your home.',
   provider: { '@id': 'https://something-blue-productions.com/#organization' },
   areaServed: [
     { '@type': 'City', name: 'Cambridge' },
@@ -112,10 +112,10 @@ export default function NewbornPage() {
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Newborn Photography · Cambridgeshire</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
             <span aria-hidden="true">The very{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>first days.</span></span>
-            <span style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Newborn Photography in Cambridge &amp; Cambridgeshire</span>
+            <span style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Newborn &amp; Baby Photography in Cambridgeshire</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '420px' }}>
-            Gentle, unhurried newborn sessions in our warm studios or in your home. Baby-led, calm, and completely at your pace. No rushing, no rigid poses — just your new family, documented with care.
+            Gentle, unhurried newborn and baby sessions at our warm Papworth Everard studio or in your home. Baby-led, calm, and completely at your pace. No rushing, no rigid poses — just your new family, documented with care.
           </p>
           <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.85)', textDecoration: 'none', borderBottom: '1px solid rgba(245,240,232,0.35)', paddingBottom: '3px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             Enquire about a newborn session →
@@ -212,6 +212,15 @@ export default function NewbornPage() {
               </Link>
             ))}
           </div>
+          {/* Areas we serve — contextual links to the top city newborn pages */}
+          <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: '#5c5550', lineHeight: 1.75, maxWidth: '780px', marginTop: '1.5rem' }}>
+            We regularly work with families across the county. See area-specific detail for{' '}
+            <Link href="/cambridge-newborn-photographer" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)' }}>newborn photography in Cambridge</Link>,{' '}
+            <Link href="/st-neots-newborn-photographer" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)' }}>St Neots</Link>,{' '}
+            <Link href="/huntingdon-newborn-photographer" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)' }}>Huntingdon</Link>,{' '}
+            <Link href="/st-ives-newborn-photographer" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)' }}>St Ives</Link> and{' '}
+            <Link href="/ely-newborn-photographer" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)' }}>Ely</Link>.
+          </p>
         </div>
       </section>
 

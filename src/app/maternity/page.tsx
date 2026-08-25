@@ -3,7 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Maternity Photography Cambridge & Cambridgeshire | Something Blue Productions",
+  title: { absolute: "Maternity Photography Cambridge & Cambridgeshire | Something Blue Productions" },
   description: "Beautiful, elegant maternity photography at our Papworth Everard studio near Cambridge, or outdoors across Cambridgeshire. Book between 28–36 weeks for the best results.",
   alternates: { canonical: "/maternity" },
   openGraph: {
@@ -21,7 +21,7 @@ const MATERNITY_FAQS = [
   { q: 'What should I wear?', a: "We send all clients a full styling guide when they book. In general: flowing fabrics, neutral tones, and anything that makes you feel confident and comfortable. Many clients choose to hire maternity gowns for studio sessions — we can recommend suppliers." },
   { q: 'Can my partner and children be included?', a: "Absolutely. We always recommend including your partner if you have one — couple portraits during pregnancy are beautiful and often under-appreciated. Children can be included for part of the session if they are old enough to cooperate briefly." },
   { q: 'Studio or outdoor — which do you recommend?', a: "Both produce stunning results. Studio gives you more control and is weather-proof. Outdoor has a natural, seasonal feel that many clients love. If you're unsure, we're happy to discuss what would suit you best." },
-  { q: 'Do you offer maternity and newborn together?', a: "Yes — and we recommend it. Booking both together saves money, and having the same photographer for both sessions creates a beautifully consistent set of images from this whole chapter of your family's life." },
+  { q: 'Do you offer a bump-to-baby approach with maternity and newborn together?', a: "Yes — and it's a lovely way to document the whole chapter. Many families book maternity and newborn as one bump-to-baby journey. Having the same photographer for both means we already know you and your family before baby arrives, and the two sets of images sit together as one continuous story. Combined Bump to Baby packages are available on our packages page." },
   { q: 'How will I receive my images?', a: "Via a private online gallery, usually within 3 weeks. All edited images are included — no per-image charges, no selecting a limited set. Every edited image is yours to download and keep." },
 ];
 
@@ -350,20 +350,23 @@ export default function MaternityPage() {
         </div>
       </section>
 
-      {/* ── NEWBORN CROSSLINK ── */}
+      {/* ── BUMP TO BABY ── */}
       <section className="m-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr', gap: '2rem', alignItems: 'center' }}>
           <Link href="/newborn" className="zoom-card" style={{ display: 'block', aspectRatio: '16/7', backgroundColor: '#4a3830', textDecoration: 'none', position: 'relative' }}>
-            <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>newborn-hero.jpg</span>
-            </div>
-            <Image src={`${STORAGE}/newborn-hero.jpg`} alt="Newborn photography Cambridgeshire" fill sizes="(max-width: 900px) 100vw, 1100px" className="zoom-img" style={{ objectFit: 'cover', zIndex: 1 }} />
+            <Image src={`${STORAGE}/newborn-hero.jpg`} alt="Newborn photography — the second half of a bump-to-baby journey" fill sizes="(max-width: 900px) 100vw, 1100px" className="zoom-img" style={{ objectFit: 'cover', zIndex: 1 }} />
           </Link>
           <div>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>What comes next</p>
-            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.8rem' }}>Newborn Photography</h2>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>The whole chapter</p>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.8rem' }}>Bump to Baby</h2>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', color: 'rgba(245,240,232,0.6)', lineHeight: 1.75, marginBottom: '1rem' }}>
+              Many families document both maternity and newborn as a single visual story — a bump-to-baby approach. Booking both with the same photographer means we already know you and your family before baby arrives, and the two sets of images sit together as one continuous chapter.
+            </p>
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.88rem', color: 'rgba(245,240,232,0.55)', lineHeight: 1.75, marginBottom: '1.5rem' }}>
-              Once your baby arrives, we&apos;re here for that too. Gentle, unhurried newborn sessions in our warm studios — ideally within the first two weeks. Book both together and save.
+              Sessions run at our{' '}
+              <Link href="/studio/papworth-everard" style={{ color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)' }}>Papworth Everard studio</Link>{' '}or on location in Cambridgeshire. See{' '}
+              <Link href="/newborn" style={{ color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)' }}>newborn photography</Link>{' '}for detail on how newborn sessions actually run, or{' '}
+              <Link href="/packages" style={{ color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)' }}>Bump to Baby packages</Link>{' '}for combined pricing.
             </p>
             <Link href="/newborn" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#E8DDB5', textDecoration: 'none', borderBottom: '1px solid rgba(232,221,181,0.3)', paddingBottom: '2px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
               See newborn photography →

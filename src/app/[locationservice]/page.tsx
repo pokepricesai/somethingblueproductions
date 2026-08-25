@@ -19,6 +19,12 @@ const serviceLabels: Record<string, string> = {
   commercial: 'Commercial Photography',
 };
 
+// Per-slug H1 override where the standard "{City} {Service Type}" phrasing
+// isn't the best match for the actual search intent for that page.
+const H1_OVERRIDES: Record<string, string> = {
+  'cambridge-newborn-photographer': 'Newborn & Baby Photography Cambridge',
+};
+
 const serviceLinks: Record<string, string> = {
   family: '/families',
   newborn: '/newborn',
@@ -65,7 +71,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locations
   if (!page) return { title: 'Page not found' };
   const url = `https://something-blue-productions.com/${locationservice}`;
   return {
-    title: page.title,
+    title: { absolute: page.title },
     description: page.meta_description,
     alternates: { canonical: url },
     openGraph: {
@@ -234,7 +240,7 @@ export default async function LocationServicePage({ params }: { params: Promise<
             </Link>
           </div>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2rem, 4.5vw, 4rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            {page.title}
+            {H1_OVERRIDES[locationservice] ?? `${location.name} ${serviceLabel}`}
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '440px' }}>
             {page.intro}

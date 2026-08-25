@@ -3,15 +3,33 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Creative Headshots Cambridge | Performers, Models & Creatives | Something Blue Productions",
-  description: "Creative headshots for actors, performers, models and creatives in Cambridge and Cambridgeshire. Personal, characterful portraits — not corporate.",
+  title: { absolute: "Headshot Photographer Cambridge | Something Blue" },
+  description: "Headshot photography in Cambridge and Cambridgeshire — actors, performers, models, creatives and small business teams. Personal, characterful portraits at our Papworth Everard studio.",
   alternates: { canonical: "/commercial/headshots" },
   openGraph: {
-    title: "Creative Headshots Cambridge | Something Blue Productions",
-    description: "Creative headshots for actors, performers, models and creatives across Cambridgeshire.",
+    title: "Headshot Photographer Cambridge | Something Blue",
+    description: "Headshot photography in Cambridge — actors, performers, models, creatives and small business teams.",
     url: "https://something-blue-productions.com/commercial/headshots",
     type: "website",
   },
+};
+
+const headshotServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://something-blue-productions.com/commercial/headshots#service',
+  serviceType: 'Headshot Photography',
+  name: 'Headshot Photographer Cambridge',
+  description: 'Headshot photography in Cambridge and Cambridgeshire — actors, performers, models, creatives and small business teams. Studio in Papworth Everard.',
+  provider: { '@id': 'https://something-blue-productions.com/#organization' },
+  areaServed: [
+    { '@type': 'City', name: 'Cambridge' },
+    { '@type': 'City', name: 'Ely' },
+    { '@type': 'City', name: 'Huntingdon' },
+    { '@type': 'City', name: 'St Neots' },
+    { '@type': 'AdministrativeArea', name: 'Cambridgeshire' },
+  ],
+  url: 'https://something-blue-productions.com/commercial/headshots',
 };
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
@@ -19,6 +37,10 @@ const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/publ
 export default function HeadshotsPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(headshotServiceSchema) }}
+      />
       <style>{`
         .h-pad { padding: 3rem 1.5rem; }
         .h-hero-content { padding: 0 1.5rem 6rem; }
@@ -54,9 +76,10 @@ export default function HeadshotsPage() {
         </div>
         <Image src={`${STORAGE}/commercial-headshots-hero.jpg`} alt="Creative headshots Cambridge" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="h-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Creative Headshots · Cambridge</p>
-          <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Headshots that look like{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>you.</span>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Headshot Photographer · Cambridge</p>
+          <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '760px' }}>
+            <span aria-hidden="true">Headshots that look like{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>you.</span></span>
+            <span style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>Headshot Photographer Cambridge</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '440px' }}>
             For actors, performers, models and creatives. Not corporate, not stiff — personal, characterful portraits that show who you are and get you noticed.

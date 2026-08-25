@@ -163,9 +163,9 @@ export default function Footer() {
           <div style={{ marginTop: '1.5rem' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Locations</p>
             <Link href="/locations/cambridge" className="footer-link">Cambridge</Link>
+            <Link href="/locations/st-neots" className="footer-link">St Neots</Link>
             <Link href="/locations/huntingdon" className="footer-link">Huntingdon</Link>
             <Link href="/locations/ely" className="footer-link">Ely</Link>
-            <Link href="/locations/peterborough" className="footer-link">Peterborough</Link>
             <Link href="/locations" className="footer-link">All locations →</Link>
           </div>
         </div>

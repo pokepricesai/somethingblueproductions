@@ -253,6 +253,7 @@ export default function FamiliesPage() {
               { name: 'Ely', detail: 'Jubilee Gardens, riverside walks, Cathedral grounds', href: '/ely-family-photographer' },
               { name: 'Huntingdon', detail: 'Hinchingbrooke Country Park, riverside', href: '/huntingdon-family-photographer' },
               { name: 'St Ives', detail: 'Holt Island, riverside meadows, town bridge', href: '/st-ives-family-photographer' },
+              { name: 'St Neots', detail: 'Riverside Park, Great Ouse meadows, Priory Park', href: '/st-neots-family-photographer' },
               { name: 'Newmarket', detail: "The Heath, Devil's Dyke, surrounding countryside", href: '/newmarket-family-photographer' },
               { name: 'Peterborough', detail: 'Ferry Meadows, Nene Valley, Flag Fen', href: '/peterborough-family-photographer' },
               { name: 'Waterbeach', detail: 'Riverside paths, local countryside', href: '/waterbeach-family-photographer' },
