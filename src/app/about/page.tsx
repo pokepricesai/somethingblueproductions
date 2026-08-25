@@ -160,17 +160,16 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ── STUDIOS ── */}
+      {/* ── STUDIO ── */}
       <section className="a-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>Our spaces</p>
-            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none' }}>Two studios in Cambridgeshire</h2>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>Our space</p>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none' }}>Our studio in Papworth Everard</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2px' }}>
             {[
-              { name: 'Papworth Everard Studio', location: 'Cambridgeshire · CB23', desc: 'Our main studio space. Warm, airy, and accessible from Cambridge, Huntingdon and the A14. The go-to for newborn, family and maternity sessions — and bookable online from £99.', href: '/studio/papworth-everard' },
-              { name: 'Waterbeach Studio', location: 'Near Cambridge · CB25', desc: 'Minutes from Cambridge city centre via the A10. Perfect for Cambridge-based families, professionals needing headshots, and local brand work.', href: '/studio/waterbeach' },
+              { name: 'Papworth Everard Studio', location: 'Cambridgeshire · CB23', desc: 'Our home studio. Warm, airy, and easily reached from Cambridge, Huntingdon and the A14. The go-to for newborn, family and maternity sessions — and bookable online from £99.', href: '/studio/papworth-everard' },
             ].map((studio) => (
               <div key={studio.name} style={{ padding: '2rem', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.08)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '0.8rem' }}>
@@ -225,7 +224,7 @@ export default function AboutPage() {
               { title: 'Families', sub: 'Natural lifestyle sessions', href: '/families', color: '#3a4828' },
               { title: 'Newborn', sub: 'Gentle studio sessions', href: '/newborn', color: '#4a3830' },
               { title: 'Maternity', sub: 'Studio & outdoor', href: '/maternity', color: '#4a3c50' },
-              { title: 'Studio Sessions', sub: 'Papworth & Waterbeach', href: '/studio', color: '#1b3a5c' },
+              { title: 'Studio Sessions', sub: 'Papworth Everard', href: '/studio', color: '#1b3a5c' },
               { title: 'Commercial', sub: 'Brand, headshots & performance', href: '/commercial', color: '#2c2820' },
               { title: 'Packages & Pricing', sub: 'See what\'s included', href: '/packages', color: '#3a3020' },
               { title: 'Enquire', sub: 'Get in touch', href: '/enquire', color: '#1B3A5C' },

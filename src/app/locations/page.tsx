@@ -1,11 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
-import { createClient } from '@supabase/supabase-js';
+import { supabase, SUPABASE_URL } from '@/lib/supabase';
 
 export const metadata: Metadata = {
   title: "Photography Locations | Something Blue Productions Cambridge",
-  description: "Wedding, family, newborn and commercial photography across Cambridgeshire and surrounding areas. Based in Cambridge with studios in Papworth Everard and Waterbeach.",
+  description: "Wedding, family, newborn and commercial photography across Cambridgeshire and surrounding areas. Based at our studio in Papworth Everard, near Cambridge.",
   alternates: { canonical: "/locations" },
   openGraph: {
     title: "Photography Locations | Something Blue Productions",
@@ -15,12 +15,9 @@ export const metadata: Metadata = {
   },
 };
 
-const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
+const STORAGE = `${SUPABASE_URL}/storage/v1/object/public/site-images`;
 
-const supabase = createClient(
-  'https://knwyfoqmlwbxtfhvkbmc.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y'
-);
+export const revalidate = 3600;
 
 export default async function LocationsPage() {
   const { data: locations } = await supabase
@@ -67,7 +64,7 @@ export default async function LocationsPage() {
             <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 4.5rem)' }}>Cambridgeshire.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.95rem', lineHeight: 1.8, color: 'rgba(245,240,232,0.55)', maxWidth: '500px' }}>
-            We cover weddings, families, newborn and commercial photography across Cambridge, Cambridgeshire and the surrounding region. Two studio spaces available for indoor sessions.
+            We cover weddings, families, newborn and commercial photography across Cambridge, Cambridgeshire and the surrounding region. Studio sessions run from our Papworth Everard space.
           </p>
         </div>
       </section>
@@ -129,7 +126,7 @@ export default async function LocationsPage() {
           <div className="loc-services-grid">
             {[
               { title: 'Family Photographer', href: '/families', color: '#3a4828', img: 'services-families.jpg', desc: 'Natural, relaxed family sessions outdoors or in studio' },
-              { title: 'Newborn Photographer', href: '/newborn', color: '#4a3830', img: 'services-newborn.jpg', desc: 'Gentle studio newborn sessions in Papworth or Waterbeach' },
+              { title: 'Newborn Photographer', href: '/newborn', color: '#4a3830', img: 'services-newborn.jpg', desc: 'Gentle studio newborn sessions at our Papworth Everard studio' },
               { title: 'Wedding Photographer', href: '/weddings', color: '#5c3d30', img: 'services-weddings.jpg', desc: 'Natural wedding photography and videography' },
               { title: 'Commercial Photographer', href: '/commercial', color: '#2c2820', img: 'commercial-brand-card.jpg', desc: 'Brand, performance and headshot photography' },
             ].map((s) => (
@@ -149,17 +146,16 @@ export default async function LocationsPage() {
         </div>
       </section>
 
-      {/* ── STUDIOS ── */}
+      {/* ── STUDIO ── */}
       <section className="loc-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
           <div style={{ marginBottom: '2.5rem' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>Studio sessions</p>
-            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none' }}>Two studios across Cambridgeshire</h2>
+            <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none' }}>Our studio in Papworth Everard</h2>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '2px' }}>
             {[
-              { name: 'Papworth Everard Studio', location: 'CB23 · Near Cambridge & Huntingdon', desc: 'Our main studio. Warm, airy and accessible from Cambridge, Huntingdon and the A14.', href: '/studio/papworth-everard' },
-              { name: 'Waterbeach Studio', location: 'CB25 · Minutes from Cambridge', desc: 'Close to Cambridge city centre via the A10. Ideal for Cambridge-based families and professionals.', href: '/studio/waterbeach' },
+              { name: 'Papworth Everard Studio', location: 'CB23 · Near Cambridge & Huntingdon', desc: 'Our home studio. Warm, airy and accessible from Cambridge, Huntingdon and the A14.', href: '/studio/papworth-everard' },
             ].map((studio) => (
               <Link key={studio.href} href={studio.href} style={{ padding: '2rem', backgroundColor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(168,202,236,0.08)', textDecoration: 'none', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                 <div>

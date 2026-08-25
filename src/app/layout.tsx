@@ -10,7 +10,7 @@ export const metadata: Metadata = {
     template: "%s | Something Blue Productions",
   },
   description:
-    "Photography and videography studio in Cambridgeshire. Weddings, family, newborn, maternity, headshots and commercial. Studio sessions from £99. Papworth Everard & Waterbeach.",
+    "Photography and videography studio in Papworth Everard, Cambridgeshire. Weddings, family, newborn, maternity, headshots and commercial. Studio sessions from £99.",
   keywords: [
     "wedding photographer cambridge",
     "family photographer cambridge",
@@ -18,7 +18,6 @@ export const metadata: Metadata = {
     "maternity photographer cambridgeshire",
     "wedding videography cambridge",
     "studio photography papworth everard",
-    "studio photography waterbeach",
     "headshot photographer cambridge",
     "commercial photographer cambridgeshire",
     "photographer near me cambridgeshire",
@@ -36,7 +35,7 @@ export const metadata: Metadata = {
     siteName: "Something Blue Productions",
     title: "Something Blue Productions | Wedding & Family Photography Cambridge",
     description:
-      "Photography and videography studio in Cambridgeshire. Weddings, family, newborn, maternity, headshots and commercial. Studio sessions from £99.",
+      "Photography and videography studio in Papworth Everard, Cambridgeshire. Weddings, family, newborn, maternity, headshots and commercial. Studio sessions from £99.",
     images: [
       {
         url: "https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images/hero-main.jpg",
@@ -75,34 +74,24 @@ const organizationSchema = {
   url: 'https://something-blue-productions.com',
   logo: 'https://something-blue-productions.com/logo.png',
   image: 'https://something-blue-productions.com/logo.png',
-  description: 'Photography and videography studio in Cambridgeshire specialising in weddings, family portraits, newborn, maternity, headshots and commercial photography.',
+  description: 'Photography and videography studio in Papworth Everard, Cambridgeshire specialising in weddings, family portraits, newborn, maternity, headshots and commercial photography.',
   telephone: '+447765253340',
   email: 'hello@something-blue-productions.com',
   priceRange: '££',
   currenciesAccepted: 'GBP',
   paymentAccepted: 'Credit Card, Debit Card',
-  address: [
-    {
-      '@type': 'PostalAddress',
-      streetAddress: 'Papworth Everard',
-      addressLocality: 'Cambridge',
-      addressRegion: 'Cambridgeshire',
-      postalCode: 'CB23',
-      addressCountry: 'GB',
-    },
-    {
-      '@type': 'PostalAddress',
-      streetAddress: 'Waterbeach',
-      addressLocality: 'Cambridge',
-      addressRegion: 'Cambridgeshire',
-      postalCode: 'CB25',
-      addressCountry: 'GB',
-    },
-  ],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Papworth Everard',
+    addressLocality: 'Cambridge',
+    addressRegion: 'Cambridgeshire',
+    postalCode: 'CB23',
+    addressCountry: 'GB',
+  },
   geo: {
     '@type': 'GeoCoordinates',
-    latitude: 52.2394,
-    longitude: -0.1146,
+    latitude: 52.2436,
+    longitude: -0.1088,
   },
   areaServed: [
     { '@type': 'City', name: 'Cambridge' },
@@ -115,14 +104,8 @@ const organizationSchema = {
   ],
   sameAs: [
     'https://www.instagram.com/somethingblue.productions',
+    'https://www.facebook.com/somethingblueproductions',
   ],
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '5.0',
-    reviewCount: '14',
-    bestRating: '5',
-    worstRating: '5',
-  },
   openingHoursSpecification: [
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Tuesday', 'Wednesday'], opens: '19:00', closes: '22:00' },
     { '@type': 'OpeningHoursSpecification', dayOfWeek: ['Thursday', 'Friday'], opens: '09:00', closes: '22:00' },

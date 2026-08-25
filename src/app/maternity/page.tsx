@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Maternity Photography Cambridge & Cambridgeshire | Something Blue Productions",
-  description: "Beautiful, elegant maternity photography at our studios in Papworth Everard and Waterbeach, or outdoors across Cambridgeshire. Book between 28–36 weeks for the best results.",
+  description: "Beautiful, elegant maternity photography at our Papworth Everard studio near Cambridge, or outdoors across Cambridgeshire. Book between 28–36 weeks for the best results.",
   alternates: { canonical: "/maternity" },
   openGraph: {
     title: "Maternity Photography Cambridge & Cambridgeshire | Something Blue Productions",
@@ -31,7 +31,7 @@ const maternityServiceSchema = {
   '@id': 'https://something-blue-productions.com/maternity#service',
   serviceType: 'Maternity Photography',
   name: 'Maternity Photography Cambridge & Cambridgeshire',
-  description: 'Beautiful, elegant maternity photography in our Papworth Everard and Waterbeach studios, or outdoors across Cambridgeshire. Best between 28–36 weeks.',
+  description: 'Beautiful, elegant maternity photography in our Papworth Everard studio near Cambridge, or outdoors across Cambridgeshire. Best between 28–36 weeks.',
   provider: { '@id': 'https://something-blue-productions.com/#organization' },
   areaServed: [
     { '@type': 'City', name: 'Cambridge' },
@@ -149,7 +149,7 @@ export default function MaternityPage() {
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
         <div className="m-split-grid" style={{ maxWidth: '1300px', margin: '0 auto' }}>
           {[
-            { color: '#1b3a5c', img: 'maternity-studio-card.jpg', label: 'Studio', title: 'Studio Maternity', desc: 'Beautiful controlled light, warm temperature, and complete privacy. Our studios in Papworth Everard and Waterbeach are set up specifically to flatter and celebrate.' },
+            { color: '#1b3a5c', img: 'maternity-studio-card.jpg', label: 'Studio', title: 'Studio Maternity', desc: 'Beautiful controlled light, warm temperature, and complete privacy. Our Papworth Everard studio is set up specifically to flatter and celebrate.' },
             { color: '#3a4828', img: 'maternity-outdoor-card.jpg', label: 'Outdoors', title: 'Outdoor Maternity', desc: "Cambridgeshire has beautiful natural settings for maternity sessions — meadows, woodland, riverside. Golden hour outdoor sessions have a warmth that's hard to replicate indoors." },
           ].map((card) => (
             <div key={card.title} style={{ position: 'relative', aspectRatio: '4/3', backgroundColor: card.color, overflow: 'hidden' }}>
@@ -270,7 +270,7 @@ export default function MaternityPage() {
           <div className="m-testimonials-grid">
             {[
               { quote: "I felt so self-conscious about being photographed during pregnancy. Within ten minutes of arriving at the studio I completely forgot to feel that way. The images are the most beautiful photographs I've ever had taken.", name: 'Claire M.', detail: 'Maternity session · Papworth Everard Studio' },
-              { quote: "We did both maternity and newborn with Something Blue. Having the same photographer for both made everything feel connected. The two sets of images together are something really special.", name: 'Amy & Rob', detail: 'Maternity & Newborn · Waterbeach Studio' },
+              { quote: "We did both maternity and newborn with Something Blue. Having the same photographer for both made everything feel connected. The two sets of images together are something really special.", name: 'Amy & Rob', detail: 'Maternity & Newborn · Papworth Everard Studio' },
             ].map((t, i) => (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: '4rem', color: 'rgba(168,202,236,0.2)', lineHeight: 0.8 }}>&ldquo;</span>
@@ -294,7 +294,7 @@ export default function MaternityPage() {
           </div>
           <div className="m-packages-grid" style={{ marginBottom: '1.5rem' }}>
             {[
-              { name: 'Studio Session', price: 'From £245', includes: ['90 minute session', 'Studio in Papworth or Waterbeach', 'Solo or with partner', 'Online gallery', '25+ edited images', 'Print release'], highlight: false },
+              { name: 'Studio Session', price: 'From £245', includes: ['90 minute session', 'Papworth Everard studio', 'Solo or with partner', 'Online gallery', '25+ edited images', 'Print release'], highlight: false },
               { name: 'Extended Studio', price: 'From £345', includes: ['2 hour session', 'Multiple setups & outfits', 'Partner & family included', 'Online gallery', '40+ edited images', 'Print release', 'Styling guide'], highlight: true },
               { name: 'Outdoor Session', price: 'From £295', includes: ['90 minute session', 'Location of your choice', 'Golden hour preferred', 'Online gallery', '30+ edited images', 'Print release'], highlight: false },
             ].map((pkg) => (

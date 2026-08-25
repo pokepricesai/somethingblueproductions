@@ -11,11 +11,11 @@ const portfolioItems = [
   { id: 2, category: 'families', label: 'Family', location: 'Ely', color: '#3a4828', img: 'families-portfolio-01.jpg', aspect: '3/2' },
   { id: 3, category: 'newborn', label: 'Newborn', location: 'Papworth Everard Studio', color: '#4a3830', img: 'newborn-portfolio-01.jpg', aspect: '2/3' },
   { id: 4, category: 'weddings', label: 'Wedding', location: 'Huntingdon', color: '#6a4838', img: 'weddings-portfolio-02.jpg', aspect: '3/2' },
-  { id: 5, category: 'maternity', label: 'Maternity', location: 'Waterbeach Studio', color: '#4a3c50', img: 'maternity-portfolio-01.jpg', aspect: '2/3' },
+  { id: 5, category: 'maternity', label: 'Maternity', location: 'Papworth Everard Studio', color: '#4a3c50', img: 'maternity-portfolio-01.jpg', aspect: '2/3' },
   { id: 6, category: 'families', label: 'Family', location: 'Cambridge', color: '#3a5030', img: 'families-portfolio-02.jpg', aspect: '3/2' },
   { id: 7, category: 'weddings', label: 'Wedding', location: 'St Ives', color: '#503828', img: 'weddings-portfolio-03.jpg', aspect: '2/3' },
   { id: 8, category: 'commercial', label: 'Headshots', location: 'Papworth Everard Studio', color: '#2a2030', img: 'commercial-portfolio-01.jpg', aspect: '3/2' },
-  { id: 9, category: 'newborn', label: 'Newborn', location: 'Waterbeach Studio', color: '#c8b0a0', img: 'newborn-portfolio-02.jpg', aspect: '2/3' },
+  { id: 9, category: 'newborn', label: 'Newborn', location: 'Papworth Everard Studio', color: '#c8b0a0', img: 'newborn-portfolio-02.jpg', aspect: '2/3' },
   { id: 10, category: 'families', label: 'Family', location: 'Huntingdon', color: '#4a5838', img: 'families-portfolio-03.jpg', aspect: '3/2' },
   { id: 11, category: 'weddings', label: 'Wedding', location: 'Newmarket', color: '#483020', img: 'weddings-portfolio-04.jpg', aspect: '2/3' },
   { id: 12, category: 'commercial', label: 'Performance', location: 'Cambridge', color: '#1b2a3a', img: 'commercial-portfolio-02.jpg', aspect: '3/2' },
@@ -24,7 +24,7 @@ const portfolioItems = [
   { id: 15, category: 'weddings', label: 'Wedding', location: 'Ely', color: '#402818', img: 'weddings-portfolio-05.jpg', aspect: '2/3' },
   { id: 16, category: 'newborn', label: 'Newborn', location: 'Papworth Everard Studio', color: '#b8a090', img: 'newborn-portfolio-03.jpg', aspect: '3/2' },
   { id: 17, category: 'weddings', label: 'Wedding', location: 'Cambridge', color: '#5a3828', img: 'weddings-portfolio-06.jpg', aspect: '2/3' },
-  { id: 18, category: 'commercial', label: 'Brand', location: 'Waterbeach Studio', color: '#3a3020', img: 'commercial-portfolio-03.jpg', aspect: '3/2' },
+  { id: 18, category: 'commercial', label: 'Brand', location: 'Papworth Everard Studio', color: '#3a3020', img: 'commercial-portfolio-03.jpg', aspect: '3/2' },
 ];
 
 const filters = [
@@ -181,7 +181,7 @@ export default function PortfolioPage() {
             We document the day, we don&apos;t direct it. The work below is a cross-section of how we shoot — quietly, naturally, and with an eye for the moments people don&apos;t notice they&apos;re making.
           </p>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1rem' }}>
-            Most of these images are from sessions in and around Cambridgeshire — weddings in Ely and Cambridge, family sessions in Huntingdon and St Ives, newborn and maternity work in our Papworth Everard and Waterbeach studios, and commercial shoots across the county. Click any image to see it full-size, or filter by category below.
+            Most of these images are from sessions in and around Cambridgeshire — weddings in Ely and Cambridge, family sessions in Huntingdon and St Ives, newborn and maternity work at our Papworth Everard studio, and commercial shoots across the county. Click any image to see it full-size, or filter by category below.
           </p>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550' }}>
             Every session here was photographed by Samantha Clark, with film work by Luke Pierce. These are real clients, in real moments — never staged for the camera.
@@ -255,9 +255,8 @@ export default function PortfolioPage() {
             Most of the work shown here is from sessions in{' '}
             <Link href="/locations/cambridge" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Cambridge</Link>,{' '}
             <Link href="/locations/ely" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Ely</Link>,{' '}
-            <Link href="/locations/huntingdon" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Huntingdon</Link>, St Ives, Newmarket and Peterborough — plus our two photography studios in{' '}
-            <Link href="/studio/papworth-everard" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Papworth Everard</Link>{' '}and{' '}
-            <Link href="/studio/waterbeach" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Waterbeach</Link>. We travel anywhere in the UK for weddings and commercial work, and reach internationally for select projects.
+            <Link href="/locations/huntingdon" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Huntingdon</Link>, St Ives, Newmarket and Peterborough — plus our photography studio in{' '}
+            <Link href="/studio/papworth-everard" style={{ color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.25)' }}>Papworth Everard</Link>. We travel anywhere in the UK for weddings and commercial work, and reach internationally for select projects.
           </p>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.9rem', lineHeight: 1.85, color: '#5c5550' }}>
             Want to see more? Read our journal, browse{' '}

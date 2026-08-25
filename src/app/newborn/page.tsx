@@ -4,11 +4,11 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Newborn Photography Cambridge & Cambridgeshire | Something Blue Productions",
-  description: "Gentle, unhurried newborn photography at our studios in Papworth Everard and Waterbeach, or in your home. Baby-led sessions in a calm, warm environment.",
+  description: "Gentle, unhurried newborn photography at our Papworth Everard studio near Cambridge, or in your home. Baby-led sessions in a calm, warm environment.",
   alternates: { canonical: "/newborn" },
   openGraph: {
     title: "Newborn Photography Cambridge & Cambridgeshire | Something Blue Productions",
-    description: "Gentle, unhurried newborn photography at our Papworth Everard and Waterbeach studios.",
+    description: "Gentle, unhurried newborn photography at our Papworth Everard studio near Cambridge.",
     url: "https://something-blue-productions.com/newborn",
     type: "website",
   },
@@ -32,7 +32,7 @@ const newbornServiceSchema = {
   '@id': 'https://something-blue-productions.com/newborn#service',
   serviceType: 'Newborn Photography',
   name: 'Newborn Photography Cambridge & Cambridgeshire',
-  description: 'Gentle, unhurried newborn photography in our Papworth Everard and Waterbeach studios, or in your home. Baby-led sessions in a calm, warm environment.',
+  description: 'Gentle, unhurried newborn photography in our Papworth Everard studio near Cambridge, or in your home. Baby-led sessions in a calm, warm environment.',
   provider: { '@id': 'https://something-blue-productions.com/#organization' },
   areaServed: [
     { '@type': 'City', name: 'Cambridge' },
@@ -193,7 +193,6 @@ export default function NewbornPage() {
           <div className="n-options-grid" style={{ marginBottom: '1rem' }}>
             {[
               { title: 'Papworth Everard Studio', sub: 'Cambridgeshire · CB23', desc: 'Our warm, airy studio space near Cambridge. Accessible from Huntingdon, the A14 corridor, and Cambridge city. The most popular option for newborn sessions.', href: '/studio/papworth-everard', color: '#1b3a5c', img: 'studio-papworth-hero.jpg' },
-              { title: 'Waterbeach Studio', sub: 'Near Cambridge · CB25', desc: 'Minutes from Cambridge city centre. Ideal for families based in Cambridge or the A10 corridor. Same warm, calm environment as our Papworth studio.', href: '/studio/waterbeach', color: '#162d4a', img: 'studio-waterbeach-hero.jpg' },
               { title: 'Your Home', sub: 'Cambridgeshire & surrounding areas', desc: 'Prefer to stay at home? We can come to you. Home sessions have a beautiful natural feel — your own light, your own surroundings. Available within Cambridgeshire.', href: '/enquire', color: '#4a3830', img: 'newborn-home-card.jpg' },
             ].map((opt) => (
               <Link key={opt.title} href={opt.href} className="zoom-card" style={{ position: 'relative', display: 'block', aspectRatio: '4/3', backgroundColor: opt.color, textDecoration: 'none' }}>
@@ -278,7 +277,7 @@ export default function NewbornPage() {
           <div className="n-testimonials-grid">
             {[
               { quote: "My daughter was six days old. I was nervous about the whole thing. The studio was so calm and the whole session felt gentle from start to finish. The images are extraordinary.", name: 'Emily R.', detail: 'Newborn session · Papworth Everard Studio' },
-              { quote: "We were exhausted new parents and I genuinely wasn't sure we'd manage it. But the whole thing was so easy — no pressure, no rushing, just a lovely couple of hours. The photos made me cry.", name: 'Hannah & Will', detail: 'Newborn session · Waterbeach Studio' },
+              { quote: "We were exhausted new parents and I genuinely wasn't sure we'd manage it. But the whole thing was so easy — no pressure, no rushing, just a lovely couple of hours. The photos made me cry.", name: 'Hannah & Will', detail: 'Newborn session · Papworth Everard Studio' },
             ].map((t, i) => (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: '4rem', color: '#DDD5C0', lineHeight: 0.8 }}>&ldquo;</span>
@@ -302,7 +301,7 @@ export default function NewbornPage() {
           </div>
           <div className="n-packages-grid" style={{ marginBottom: '1.5rem' }}>
             {[
-              { name: 'Studio Session', price: 'From £295', includes: ['2–3 hour session', 'Studio in Papworth or Waterbeach', 'Baby portraits', 'Parent & baby portraits', 'Online gallery', '30+ edited images', 'Print release'], highlight: false },
+              { name: 'Studio Session', price: 'From £295', includes: ['2–3 hour session', 'Papworth Everard studio', 'Baby portraits', 'Parent & baby portraits', 'Online gallery', '30+ edited images', 'Print release'], highlight: false },
               { name: 'Studio + Siblings', price: 'From £345', includes: ['2–3 hour session', 'Baby portraits', 'Sibling introduction portraits', 'Family portraits', 'Online gallery', '40+ edited images', 'Print release'], highlight: true },
               { name: 'Home Session', price: 'From £345', includes: ['2–3 hour session', 'In your home', 'Baby portraits', 'Family portraits', 'Natural lifestyle feel', 'Online gallery', '35+ edited images'], highlight: false },
             ].map((pkg) => (

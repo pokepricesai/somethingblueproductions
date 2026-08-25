@@ -100,7 +100,7 @@ export default function Home() {
             Made to be{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>remembered.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.7)', marginBottom: '2rem', maxWidth: '400px' }}>
-            Wedding and family photography rooted in Cambridgeshire. Quiet, honest work from two studio spaces.
+            Wedding and family photography rooted in Cambridgeshire. Quiet, honest work from our studio in Papworth Everard.
           </p>
           <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.85rem 2rem', textDecoration: 'none', display: 'inline-block' }}>
@@ -117,8 +117,8 @@ export default function Home() {
       <section className="home-section-pad" style={{ backgroundColor: '#F5F0E8' }}>
         <div style={{ maxWidth: '700px', margin: '0 auto', textAlign: 'center' }}>
           <p className="home-brand-statement" style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, lineHeight: 1.9, color: '#2C2820', letterSpacing: '0.04em', textTransform: 'none' }}>
-            Something Blue is a photography and video studio based between{' '}
-            <span style={{ color: '#1B3A5C' }}>Cambridge</span> and Waterbeach.
+            Something Blue is a photography and video studio based in{' '}
+            <span style={{ color: '#1B3A5C' }}>Papworth Everard</span>, near Cambridge.
             We shoot weddings, families, and the quieter moments — honestly, and without fuss.
           </p>
           <div style={{ width: '40px', height: '1px', backgroundColor: '#DDD5C0', margin: '2rem auto 0' }} />
@@ -132,7 +132,7 @@ export default function Home() {
             { label: 'Photography & Video', title: 'Weddings', href: '/weddings', color: '#5c3d30', img: 'services-weddings.jpg' },
             { label: 'Natural & Lifestyle', title: 'Families', href: '/families', color: '#3a4828', img: 'services-families.jpg' },
             { label: 'Newborn & Maternity', title: 'Early Days', href: '/newborn', color: '#4a3830', img: 'services-newborn.jpg' },
-            { label: 'Papworth & Waterbeach', title: 'Studio Sessions', href: '/studio', color: '#1b3a5c', img: 'services-studio.jpg' },
+            { label: 'Papworth Everard', title: 'Studio Sessions', href: '/studio', color: '#1b3a5c', img: 'services-studio.jpg' },
           ].map((service) => (
             <Link key={service.href} href={service.href} className="home-service-card zoom-card" style={{ position: 'relative', display: 'block', backgroundColor: service.color, textDecoration: 'none' }}>
               <Img src={`${STORAGE}/${service.img}`} alt={`${service.title} photography Cambridgeshire`} zoom sizes="(max-width: 640px) 50vw, (max-width: 900px) 50vw, 25vw" />
@@ -175,7 +175,7 @@ export default function Home() {
                 Something Blue is Samantha and Luke — a photographer and videographer based in Cambridgeshire.
               </p>
               <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550', marginBottom: '1.8rem' }}>
-                Samantha shoots photography across weddings, families, newborn and maternity. Luke covers videography and commercial work. Together they run two studio spaces — one bookable online from £99, one available for larger projects.
+                Samantha shoots photography across weddings, families, newborn and maternity. Luke covers videography and commercial work. Together they run the Papworth Everard studio — bookable online from £99, with bespoke wedding, outdoor and commercial work handled on enquiry.
               </p>
               <Link href="/about" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#1B3A5C', textDecoration: 'none', borderBottom: '1px solid rgba(27,58,92,0.3)', paddingBottom: '2px' }}>
                 Meet Samantha &amp; Luke →
@@ -291,40 +291,34 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── STUDIOS ── */}
+      {/* ── STUDIO ── */}
       <section className="home-section-pad" style={{ backgroundColor: '#0d1b2a' }}>
         <div style={{ maxWidth: '1300px', margin: '0 auto' }}>
           <div className="home-studios-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
             <div>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>Two spaces, one county</p>
-              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none' }}>Our studios</h2>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.5rem' }}>Our home base</p>
+              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.4rem, 2.5vw, 2rem)', color: '#E8DDB5', textTransform: 'none' }}>Papworth Everard Studio</h2>
             </div>
             <p className="home-studios-subtitle" style={{ fontFamily: "'Stay Humble', cursive", fontSize: '1.1rem', color: '#9E9282', maxWidth: '280px', lineHeight: 1.7 }}>
               A warm, controlled indoor space changes what&apos;s possible.
             </p>
           </div>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(232,221,181,0.5)', lineHeight: 1.75, maxWidth: '720px', marginBottom: '2rem' }}>
-            We work out of two studios in Cambridgeshire — Papworth Everard and Waterbeach — and travel for weddings and outdoor sessions across{' '}
+            Our studio is in Papworth Everard, Cambridgeshire — easy access from Cambridge, Huntingdon and the A14. We also travel for weddings and outdoor sessions across{' '}
             <Link href="/locations" style={{ color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)' }}>Cambridge, Ely, Huntingdon and beyond</Link>.
           </p>
-          <div className="home-studios-grid">
-            {[
-              { tag: 'Book online · From £99', name: 'Papworth Everard', desc: 'Our bookable studio for couple, maternity, newborn, family and headshot sessions. Choose your date and pay instantly online.', color: '#1b3a5c', img: 'studio-papworth-hero.jpg', cta: 'Book a session →', ctaHref: '/book' },
-              { tag: 'Enquire · Larger projects', name: 'Waterbeach', desc: 'Available for extended shoots, multiple outfits, outdoor combinations, video and bespoke commercial projects. Please get in touch to discuss.', color: '#162d4a', img: 'studio-waterbeach-hero.jpg', cta: 'Enquire about Waterbeach →', ctaHref: '/enquire' },
-            ].map((studio) => (
-              <div key={studio.name} className="zoom-card" style={{ position: 'relative', aspectRatio: '16/9', backgroundColor: studio.color }}>
-                <Img src={`${STORAGE}/${studio.img}`} alt={`${studio.name} photography studio`} zoom sizes="(max-width: 900px) 100vw, 50vw" />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.95) 0%, rgba(13,27,42,0.3) 60%, transparent 100%)', zIndex: 2 }} />
-                <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 1.8rem', zIndex: 3 }}>
-                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', display: 'block', marginBottom: '0.4rem' }}>{studio.tag}</span>
-                  <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.1rem, 2vw, 1.6rem)', color: '#E8DDB5', lineHeight: 1.2, marginBottom: '0.5rem', textTransform: 'none' }}>{studio.name}</h3>
-                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: 'rgba(245,240,232,0.5)', lineHeight: 1.65, maxWidth: '300px', marginBottom: '1rem' }}>{studio.desc}</p>
-                  <Link href={studio.ctaHref} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', background: studio.ctaHref === '/book' ? '#E8DDB5' : 'transparent', color: studio.ctaHref === '/book' ? '#0d1b2a' : 'rgba(232,221,181,0.6)', border: studio.ctaHref === '/book' ? 'none' : '1px solid rgba(232,221,181,0.25)', padding: '0.6rem 1.25rem', textDecoration: 'none', display: 'inline-block' }}>
-                    {studio.cta}
-                  </Link>
-                </div>
+          <div className="zoom-card" style={{ position: 'relative', aspectRatio: '16/9', backgroundColor: '#1b3a5c' }}>
+            <Img src={`${STORAGE}/studio-papworth-hero.jpg`} alt="Papworth Everard photography studio near Cambridge" zoom sizes="100vw" />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(13,27,42,0.95) 0%, rgba(13,27,42,0.3) 60%, transparent 100%)', zIndex: 2 }} />
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem 1.8rem', zIndex: 3 }}>
+              <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', display: 'block', marginBottom: '0.4rem' }}>Book online · From £99</span>
+              <h3 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.1rem, 2vw, 1.6rem)', color: '#E8DDB5', lineHeight: 1.2, marginBottom: '0.5rem', textTransform: 'none' }}>Papworth Everard</h3>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: 'rgba(245,240,232,0.5)', lineHeight: 1.65, maxWidth: '420px', marginBottom: '1rem' }}>Warm, private studio for couple, maternity, newborn, family and headshot sessions. Choose your date and pay instantly online.</p>
+              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', background: '#E8DDB5', color: '#0d1b2a', padding: '0.6rem 1.25rem', textDecoration: 'none', display: 'inline-block' }}>Book a session →</Link>
+                <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.15em', textTransform: 'uppercase', background: 'transparent', color: 'rgba(232,221,181,0.7)', border: '1px solid rgba(232,221,181,0.3)', padding: '0.6rem 1.25rem', textDecoration: 'none', display: 'inline-block' }}>About the studio →</Link>
               </div>
-            ))}
+            </div>
           </div>
         </div>
       </section>

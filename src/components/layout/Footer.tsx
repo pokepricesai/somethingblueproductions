@@ -89,7 +89,7 @@ export default function Footer() {
             Something Blue
           </div>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.4)', lineHeight: 1.75, marginBottom: '1.8rem', maxWidth: '260px' }}>
-            Photography and video for weddings, families, newborn and maternity. Based in Cambridgeshire with studios in Papworth Everard and Waterbeach.
+            Photography and video for weddings, families, newborn and maternity. Based at our studio in Papworth Everard, Cambridgeshire.
           </p>
 
           <a href={`mailto:${CONTACT.email}`} className="footer-contact-link">
@@ -154,11 +154,11 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* ── Studios + locations ── */}
+        {/* ── Studio + locations ── */}
         <div>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Studios</p>
-          <Link href="/studio/papworth-everard" className="footer-link">Papworth Everard — Book online</Link>
-          <Link href="/studio/waterbeach" className="footer-link">Waterbeach — Enquire</Link>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Studio</p>
+          <Link href="/studio/papworth-everard" className="footer-link">Papworth Everard — About the studio</Link>
+          <Link href="/book" className="footer-link">Book a studio session</Link>
           <div style={{ marginTop: '1.5rem' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.62rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.3)', marginBottom: '1.2rem' }}>Locations</p>
             <Link href="/locations/cambridge" className="footer-link">Cambridge</Link>

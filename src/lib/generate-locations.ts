@@ -74,7 +74,7 @@ type Location = {
 type Service = typeof services[0];
 
 async function generatePageContent(location: Location, service: Service) {
-  const prompt = `You are writing a page for Something Blue Productions, a premium photography studio based in Cambridgeshire with studios in Papworth Everard and Waterbeach.
+  const prompt = `You are writing a page for Something Blue Productions, a premium photography studio based in Papworth Everard, Cambridgeshire (our only studio location — do not refer to any other studio).
 
 Write a complete, high-quality SEO page for:
 Service: ${service.pageLabel}

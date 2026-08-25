@@ -16,11 +16,11 @@ const navLinks = [
     ],
   },
   {
-    label: 'Studios',
+    label: 'Studio',
     href: '/studio',
     dropdown: [
-      { label: 'Papworth Everard — Book online', href: '/studio/papworth-everard' },
-      { label: 'Waterbeach — Enquire', href: '/studio/waterbeach' },
+      { label: 'About the studio', href: '/studio/papworth-everard' },
+      { label: 'Book a session', href: '/book' },
     ],
   },
   {
@@ -297,7 +297,7 @@ export default function Nav() {
 
           <div style={{ position: 'absolute', bottom: '6rem', textAlign: 'center' }}>
             <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.22em', textTransform: 'uppercase', color: '#3D6080' }}>
-              Studios in Papworth Everard &amp; Waterbeach
+              Studio in Papworth Everard, Cambridgeshire
             </p>
           </div>
         </div>

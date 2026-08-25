@@ -123,7 +123,7 @@ export default function BrandPage() {
               { title: 'Brand & Lifestyle', desc: 'Images that show your brand in context — how you work, what you make, who you are.' },
               { title: 'Social Media Content', desc: 'A library of images shot in a consistent style, ready to use across your social channels.' },
               { title: 'Team & People', desc: 'Individual and team portraits for websites, LinkedIn and marketing materials.' },
-              { title: 'Studio Hire', desc: 'Use our Papworth Everard or Waterbeach studios for your own brand shoot.' },
+              { title: 'Studio Hire', desc: 'Use our Papworth Everard studio for your own brand shoot.' },
               { title: 'Bespoke Projects', desc: "Have something specific in mind? Tell us what you need — if we can do it, we will." },
             ].map((s) => (
               <div key={s.title} style={{ padding: '2rem 1.5rem', backgroundColor: '#E8DDB5' }}>

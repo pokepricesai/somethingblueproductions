@@ -13,6 +13,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: '/studio/waterbeach',
+        destination: '/studio',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

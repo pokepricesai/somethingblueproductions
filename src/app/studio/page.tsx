@@ -4,11 +4,11 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Studio Photography Sessions Cambridge | Something Blue Productions",
-  description: "Two warm, professional photography studios in Papworth Everard and Waterbeach. Newborn, family, maternity, headshots and brand photography — indoors, whatever the weather.",
+  description: "Warm, professional photography studio in Papworth Everard, near Cambridge. Newborn, family, maternity, headshots and brand photography — indoors, whatever the weather. Book from £99.",
   alternates: { canonical: "/studio" },
   openGraph: {
     title: "Studio Photography Sessions Cambridge | Something Blue Productions",
-    description: "Two warm, professional photography studios in Papworth Everard and Waterbeach.",
+    description: "Warm, professional photography studio in Papworth Everard, near Cambridge.",
     url: "https://something-blue-productions.com/studio",
     type: "website",
   },
@@ -60,12 +60,12 @@ export default function StudioPage() {
         </div>
         <Image src={`${STORAGE}/studio-hero.jpg`} alt="Studio photography Cambridge" fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="s-hero-content" style={{ position: 'relative', zIndex: 2 }}>
-          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Studio Photography · Cambridgeshire</p>
+          <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.6)', marginBottom: '1rem' }}>Studio Photography · Papworth Everard</p>
           <h1 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(2.2rem, 5vw, 4.5rem)', lineHeight: 1.05, color: '#ffffff', marginBottom: '1.2rem', textTransform: 'none', maxWidth: '700px' }}>
-            Two studios.{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>One county.</span>
+            Warm, private,{' '}<span style={{ fontFamily: "'Stay Humble', cursive", fontSize: 'clamp(2.5rem, 5.5vw, 5rem)' }}>and yours.</span>
           </h1>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: 'clamp(0.88rem, 1.2vw, 0.95rem)', lineHeight: 1.75, color: 'rgba(245,240,232,0.72)', marginBottom: '2rem', maxWidth: '440px' }}>
-            Warm, professional studio spaces in Papworth Everard and Waterbeach. Newborn, family, maternity, headshots and brand photography — indoors, whatever the weather.
+            Our studio in Papworth Everard, Cambridgeshire. Newborn, family, maternity, headshots and brand photography — indoors, whatever the weather.
           </p>
           <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(245,240,232,0.85)', textDecoration: 'none', borderBottom: '1px solid rgba(245,240,232,0.35)', paddingBottom: '3px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
             Book a studio session →
@@ -81,43 +81,35 @@ export default function StudioPage() {
             A controlled indoor space changes what&apos;s possible. Beautiful light regardless of the weather. A warm, calm environment for newborns. Space to move freely for families. Privacy for headshots and brand work.
           </p>
           <p style={{ fontFamily: "'Inter', sans-serif", fontWeight: 300, fontSize: '0.92rem', lineHeight: 1.85, color: '#5c5550' }}>
-            Both studios are set up with the same care and attention to detail. Whichever location works best for you, you&apos;ll find the same quality of light, warmth, and environment.
+            Our Papworth Everard studio is easy to reach from Cambridge, Huntingdon, St Ives and the A14 corridor — with parking directly outside.
           </p>
         </div>
       </section>
 
-      {/* ── TWO STUDIOS ── */}
+      {/* ── STUDIO SPOTLIGHT ── */}
       <section style={{ padding: '0 1.5rem 3rem', backgroundColor: '#F5F0E8' }}>
-        <div className="s-studios-grid" style={{ maxWidth: '1300px', margin: '0 auto' }}>
-          {[
-            { tag: 'Studio One', name: 'Papworth Everard', desc: 'Our main studio space in Cambridgeshire. Warm, airy, and set up for newborn, family and maternity sessions. Accessible from Cambridge, Huntingdon and the A14 corridor.', href: '/studio/papworth-everard', color: '#1b3a5c', img: 'studio-papworth-interior-01.jpg', features: ['Heated for newborn sessions', 'Natural and artificial lighting', 'Parking directly outside', 'Accessible from A14 and Cambridge', 'Props and backdrops provided'] },
-            { tag: 'Studio Two', name: 'Waterbeach', desc: 'Minutes from Cambridge city centre and the A10. Perfect for families based in or around Cambridge, and for headshot and commercial sessions close to the city.', href: '/studio/waterbeach', color: '#162d4a', img: 'studio-waterbeach-interior-01.jpg', features: ['Minutes from Cambridge city centre', 'Natural and artificial lighting', 'Easy A10 access', 'Suitable for all session types', 'Props and backdrops provided'] },
-          ].map((studio) => (
-            <div key={studio.name} style={{ backgroundColor: '#0d1b2a', overflow: 'hidden' }}>
-              <div style={{ aspectRatio: '4/3', backgroundColor: studio.color, position: 'relative', overflow: 'hidden' }}>
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>{studio.img}</span>
-                </div>
-                <Image src={`${STORAGE}/${studio.img}`} alt={studio.name} fill sizes="(max-width: 900px) 100vw, 50vw" style={{ objectFit: 'cover', zIndex: 1 }} />
-              </div>
-              <div style={{ padding: '2rem' }}>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>{studio.tag}</p>
-                <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.7rem' }}>{studio.name}</h2>
-                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.55)', lineHeight: 1.75, marginBottom: '1.2rem' }}>{studio.desc}</p>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-                  {studio.features.map((f) => (
-                    <div key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-                      <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#A8CAEC', flexShrink: 0, display: 'inline-block' }} />
-                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'rgba(245,240,232,0.55)' }}>{f}</p>
-                    </div>
-                  ))}
-                </div>
-                <Link href={studio.href} style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)', paddingBottom: '2px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
-                  About this studio →
-                </Link>
-              </div>
+        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
+          <div style={{ backgroundColor: '#0d1b2a', overflow: 'hidden' }}>
+            <div style={{ aspectRatio: '16/9', backgroundColor: '#1b3a5c', position: 'relative', overflow: 'hidden' }}>
+              <Image src={`${STORAGE}/studio-papworth-interior-01.jpg`} alt="Papworth Everard photography studio interior" fill sizes="(max-width: 900px) 100vw, 1100px" style={{ objectFit: 'cover', zIndex: 1 }} />
             </div>
-          ))}
+            <div style={{ padding: '2rem' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Papworth Everard · CB23</p>
+              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.3rem, 2.5vw, 1.8rem)', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.7rem' }}>Our studio</h2>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: 'rgba(245,240,232,0.55)', lineHeight: 1.75, marginBottom: '1.2rem', maxWidth: '640px' }}>Warm, airy, and set up for newborn, family and maternity sessions. Accessible from Cambridge, Huntingdon and the A14 corridor.</p>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '0.5rem 1rem', marginBottom: '1.5rem' }}>
+                {['Heated for newborn sessions', 'Natural and artificial lighting', 'Parking directly outside', 'Accessible from A14 and Cambridge', 'Props and backdrops provided', 'Private — no other clients during your session'].map((f) => (
+                  <div key={f} style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+                    <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: '#A8CAEC', flexShrink: 0, display: 'inline-block' }} />
+                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: 'rgba(245,240,232,0.55)' }}>{f}</p>
+                  </div>
+                ))}
+              </div>
+              <Link href="/studio/papworth-everard" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', color: '#A8CAEC', textDecoration: 'none', borderBottom: '1px solid rgba(168,202,236,0.3)', paddingBottom: '2px', display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                Full studio details →
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -125,7 +117,7 @@ export default function StudioPage() {
       <section style={{ backgroundColor: '#1B3A5C', padding: '2rem 1.5rem' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Papworth Everard — Book instantly online</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Book instantly online</p>
             <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.2rem' }}>Studio sessions from £99 · All images included · No per-image charges</p>
             <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(232,221,181,0.45)' }}>Couple, maternity, newborn, family and headshot sessions. Also available as gift vouchers — perfect for birthdays, baby showers and Christmas.</p>
           </div>
@@ -136,15 +128,15 @@ export default function StudioPage() {
         </div>
       </section>
 
-      {/* ── WATERBEACH NOTE ── */}
+      {/* ── BESPOKE NOTE ── */}
       <section style={{ backgroundColor: '#0d1b2a', padding: '2rem 1.5rem', borderTop: '1px solid rgba(168,202,236,0.08)' }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center' }}>
           <div>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Waterbeach Studio · Larger & bespoke shoots</p>
-            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.3rem' }}>Extended sessions, multiple outfits, video & commercial work</p>
-            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.35)', maxWidth: '500px' }}>Our Waterbeach studio is available for longer, more in-depth shoots — multiple outfit changes, video, bespoke commercial projects and extended family sessions. Please enquire to discuss.</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.2em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.4rem' }}>Larger & bespoke shoots</p>
+            <p style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1rem', color: '#E8DDB5', textTransform: 'none', marginBottom: '0.3rem' }}>Extended sessions, multiple outfits, video &amp; commercial work</p>
+            <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.35)', maxWidth: '500px' }}>For longer, more in-depth shoots — multiple outfit changes, video, bespoke commercial projects and extended family sessions — get in touch and we&apos;ll tailor a session for you.</p>
           </div>
-          <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', border: '1px solid rgba(168,202,236,0.3)', color: '#A8CAEC', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', flexShrink: 0 }}>Enquire about Waterbeach →</Link>
+          <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.18em', textTransform: 'uppercase', border: '1px solid rgba(168,202,236,0.3)', color: '#A8CAEC', padding: '0.75rem 1.5rem', textDecoration: 'none', display: 'inline-block', flexShrink: 0 }}>Enquire about a bespoke shoot →</Link>
         </div>
       </section>
 
@@ -241,7 +233,7 @@ export default function StudioPage() {
           <div className="s-testimonials-grid">
             {[
               { quote: "My daughter was six days old. I was nervous about the whole thing. The studio was so calm and the session felt gentle from start to finish. The images are extraordinary.", name: 'Emily R.', detail: 'Newborn session · Papworth Everard Studio' },
-              { quote: "We used the Waterbeach studio for our family session in January. The light was beautiful, the kids were warm and comfortable, and we got photos I'll have on the wall forever.", name: 'Dan & Sophie', detail: 'Family session · Waterbeach Studio' },
+              { quote: "The light was beautiful, the kids were warm and comfortable, and we got photos I'll have on the wall forever. Genuinely couldn't recommend the studio more.", name: 'Dan & Sophie', detail: 'Family session · Papworth Everard Studio' },
             ].map((t, i) => (
               <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <span style={{ fontFamily: "'Stay Humble', cursive", fontSize: '4rem', color: '#DDD5C0', lineHeight: 0.8 }}>&ldquo;</span>
@@ -265,12 +257,12 @@ export default function StudioPage() {
           </div>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {[
-              { q: 'Which studio should I choose?', a: "Choose whichever is most convenient for you — both offer the same quality and environment. Papworth Everard is better for those coming from Huntingdon or the A14. Waterbeach is closer to Cambridge city centre and the A10." },
-              { q: 'Is there parking?', a: "Yes — both studios have parking directly outside or very nearby. No need to worry about town centre parking." },
+              { q: 'Where exactly is the studio?', a: "Papworth Everard, Cambridgeshire (CB23) — a short drive from Cambridge, Huntingdon and St Ives. Full address and directions are shared when you book." },
+              { q: 'Is there parking?', a: "Yes — parking is directly outside the studio. No town centre parking stress." },
               { q: 'What should we bring?', a: "Just yourselves. All props, wraps, backdrops and accessories are provided. For newborn sessions, bring whatever you need for feeding and nappy changes. We have everything else." },
-              { q: 'How warm are the studios?', a: "Both studios are kept warm throughout — especially important for newborn sessions. Babies are comfortable from arrival to departure." },
+              { q: 'How warm is the studio?', a: "The studio is kept warm throughout — especially important for newborn sessions. Babies are comfortable from arrival to departure." },
               { q: 'Can I visit the studio before booking?', a: "Yes — we can arrange a quick visit if you'd like to see the space before committing. Just mention it when you enquire." },
-              { q: 'Are the studios suitable for commercial work?', a: "Yes. Both studios are suitable for headshots, product photography, and small brand shoots. For larger commercial productions, get in touch and we'll discuss what works best." },
+              { q: 'Is the studio suitable for commercial work?', a: "Yes. The studio is well suited to headshots, product photography, and small brand shoots. For larger commercial productions, get in touch and we'll discuss what works best." },
             ].map((faq, i) => (
               <div key={i} style={{ padding: '1.5rem 0', borderBottom: '1px solid #DDD5C0' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.6rem' }}>{faq.q}</p>
@@ -287,11 +279,11 @@ export default function StudioPage() {
           <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '1rem' }}>Book a studio session</p>
           <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: 'clamp(1.6rem, 3vw, 2.4rem)', color: '#E8DDB5', lineHeight: 1.25, textTransform: 'none', marginBottom: '1rem' }}>Ready to book your studio session?</h2>
           <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(245,240,232,0.45)', lineHeight: 1.8, marginBottom: '2rem' }}>
-            Papworth Everard sessions from £99 — book instantly online. For Waterbeach or bespoke shoots, get in touch and we&apos;ll come back to you quickly.
+            Sessions from £99 — book instantly online. For bespoke or extended shoots, get in touch and we&apos;ll come back to you quickly.
           </p>
           <div className="s-cta-buttons">
             <Link href="/book" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', backgroundColor: '#E8DDB5', color: '#0d1b2a', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Book a session</Link>
-            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire about Waterbeach</Link>
+            <Link href="/enquire" style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.68rem', letterSpacing: '0.2em', textTransform: 'uppercase', border: '1px solid rgba(245,240,232,0.25)', color: 'rgba(245,240,232,0.6)', padding: '1rem 2.5rem', textDecoration: 'none', display: 'inline-block' }}>Enquire about a bespoke shoot</Link>
           </div>
         </div>
       </section>

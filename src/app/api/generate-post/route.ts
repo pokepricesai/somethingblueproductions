@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/lib/supabase';
+import { submitToIndexNow } from '@/lib/indexnow';
 
-const supabaseUrl = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y';
+const supabaseUrl = SUPABASE_URL;
+const supabaseKey = SUPABASE_ANON_KEY;
 
 const CATEGORIES = ['Weddings', 'Families', 'Newborn', 'Maternity', 'Studio', 'Commercial', 'Locations'];
 
@@ -45,7 +47,7 @@ async function getExistingSlugs(): Promise<string[]> {
 
 async function generatePost(brief: typeof POST_BRIEFS[0]) {
   console.log('API KEY:', process.env.ANTHROPIC_API_KEY?.slice(0, 20) + '...');
-  const prompt = `You are writing a journal post for Something Blue Productions, a premium photography studio based in Cambridgeshire with studios in Papworth Everard and Waterbeach.
+  const prompt = `You are writing a journal post for Something Blue Productions, a premium photography studio based in Papworth Everard, Cambridgeshire (our only studio location — do not refer to any other studio).
 
 Category: ${brief.category}
 Brief: ${brief.brief}
@@ -147,11 +149,23 @@ export async function POST(request: NextRequest) {
     }
     generated.slug = slug;
 
+    let indexNow: Awaited<ReturnType<typeof submitToIndexNow>> | null = null;
     if (publish) {
       await savePost(generated);
+      // Ping IndexNow with the new post + journal index so Bing/Yandex/etc.
+      // discover it quickly. Failures are logged but never block the response.
+      try {
+        indexNow = await submitToIndexNow([
+          `/journal/${slug}`,
+          '/journal',
+          '/sitemap.xml',
+        ]);
+      } catch (err) {
+        console.error('IndexNow submission failed:', err);
+      }
     }
 
-    return NextResponse.json({ success: true, post: generated });
+    return NextResponse.json({ success: true, post: generated, indexNow });
 
   } catch (err) {
     console.error('Generate post error:', err);

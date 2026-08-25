@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 
-const supabaseUrl = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
 
 const CONTACT = {
   email: 'hello@something-blue-productions.com',
@@ -169,7 +169,7 @@ export default function EnquirePage() {
 
             {/* Studio info */}
             <div style={{ marginTop: '2rem' }}>
-              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Our studios</p>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: '#9E9282', marginBottom: '1rem' }}>Our studio</p>
 
               <div style={{ background: '#FAF8F2', border: '1px solid #DDD5C0', padding: '1.25rem 1.5rem', marginBottom: '2px' }}>
                 <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.75rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.35rem' }}>Papworth Everard · CB23</p>
@@ -180,9 +180,9 @@ export default function EnquirePage() {
               </div>
 
               <div style={{ background: '#FAF8F2', border: '1px solid #DDD5C0', padding: '1.25rem 1.5rem' }}>
-                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.75rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.35rem' }}>Waterbeach · CB25</p>
+                <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.75rem', color: '#1B3A5C', textTransform: 'none', marginBottom: '0.35rem' }}>Extended &amp; bespoke shoots</p>
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#5c5550', lineHeight: 1.65 }}>
-                  Available for larger, more in-depth shoots — extended sessions, multiple outfits, outdoor combinations, video and bespoke projects. Please enquire below.
+                  For longer, more in-depth shoots — extended sessions, multiple outfits, outdoor combinations, video and bespoke projects — please enquire below.
                 </p>
               </div>
             </div>

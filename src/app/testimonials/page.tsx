@@ -67,7 +67,7 @@ const testimonials = [
     quote: "We were exhausted new parents and I genuinely wasn't sure we'd manage it. But the whole thing was so easy — no pressure, no rushing, just a lovely couple of hours. The photos made me cry.",
     name: "Hannah & Will",
     service: "Newborn Photography",
-    location: "Waterbeach Studio",
+    location: "Papworth Everard Studio",
     category: "newborn",
   },
   {
@@ -88,14 +88,14 @@ const testimonials = [
     quote: "We did both maternity and newborn with Something Blue. Having the same photographer for both made everything feel connected. The two sets of images together are something really special.",
     name: "Amy & Rob",
     service: "Maternity & Newborn",
-    location: "Waterbeach Studio",
+    location: "Papworth Everard Studio",
     category: "maternity",
   },
   {
-    quote: "Used the Waterbeach studio for our family session in January. The light was beautiful, the kids were warm and comfortable, and we got photos I'll have on the wall forever.",
+    quote: "Used the studio for our family session in January. The light was beautiful, the kids were warm and comfortable, and we got photos I'll have on the wall forever.",
     name: "Dan & Sophie",
     service: "Studio Family Session",
-    location: "Waterbeach Studio",
+    location: "Papworth Everard Studio",
     category: "studio",
   },
   {
