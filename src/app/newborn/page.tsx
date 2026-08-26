@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: { absolute: "Newborn & Baby Photography Cambridgeshire | Something Blue" },
@@ -43,6 +44,10 @@ const newbornServiceSchema = {
   url: 'https://something-blue-productions.com/newborn',
 };
 
+const newbornBreadcrumbs = breadcrumbList([
+  { name: 'Newborn', path: '/newborn' },
+]);
+
 const newbornFaqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -63,6 +68,10 @@ export default function NewbornPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(newbornFaqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(newbornBreadcrumbs) }}
       />
       <style>{`
         .n-pad { padding: 3rem 1.5rem; }

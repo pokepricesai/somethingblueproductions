@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Family Photography Cambridge & Cambridgeshire | Something Blue Productions",
+  title: "Family Photography Cambridge & Cambridgeshire",
   description: "Natural, relaxed family photography across Cambridge and Cambridgeshire. Outdoor lifestyle sessions and studio shoots. No stiff poses — just your family as they really are.",
   alternates: { canonical: "/families" },
   openGraph: {
@@ -46,6 +47,10 @@ const familyServiceSchema = {
   ],
 };
 
+const familyBreadcrumbs = breadcrumbList([
+  { name: 'Families', path: '/families' },
+]);
+
 const familyFaqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -66,6 +71,10 @@ export default function FamiliesPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(familyFaqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(familyBreadcrumbs) }}
       />
       <style>{`
         .f-pad { padding: 3rem 1.5rem; }

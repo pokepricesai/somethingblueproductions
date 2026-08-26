@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Client Testimonials | Something Blue Productions Cambridge",
+  title: "Client Testimonials · Cambridge",
   description: "Read what our wedding, family, newborn and maternity clients say about Something Blue Productions. Real reviews from real people across Cambridge and Cambridgeshire.",
   alternates: { canonical: "/testimonials" },
   openGraph: {

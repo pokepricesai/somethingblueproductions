@@ -2,9 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { SUPABASE_URL } from "@/lib/supabase";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Engagement & Couples Photography Cambridge | Something Blue Productions",
+  title: "Engagement & Couples Photography Cambridge",
   description:
     "Relaxed, natural engagement and couples photography across Cambridge and Cambridgeshire. Studio sessions from £99 or outdoor shoots — unhurried, unposed, honest.",
   alternates: { canonical: "/engagement" },
@@ -88,6 +89,10 @@ const engagementServiceSchema = {
   ],
 };
 
+const engagementBreadcrumbs = breadcrumbList([
+  { name: 'Engagement', path: '/engagement' },
+]);
+
 const engagementFaqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -108,6 +113,10 @@ export default function EngagementPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(engagementFaqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(engagementBreadcrumbs) }}
       />
       <style>{`
         .e-pad { padding: 3rem 1.5rem; }

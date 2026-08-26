@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Performance & Show Photography Cambridge | Something Blue Productions",
+  title: "Performance & Show Photography Cambridge",
   description: "Theatre, dance, music and live performance photography across Cambridge and Cambridgeshire. Fast, discreet, and designed to capture energy and emotion.",
   alternates: { canonical: "/commercial/performance" },
   openGraph: {
@@ -16,9 +17,18 @@ export const metadata: Metadata = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const performanceBreadcrumbs = breadcrumbList([
+  { name: 'Commercial', path: '/commercial' },
+  { name: 'Performance & Show', path: '/commercial/performance' },
+]);
+
 export default function PerformancePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(performanceBreadcrumbs) }}
+      />
       <style>{`
         .p-pad { padding: 3rem 1.5rem; }
         .p-hero-content { padding: 0 1.5rem 6rem; }

@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Studio Photography Sessions | Something Blue Productions",
+  title: "Studio Photography Sessions",
   description: "Newborn, family, maternity, couples, headshots and brand studio photography sessions with Something Blue Productions. Session types, what's included, and how to choose. Book from £99.",
   alternates: { canonical: "/studio" },
   openGraph: {
@@ -16,9 +17,43 @@ export const metadata: Metadata = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const studioServiceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  '@id': 'https://something-blue-productions.com/studio#service',
+  serviceType: 'Studio Photography',
+  name: 'Studio Photography Sessions',
+  description: 'Studio photography sessions in Papworth Everard, Cambridgeshire — newborn, family, maternity, couples, headshots and brand. Mini sessions from £99, family experience £199.',
+  provider: { '@id': 'https://something-blue-productions.com/#organization' },
+  areaServed: [
+    { '@type': 'City', name: 'Cambridge' },
+    { '@type': 'City', name: 'Huntingdon' },
+    { '@type': 'City', name: 'St Neots' },
+    { '@type': 'City', name: 'Ely' },
+    { '@type': 'AdministrativeArea', name: 'Cambridgeshire' },
+  ],
+  url: 'https://something-blue-productions.com/studio',
+  offers: [
+    { '@type': 'Offer', name: 'Mini Studio Session', price: '99', priceCurrency: 'GBP', availability: 'https://schema.org/InStock', url: 'https://something-blue-productions.com/book' },
+    { '@type': 'Offer', name: 'Family Studio Experience', price: '199', priceCurrency: 'GBP', availability: 'https://schema.org/InStock', url: 'https://something-blue-productions.com/book' },
+  ],
+};
+
+const studioBreadcrumbs = breadcrumbList([
+  { name: 'Studio', path: '/studio' },
+]);
+
 export default function StudioPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(studioServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(studioBreadcrumbs) }}
+      />
       <style>{`
         .s-pad { padding: 3rem 1.5rem; }
         .s-hero-content { padding: 0 1.5rem 6rem; }

@@ -88,7 +88,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const url = `https://something-blue-productions.com/journal/${slug}`;
   const description = post.meta_description || post.excerpt;
   return {
-    title: `${post.title} | Something Blue Productions`,
+    title: post.title,
     description,
     alternates: { canonical: url },
     openGraph: {

@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "About | Something Blue Productions · Cambridge Wedding & Family Photographer",
+  title: "About · Cambridge Wedding & Family Photographer",
   description: "Something Blue Productions is a photography and video studio based in Cambridgeshire. We shoot weddings, families, newborn and maternity — honestly, and without fuss.",
   alternates: { canonical: "/about" },
   openGraph: {

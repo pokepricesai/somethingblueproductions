@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { GiftCategoryPage } from '../_shared';
 
 export const metadata: Metadata = {
-  title: "Family Photography Gift Voucher | Something Blue Productions",
+  title: "Family Photography Gift Voucher",
   description:
     "Family photography gift voucher — £199 for a 60-minute studio session for 3+ people, 15–20 edited images and a free print. Papworth Everard studio, Cambridgeshire.",
   alternates: { canonical: "/gift-vouchers/family" },
@@ -31,14 +31,16 @@ const productSchema = {
   description: 'Family studio photography session for 3+ people at our Papworth Everard studio in Cambridgeshire.',
   brand: { '@id': 'https://something-blue-productions.com/#organization' },
   category: 'Photography Gift Voucher',
-  offers: {
-    '@type': 'Offer',
-    name: 'Family Studio Experience Voucher',
-    price: '199',
-    priceCurrency: 'GBP',
-    availability: 'https://schema.org/InStock',
-    url: 'https://something-blue-productions.com/book',
-  },
+  offers: [
+    {
+      '@type': 'Offer',
+      name: 'Family Studio Experience Voucher',
+      price: '199',
+      priceCurrency: 'GBP',
+      availability: 'https://schema.org/InStock',
+      url: 'https://something-blue-productions.com/book',
+    },
+  ],
 };
 
 export default function FamilyGiftPage() {

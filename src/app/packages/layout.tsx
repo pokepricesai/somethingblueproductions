@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Packages & Pricing | Photography Cambridge from £99",
@@ -14,6 +15,18 @@ export const metadata: Metadata = {
   },
 };
 
+const packagesBreadcrumbs = breadcrumbList([
+  { name: 'Packages', path: '/packages' },
+]);
+
 export default function PackagesLayout({ children }: { children: React.ReactNode }) {
-  return children;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(packagesBreadcrumbs) }}
+      />
+      {children}
+    </>
+  );
 }

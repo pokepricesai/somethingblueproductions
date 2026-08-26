@@ -1,8 +1,9 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Photography Studio in Papworth Everard, Cambridgeshire | Something Blue Productions",
+  title: "Photography Studio in Papworth Everard, Cambridgeshire",
   description: "Our photography studio in Papworth Everard (CB23) — facilities, parking, access from Cambridge and the A14, and the session types we host here. Book from £99.",
   alternates: { canonical: "/studio/papworth-everard" },
   openGraph: {
@@ -51,12 +52,21 @@ const papworthLocalBusinessSchema = {
   ],
 };
 
+const papworthBreadcrumbs = breadcrumbList([
+  { name: 'Studio', path: '/studio' },
+  { name: 'Papworth Everard', path: '/studio/papworth-everard' },
+]);
+
 export default function PapworthStudioPage() {
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(papworthLocalBusinessSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(papworthBreadcrumbs) }}
       />
       <style>{`
         .pe-pad { padding: 3rem 1.5rem; }

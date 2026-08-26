@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { GiftCategoryPage } from '../_shared';
 
 export const metadata: Metadata = {
-  title: "Engagement & Couples Photography Gift Voucher | Something Blue Productions",
+  title: "Engagement & Couples Photography Gift Voucher",
   description:
     "Engagement and couples photography gift voucher from £99 — a relaxed studio session at our Papworth Everard studio. Perfect for engagements, anniversaries and wedding gifts.",
   alternates: { canonical: "/gift-vouchers/engagement" },
@@ -31,14 +31,16 @@ const productSchema = {
   description: 'Studio couples or engagement photography session at our Papworth Everard studio in Cambridgeshire.',
   brand: { '@id': 'https://something-blue-productions.com/#organization' },
   category: 'Photography Gift Voucher',
-  offers: {
-    '@type': 'Offer',
-    name: 'Mini Studio Session Voucher',
-    price: '99',
-    priceCurrency: 'GBP',
-    availability: 'https://schema.org/InStock',
-    url: 'https://something-blue-productions.com/book',
-  },
+  offers: [
+    {
+      '@type': 'Offer',
+      name: 'Mini Studio Session Voucher',
+      price: '99',
+      priceCurrency: 'GBP',
+      availability: 'https://schema.org/InStock',
+      url: 'https://something-blue-productions.com/book',
+    },
+  ],
 };
 
 export default function EngagementGiftPage() {

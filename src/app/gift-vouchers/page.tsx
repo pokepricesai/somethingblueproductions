@@ -2,9 +2,10 @@ import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
 import { SUPABASE_URL } from "@/lib/supabase";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Photography Gift Vouchers | Something Blue Productions Cambridge",
+  title: "Photography Gift Vouchers · Cambridge",
   description:
     "Photography gift vouchers from £99 — newborn, family and engagement studio sessions. Sent by email. Something Blue Productions, Papworth Everard studio in Cambridgeshire.",
   alternates: { canonical: "/gift-vouchers" },
@@ -69,12 +70,20 @@ const giftHubSchema = {
   url: 'https://something-blue-productions.com/gift-vouchers',
 };
 
+const giftBreadcrumbs = breadcrumbList([
+  { name: 'Gift Vouchers', path: '/gift-vouchers' },
+]);
+
 export default function GiftVouchersPage() {
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(giftHubSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(giftBreadcrumbs) }}
       />
       <style>{`
         .g-pad { padding: 3rem 1.5rem; }

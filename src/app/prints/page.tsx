@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Fine Art Prints & Framing | Something Blue Productions Cambridge",
+  title: "Fine Art Prints & Framing · Cambridge",
   description: "Professional lustre prints and premium framing from your photography session. Produced by hand at our home studio in Cambridgeshire. Package deals available.",
   alternates: { canonical: "/prints" },
   openGraph: {

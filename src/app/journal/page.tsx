@@ -3,7 +3,7 @@ import Image from "next/image";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Journal | Something Blue Productions · Photography Tips & Guides",
+  title: "Journal · Photography Tips & Guides",
   description: "Photography guides, location ideas, wedding planning tips and session advice from Something Blue Productions. Based in Cambridge and Cambridgeshire.",
   alternates: { canonical: "/journal" },
   openGraph: {

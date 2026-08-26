@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Wedding Photography & Videography Cambridge | Something Blue Productions",
+  title: "Wedding Photography & Videography Cambridge",
   description: "Beautiful, natural wedding photography and videography across Cambridge, Cambridgeshire and beyond. Honest, unposed, and made to last.",
   alternates: { canonical: "/weddings" },
   openGraph: {
@@ -49,6 +50,10 @@ const weddingServiceSchema = {
   ],
 };
 
+const weddingBreadcrumbs = breadcrumbList([
+  { name: 'Weddings', path: '/weddings' },
+]);
+
 const weddingFaqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -69,6 +74,10 @@ export default function WeddingsPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(weddingFaqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(weddingBreadcrumbs) }}
       />
       <style>{`
         .w-pad { padding: 3rem 1.5rem; }

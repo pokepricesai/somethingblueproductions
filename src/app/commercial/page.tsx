@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Commercial Photography Cambridge | Something Blue Productions",
+  title: "Commercial Photography Cambridge",
   description: "Brand photography, performance & show photography, and creative headshots across Cambridge and Cambridgeshire. Professional results for businesses, performers and creatives.",
   alternates: { canonical: "/commercial" },
   openGraph: {
@@ -43,12 +44,20 @@ const commercialServiceSchema = {
   },
 };
 
+const commercialBreadcrumbs = breadcrumbList([
+  { name: 'Commercial', path: '/commercial' },
+]);
+
 export default function CommercialPage() {
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(commercialServiceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(commercialBreadcrumbs) }}
       />
       <style>{`
         .c-pad { padding: 3rem 1.5rem; }

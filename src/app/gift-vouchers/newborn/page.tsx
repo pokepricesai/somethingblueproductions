@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { GiftCategoryPage } from '../_shared';
 
 export const metadata: Metadata = {
-  title: "Newborn Photography Gift Voucher | Something Blue Productions",
+  title: "Newborn Photography Gift Voucher",
   description:
     "Newborn photography gift voucher from £99 — a calm, unhurried studio session at our Papworth Everard studio. Perfect for baby showers and new-parent gifts.",
   alternates: { canonical: "/gift-vouchers/newborn" },

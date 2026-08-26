@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Thank You | Something Blue Productions",
+  title: "Thank You",
   description: "Thank you for your enquiry — we'll be in touch within 24 hours.",
   robots: { index: false, follow: true },
 };

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: { absolute: "Maternity Photography Cambridge & Cambridgeshire | Something Blue Productions" },
@@ -42,6 +43,10 @@ const maternityServiceSchema = {
   url: 'https://something-blue-productions.com/maternity',
 };
 
+const maternityBreadcrumbs = breadcrumbList([
+  { name: 'Maternity', path: '/maternity' },
+]);
+
 const maternityFaqSchema = {
   '@context': 'https://schema.org',
   '@type': 'FAQPage',
@@ -62,6 +67,10 @@ export default function MaternityPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(maternityFaqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(maternityBreadcrumbs) }}
       />
       <style>{`
         .m-pad { padding: 3rem 1.5rem; }

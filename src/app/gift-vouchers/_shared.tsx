@@ -1,8 +1,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { SUPABASE_URL } from '@/lib/supabase';
+import { breadcrumbList } from '@/lib/seo';
 
 export const STORAGE = `${SUPABASE_URL}/storage/v1/object/public/site-images`;
+
+const CATEGORY_LABELS: Record<string, string> = {
+  newborn: 'Newborn Photography Gift',
+  family: 'Family Photography Gift',
+  engagement: 'Engagement & Couples Gift',
+};
 
 export type GiftCategoryProps = {
   slug: 'newborn' | 'family' | 'engagement';
@@ -24,11 +31,19 @@ export type GiftCategoryProps = {
 };
 
 export function GiftCategoryPage(p: GiftCategoryProps) {
+  const breadcrumbs = breadcrumbList([
+    { name: 'Gift Vouchers', path: '/gift-vouchers' },
+    { name: CATEGORY_LABELS[p.slug] ?? p.title, path: `/gift-vouchers/${p.slug}` },
+  ]);
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(p.productSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbs) }}
       />
       <style>{`
         .gc-pad { padding: 3rem 1.5rem; }

@@ -1,9 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Brand & Business Photography Cambridge | Something Blue Productions",
+  title: "Brand & Business Photography Cambridge",
   description: "Product photography, brand visuals and small business content photography across Cambridge and Cambridgeshire. Professional images that represent your business properly.",
   alternates: { canonical: "/commercial/brand" },
   openGraph: {
@@ -16,9 +17,18 @@ export const metadata: Metadata = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const brandBreadcrumbs = breadcrumbList([
+  { name: 'Commercial', path: '/commercial' },
+  { name: 'Brand & Business', path: '/commercial/brand' },
+]);
+
 export default function BrandPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(brandBreadcrumbs) }}
+      />
       <style>{`
         .b-pad { padding: 3rem 1.5rem; }
         .b-hero-content { padding: 0 1.5rem 6rem; }

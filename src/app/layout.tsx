@@ -25,9 +25,6 @@ export const metadata: Metadata = {
   authors: [{ name: "Something Blue Productions" }],
   creator: "Something Blue Productions",
   metadataBase: new URL("https://something-blue-productions.com"),
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     type: "website",
     locale: "en_GB",

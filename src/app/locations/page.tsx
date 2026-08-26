@@ -4,7 +4,7 @@ import type { Metadata } from "next";
 import { supabase, SUPABASE_URL } from '@/lib/supabase';
 
 export const metadata: Metadata = {
-  title: "Photography Locations | Something Blue Productions Cambridge",
+  title: "Photography Locations · Cambridgeshire",
   description: "Wedding, family, newborn and commercial photography across Cambridgeshire and surrounding areas. Based at our studio in Papworth Everard, near Cambridge.",
   alternates: { canonical: "/locations" },
   openGraph: {

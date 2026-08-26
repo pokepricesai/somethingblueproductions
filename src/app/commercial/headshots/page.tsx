@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { Metadata } from "next";
+import { breadcrumbList } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: { absolute: "Headshot Photographer Cambridge | Something Blue" },
@@ -34,9 +35,18 @@ const headshotServiceSchema = {
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
+const headshotsBreadcrumbs = breadcrumbList([
+  { name: 'Commercial', path: '/commercial' },
+  { name: 'Headshots', path: '/commercial/headshots' },
+]);
+
 export default function HeadshotsPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(headshotsBreadcrumbs) }}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(headshotServiceSchema) }}

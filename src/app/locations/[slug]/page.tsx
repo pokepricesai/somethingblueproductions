@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const url = `https://something-blue-productions.com/locations/${slug}`;
   const description = `Wedding, family, newborn and commercial photography in ${location.name}, ${location.county}. Something Blue Productions — based in Cambridgeshire.`;
   return {
-    title: `Photography in ${location.name} | Something Blue Productions`,
+    title: `Photography in ${location.name}, ${location.county}`,
     description,
     alternates: { canonical: url },
     openGraph: {
