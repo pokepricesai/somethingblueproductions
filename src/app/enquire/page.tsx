@@ -1,9 +1,6 @@
 'use client';
 
-import { useState } from 'react';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL as string;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY as string;
+import { useState, useEffect, useRef } from 'react';
 
 const CONTACT = {
   email: 'hello@something-blue-productions.com',
@@ -33,33 +30,37 @@ export default function EnquirePage() {
     name: '', email: '', phone: '', service: '', date: '', message: '',
   });
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+  // Honeypot: real users leave this blank; bots fill every field
+  const [website, setWebsite] = useState('');
+  // Timing: record when the form mounted so the server can reject <3s submissions
+  const formTs = useRef<number>(0);
+  useEffect(() => { formTs.current = Date.now(); }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setStatus('sending');
+    setErrorMsg('');
     try {
-      const res = await fetch(`${supabaseUrl}/rest/v1/enquiries`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`,
-          'Prefer': 'return=minimal',
-        },
-        body: JSON.stringify(formData),
-      });
-      if (!res.ok) throw new Error('Failed');
-
-      // Send email alert to Samantha
-      await fetch('/api/send-enquiry-alert', {
+      const res = await fetch('/api/enquiries', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          website,
+          formTs: formTs.current,
+          sourcePage: typeof document !== 'undefined' ? document.referrer || window.location.pathname : undefined,
+        }),
       });
-
-      // TODO: create /thank-you page, or reuse /book/success
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setErrorMsg(j.error || 'Something went wrong. Please try again or email us directly.');
+        setStatus('error');
+        return;
+      }
       window.location.href = '/thank-you';
     } catch {
+      setErrorMsg('Network error. Please try again or email us directly.');
       setStatus('error');
     }
   };
@@ -248,9 +249,23 @@ export default function EnquirePage() {
                   style={{ resize: 'vertical' }} />
               </div>
 
+              {/* Honeypot — hidden from real users, visible to bots */}
+              <div aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: '1px', height: '1px', overflow: 'hidden' }}>
+                <label>
+                  Website
+                  <input
+                    type="text"
+                    tabIndex={-1}
+                    autoComplete="off"
+                    value={website}
+                    onChange={e => setWebsite(e.target.value)}
+                  />
+                </label>
+              </div>
+
               {status === 'error' && (
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.8rem', color: '#C8572A', marginBottom: '1rem' }}>
-                  Something went wrong. Please email us directly at {CONTACT.email}
+                  {errorMsg || `Something went wrong. Please email us directly at ${CONTACT.email}`}
                 </p>
               )}
 

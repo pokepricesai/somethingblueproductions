@@ -11,6 +11,28 @@ interface Enquiry {
   service?: string;
   message: string;
   read: boolean;
+  spam_status?: 'genuine' | 'suspected_spam' | 'blocked_obvious_bot' | string;
+  notification_status?: 'pending' | 'sent' | 'partial' | 'failed' | 'skipped_spam' | string;
+  source_page?: string | null;
+}
+
+function notifyLabel(s?: string) {
+  switch (s) {
+    case 'sent': return { text: 'alert sent', color: '#2C7A4B' };
+    case 'partial': return { text: 'alert partial', color: '#C8572A' };
+    case 'failed': return { text: 'alert FAILED', color: '#C8572A' };
+    case 'skipped_spam': return { text: 'no alert (spam)', color: '#9E9282' };
+    case 'pending': return { text: 'alert pending', color: '#9E9282' };
+    default: return null;
+  }
+}
+
+function spamLabel(s?: string) {
+  switch (s) {
+    case 'suspected_spam': return { text: 'suspected spam', color: '#C8572A' };
+    case 'blocked_obvious_bot': return { text: 'blocked bot', color: '#9E9282' };
+    default: return null;
+  }
 }
 
 export default function AdminEnquiriesPage() {
@@ -123,6 +145,17 @@ export default function AdminEnquiriesPage() {
                   <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#A8CAEC', marginBottom: '0.3rem' }}>{e.service}</p>
                 )}
                 <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: 'rgba(245,240,232,0.35)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{e.message}</p>
+                {(() => {
+                  const spam = spamLabel(e.spam_status);
+                  const notif = notifyLabel(e.notification_status);
+                  if (!spam && !notif) return null;
+                  return (
+                    <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.3rem', flexWrap: 'wrap' }}>
+                      {spam && <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: spam.color, border: `1px solid ${spam.color}`, padding: '0.05rem 0.35rem' }}>{spam.text}</span>}
+                      {notif && <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.5rem', letterSpacing: '0.1em', textTransform: 'uppercase', color: notif.color, border: `1px solid ${notif.color}`, padding: '0.05rem 0.35rem' }}>{notif.text}</span>}
+                    </div>
+                  );
+                })()}
               </div>
             ))}
           </div>
@@ -154,7 +187,19 @@ export default function AdminEnquiriesPage() {
                   )}
                   <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.72rem', color: 'rgba(245,240,232,0.25)' }}>
                     {new Date(selected.created_at).toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })} at {new Date(selected.created_at).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' })}
+                    {selected.source_page ? ` · ${selected.source_page}` : ''}
                   </p>
+                  {(() => {
+                    const spam = spamLabel(selected.spam_status);
+                    const notif = notifyLabel(selected.notification_status);
+                    if (!spam && !notif) return null;
+                    return (
+                      <div style={{ display: 'flex', gap: '0.4rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+                        {spam && <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: spam.color, border: `1px solid ${spam.color}`, padding: '0.15rem 0.5rem' }}>{spam.text}</span>}
+                        {notif && <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.55rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: notif.color, border: `1px solid ${notif.color}`, padding: '0.15rem 0.5rem' }}>{notif.text}</span>}
+                      </div>
+                    );
+                  })()}
                 </div>
 
                 <div style={{ marginBottom: '2rem' }}>

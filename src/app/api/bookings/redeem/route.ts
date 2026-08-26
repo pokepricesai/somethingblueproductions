@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { notify, RECIPIENTS } from '@/lib/notify';
+import { composeBookingAlert, composeBookingConfirmation, type BookingData } from '@/lib/notify-templates';
 
 /**
  * Voucher redemption booking — for recipients who received a gift voucher
@@ -72,52 +74,119 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid date/time' }, { status: 422 });
   }
 
-  const { data: voucher, error: vErr } = await supabaseAdmin
+  // ── Atomic voucher claim (prevents double-redemption race) ────────
+  // Update status='used' ONLY if it's currently 'unused'. If two concurrent
+  // requests race, exactly one wins the update (returns the row), the other
+  // gets an empty result and is rejected.
+  //
+  // TECHNICAL DEBT (Phase B):
+  //   This flow is claim-voucher → insert-booking → rollback-voucher on
+  //   booking failure. It is materially safer than the pre-Phase-B pattern
+  //   (which had no atomicity at all) but it is NOT a single Postgres
+  //   transaction. Two edge cases remain:
+  //     (a) if the voucher UPDATE succeeds but the process crashes before
+  //         the booking INSERT runs, the voucher is left in state='used'
+  //         with no corresponding booking. The buyer can no longer redeem.
+  //     (b) if the rollback UPDATE fails after a booking INSERT failure,
+  //         the voucher is stuck as 'used' with no booking.
+  //   Both windows are very small (Vercel function invocations are typically
+  //   under a second). We accept the risk for now.
+  //   PLANNED FIX: move the claim + insert into a Postgres RPC function
+  //   (SECURITY DEFINER) that runs both statements in a single transaction
+  //   and returns the booking row. Deferred as no observed correctness
+  //   problem in practice.
+  const nowIso = new Date().toISOString();
+  const { data: claimed, error: claimErr } = await supabaseAdmin
     .from('vouchers')
-    .select('id, code, session_type, session_duration, session_price, buyer_name, buyer_email, recipient_name, expires_at, status')
+    .update({ status: 'used', redeemed_at: nowIso })
     .eq('code', code)
+    .eq('status', 'unused')
+    .select('id, code, session_type, session_duration, session_price, buyer_name, buyer_email, recipient_name, expires_at')
     .maybeSingle();
-  if (vErr) return NextResponse.json({ error: 'Voucher lookup failed' }, { status: 500 });
-  if (!voucher || voucher.status !== 'unused') {
-    return NextResponse.json({ error: 'Voucher not valid.' }, { status: 400 });
+
+  if (claimErr) {
+    return NextResponse.json({ error: 'Voucher lookup failed' }, { status: 500 });
   }
-  if (new Date(voucher.expires_at) <= new Date()) {
+  if (!claimed) {
+    // Either the code doesn't exist, is already used, or was just claimed
+    // by a concurrent request. Same user-facing message either way.
+    return NextResponse.json({ error: 'Voucher not valid or already used.' }, { status: 400 });
+  }
+  if (new Date(claimed.expires_at) <= new Date()) {
+    // Roll back the claim so the customer can be told to contact us.
+    await supabaseAdmin
+      .from('vouchers')
+      .update({ status: 'unused', redeemed_at: null })
+      .eq('id', claimed.id);
     return NextResponse.json({ error: 'Voucher has expired.' }, { status: 400 });
   }
 
+  // ── Insert booking ────────────────────────────────────────────────
   const { data: inserted, error: bErr } = await supabaseAdmin
     .from('bookings')
     .insert({
       name, email, phone,
-      service_type: voucher.session_type,
-      people_count: voucher.session_duration === 60 ? 3 : 1,
-      session_duration: voucher.session_duration,
+      service_type: claimed.session_type,
+      people_count: claimed.session_duration === 60 ? 3 : 1,
+      session_duration: claimed.session_duration,
       session_price: 0,
       slot_date: date,
       slot_time: time,
-      voucher_code: voucher.code,
+      voucher_code: claimed.code,
       notes,
       status: 'confirmed',
     })
     .select('id')
     .single();
-  if (bErr) return NextResponse.json({ error: 'Booking insert failed' }, { status: 500 });
+  if (bErr) {
+    // Booking failed AFTER we already marked voucher used. Roll back the
+    // voucher so the customer can retry.
+    await supabaseAdmin
+      .from('vouchers')
+      .update({ status: 'unused', redeemed_at: null })
+      .eq('id', claimed.id);
+    return NextResponse.json({ error: 'Booking insert failed' }, { status: 500 });
+  }
 
-  const { error: uErr } = await supabaseAdmin
-    .from('vouchers')
-    .update({ status: 'used', redeemed_at: new Date().toISOString() })
-    .eq('id', voucher.id);
-  if (uErr) console.error('Voucher mark-used failed:', uErr);
+  // ── Dispatch notifications ────────────────────────────────────────
+  const bookingData: BookingData = {
+    id: inserted?.id,
+    name, email, phone,
+    service_type: claimed.session_type,
+    people_count: claimed.session_duration === 60 ? 3 : 1,
+    session_duration: claimed.session_duration,
+    session_price: 0,
+    slot_date: date,
+    slot_time: time,
+    voucher_code: claimed.code,
+    notes,
+  };
+  const adminMsg = composeBookingAlert(bookingData);
+  adminMsg.toEmail = RECIPIENTS.admin.email;
+  adminMsg.toName = RECIPIENTS.admin.name;
+  const customerMsg = composeBookingConfirmation(bookingData);
 
-  // Return voucher (redacted) so the client can post it to send-redeem-confirmation
+  await Promise.all([
+    notify(
+      { eventType: 'redeem_alert', entityType: 'booking', entityId: inserted?.id, recipientType: 'admin' },
+      adminMsg,
+      ['email', 'whatsapp']
+    ),
+    notify(
+      { eventType: 'booking_confirmation', entityType: 'booking', entityId: inserted?.id, recipientType: 'customer' },
+      customerMsg,
+      ['email']
+    ),
+  ]);
+
   return NextResponse.json({
     ok: true,
     bookingId: inserted?.id,
     voucher: {
-      code: voucher.code,
-      session_type: voucher.session_type,
-      session_duration: voucher.session_duration,
-      buyer_name: voucher.buyer_name,
+      code: claimed.code,
+      session_type: claimed.session_type,
+      session_duration: claimed.session_duration,
+      buyer_name: claimed.buyer_name,
     },
   });
 }

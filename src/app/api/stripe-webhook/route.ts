@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { createClient } from '@supabase/supabase-js';
+import { supabaseAdmin } from '@/lib/supabase-admin';
+import { notify, RECIPIENTS } from '@/lib/notify';
+import { composeBookingAlert, composeBookingConfirmation, type BookingData } from '@/lib/notify-templates';
 
-const supabase = createClient(
-  'https://knwyfoqmlwbxtfhvkbmc.supabase.co',
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 function generateVoucherCode(): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -26,7 +26,8 @@ export async function POST(req: NextRequest) {
   let event: Stripe.Event;
   try {
     event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
-  } catch {
+  } catch (err) {
+    console.error('[stripe-webhook] signature verification failed', err);
     return NextResponse.json({ error: 'Webhook error' }, { status: 400 });
   }
 
@@ -35,7 +36,32 @@ export async function POST(req: NextRequest) {
     const meta = session.metadata!;
 
     if (meta.type === 'booking') {
-      await supabase.from('bookings').insert({
+      const { data: inserted, error: bErr } = await supabaseAdmin
+        .from('bookings')
+        .insert({
+          name: meta.name,
+          email: meta.email,
+          phone: meta.phone,
+          service_type: meta.service_type,
+          people_count: parseInt(meta.people_count),
+          session_duration: parseInt(meta.session_duration),
+          session_price: parseInt(meta.session_price),
+          slot_date: meta.slot_date,
+          slot_time: meta.slot_time,
+          notes: meta.notes || null,
+          stripe_payment_id: session.id,
+          status: 'confirmed',
+        })
+        .select('id')
+        .single();
+
+      if (bErr) {
+        console.error('[stripe-webhook] booking insert failed', bErr);
+        return NextResponse.json({ error: 'Booking insert failed' }, { status: 500 });
+      }
+
+      const bookingData: BookingData = {
+        id: inserted?.id,
         name: meta.name,
         email: meta.email,
         phone: meta.phone,
@@ -45,39 +71,77 @@ export async function POST(req: NextRequest) {
         session_price: parseInt(meta.session_price),
         slot_date: meta.slot_date,
         slot_time: meta.slot_time,
-        notes: meta.notes,
-        stripe_payment_id: session.id,
-        status: 'confirmed',
-      });
+        notes: meta.notes || null,
+      };
 
-      await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/send-booking-confirmation`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ meta, sessionId: session.id }),
-      });
+      const adminMsg = composeBookingAlert(bookingData);
+      adminMsg.toEmail = RECIPIENTS.admin.email;
+      adminMsg.toName = RECIPIENTS.admin.name;
+      const customerMsg = composeBookingConfirmation(bookingData);
+
+      await Promise.all([
+        notify(
+          { eventType: 'booking_alert', entityType: 'booking', entityId: inserted?.id, recipientType: 'admin' },
+          adminMsg,
+          ['email', 'whatsapp']
+        ),
+        notify(
+          { eventType: 'booking_confirmation', entityType: 'booking', entityId: inserted?.id, recipientType: 'customer' },
+          customerMsg,
+          ['email']
+        ),
+      ]);
 
     } else if (meta.type === 'gift') {
       const code = generateVoucherCode();
 
-      await supabase.from('vouchers').insert({
-        code,
-        occasion: meta.occasion,
-        session_type: meta.service_type,
-        session_duration: parseInt(meta.duration),
-        session_price: parseInt(meta.price),
-        buyer_name: meta.buyer_name,
-        buyer_email: meta.buyer_email,
-        recipient_name: meta.recipient_name,
-        recipient_email: meta.recipient_email,
-        stripe_payment_id: session.id,
-        status: 'unused',
-      });
+      const { data: inserted, error: vErr } = await supabaseAdmin
+        .from('vouchers')
+        .insert({
+          code,
+          occasion: meta.occasion,
+          session_type: meta.service_type,
+          session_duration: parseInt(meta.duration),
+          session_price: parseInt(meta.price),
+          buyer_name: meta.buyer_name,
+          buyer_email: meta.buyer_email,
+          recipient_name: meta.recipient_name || null,
+          recipient_email: meta.recipient_email || null,
+          stripe_payment_id: session.id,
+          status: 'unused',
+        })
+        .select('id')
+        .single();
 
-      await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/send-voucher-email`, {
+      if (vErr) {
+        console.error('[stripe-webhook] voucher insert failed', vErr);
+        return NextResponse.json({ error: 'Voucher insert failed' }, { status: 500 });
+      }
+
+      // Voucher-sold flow keeps the existing dedicated email route (voucher +
+      // recipient email requires bespoke template). Wrap with notify() for
+      // logging consistency.
+      const voucherEmailRes = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/send-voucher-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ meta, code }),
       });
+      // Log a single summary row for observability.
+      try {
+        await supabaseAdmin.from('notification_log').insert({
+          event_type: 'voucher_sold',
+          entity_type: 'voucher',
+          entity_id: inserted?.id ?? null,
+          channel: 'email',
+          recipient_type: 'customer',
+          ok: voucherEmailRes.ok,
+          status_code: voucherEmailRes.status,
+          provider_ref: null,
+          error: voucherEmailRes.ok ? null : `send-voucher-email returned ${voucherEmailRes.status}`,
+        });
+      } catch (logErr) {
+        console.error('[stripe-webhook] notification_log insert failed', logErr);
+      }
     }
   }
 

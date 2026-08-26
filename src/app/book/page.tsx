@@ -167,21 +167,7 @@ export default function BookPage() {
       });
       const j = await res.json().catch(() => ({}));
       if (!res.ok) throw new Error(j.error || 'Booking failed');
-
-      // Fire-and-forget confirmation email
-      await fetch('/api/send-redeem-confirmation', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: redeemBooking.name,
-          email: redeemBooking.email,
-          phone: redeemBooking.phone,
-          date: redeemBooking.date,
-          time: redeemBooking.time,
-          notes: redeemBooking.notes,
-          voucher: redeemedVoucher,
-        }),
-      });
+      // Notifications are dispatched by the server route.
 
       setRedeemStep('confirm');
     } catch {
@@ -210,19 +196,7 @@ export default function BookPage() {
         });
         const j = await res.json().catch(() => ({}));
         if (!res.ok) throw new Error(j.error || 'Booking failed');
-        await fetch('/api/send-booking-confirmation', {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            meta: {
-              name: booking.name, email: booking.email, phone: booking.phone,
-              service_type: booking.service, people_count: String(booking.peopleCount),
-              session_duration: String(booking.duration), session_price: '0',
-              slot_date: booking.date, slot_time: booking.time,
-              notes: '',
-            },
-            sessionId: `voucher-${booking.voucherCode}`,
-          }),
-        });
+        // Notifications are dispatched by the server route.
         setBookStep('confirm');
       } else {
         const res = await fetch('/api/create-booking-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ booking }) });

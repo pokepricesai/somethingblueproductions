@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseAdmin } from '@/lib/supabase-admin';
+import { notify, RECIPIENTS } from '@/lib/notify';
+import { composeBookingAlert, composeBookingConfirmation, type BookingData } from '@/lib/notify-templates';
 
 /**
  * Booking creation for the "voucher-covered" path (customer applies a valid
@@ -133,6 +135,38 @@ export async function POST(req: NextRequest) {
     // used voucher marked unused than an unrecorded booking.
     console.error('Voucher mark-used failed:', uErr);
   }
+
+  // 4. Dispatch notifications via the unified service.
+  const bookingData: BookingData = {
+    id: inserted?.id,
+    name, email, phone,
+    service_type: service,
+    people_count: peopleCount,
+    session_duration: duration,
+    session_price: 0,
+    slot_date: date,
+    slot_time: time,
+    voucher_code: code,
+    notes,
+  };
+  const adminMsg = composeBookingAlert(bookingData);
+  adminMsg.toEmail = RECIPIENTS.admin.email;
+  adminMsg.toName = RECIPIENTS.admin.name;
+  const customerMsg = composeBookingConfirmation(bookingData);
+
+  // Fire both channels for each recipient — swallowed internally.
+  await Promise.all([
+    notify(
+      { eventType: 'booking_alert', entityType: 'booking', entityId: inserted?.id, recipientType: 'admin' },
+      adminMsg,
+      ['email', 'whatsapp']
+    ),
+    notify(
+      { eventType: 'booking_confirmation', entityType: 'booking', entityId: inserted?.id, recipientType: 'customer' },
+      customerMsg,
+      ['email']
+    ),
+  ]);
 
   return NextResponse.json({ ok: true, bookingId: inserted?.id });
 }
