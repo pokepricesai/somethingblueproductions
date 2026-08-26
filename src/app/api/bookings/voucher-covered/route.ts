@@ -92,17 +92,36 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Invalid date/time' }, { status: 422 });
   }
 
-  // 1. Re-validate voucher server-side
-  const { data: voucher, error: vErr } = await supabaseAdmin
+  // 1. ATOMIC voucher claim (mirrors /api/bookings/redeem — prevents the
+  //    race where two concurrent requests both see status='unused' and both
+  //    create bookings against the same voucher).
+  //    UPDATE ... WHERE status='unused' returns the row exactly once; the
+  //    losing request gets an empty result and is rejected.
+  //
+  //    Same TECHNICAL DEBT applies as documented in /api/bookings/redeem:
+  //    this is claim → insert → rollback-on-failure, not a single Postgres
+  //    transaction. Planned fix is a SECURITY DEFINER RPC. Deferred.
+  const nowIso = new Date().toISOString();
+  const { data: claimed, error: claimErr } = await supabaseAdmin
     .from('vouchers')
-    .select('id, code, status, expires_at')
+    .update({ status: 'used', redeemed_at: nowIso })
     .eq('code', code)
+    .eq('status', 'unused')
+    .select('id, code, expires_at')
     .maybeSingle();
-  if (vErr) return NextResponse.json({ error: 'Voucher lookup failed' }, { status: 500 });
-  if (!voucher || voucher.status !== 'unused') {
-    return NextResponse.json({ error: 'Voucher not valid.' }, { status: 400 });
+
+  if (claimErr) {
+    return NextResponse.json({ error: 'Voucher lookup failed' }, { status: 500 });
   }
-  if (new Date(voucher.expires_at) <= new Date()) {
+  if (!claimed) {
+    return NextResponse.json({ error: 'Voucher not valid or already used.' }, { status: 400 });
+  }
+  if (new Date(claimed.expires_at) <= new Date()) {
+    // Roll back the claim so the buyer can be told to contact us.
+    await supabaseAdmin
+      .from('vouchers')
+      .update({ status: 'unused', redeemed_at: null })
+      .eq('id', claimed.id);
     return NextResponse.json({ error: 'Voucher has expired.' }, { status: 400 });
   }
 
@@ -123,17 +142,14 @@ export async function POST(req: NextRequest) {
     })
     .select('id')
     .single();
-  if (bErr) return NextResponse.json({ error: 'Booking insert failed' }, { status: 500 });
-
-  // 3. Mark voucher used
-  const { error: uErr } = await supabaseAdmin
-    .from('vouchers')
-    .update({ status: 'used', redeemed_at: new Date().toISOString() })
-    .eq('id', voucher.id);
-  if (uErr) {
-    // Booking already saved. Log but don't roll back — better to have a
-    // used voucher marked unused than an unrecorded booking.
-    console.error('Voucher mark-used failed:', uErr);
+  if (bErr) {
+    // Booking failed AFTER voucher was already claimed. Roll back the
+    // claim so the customer can retry.
+    await supabaseAdmin
+      .from('vouchers')
+      .update({ status: 'unused', redeemed_at: null })
+      .eq('id', claimed.id);
+    return NextResponse.json({ error: 'Booking insert failed' }, { status: 500 });
   }
 
   // 4. Dispatch notifications via the unified service.
