@@ -113,8 +113,8 @@ export default function WeddingsPage() {
         }
       `}</style>
 
-      {/* ── HERO ── */}
-      <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#5c3d30', minHeight: '90svh' }}>
+      {/* ── HERO — see gift-vouchers/_shared.tsx for CLS-fix rationale. ── */}
+      <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#5c3d30', minHeight: 'max(650px, 90svh)' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
         <div style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <span style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.65rem', letterSpacing: '0.25em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>weddings-hero.jpg</span>

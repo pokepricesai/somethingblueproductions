@@ -61,8 +61,10 @@ export function GiftCategoryPage(p: GiftCategoryProps) {
         }
       `}</style>
 
-      {/* HERO */}
-      <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: p.heroBg, minHeight: '75svh' }}>
+      {/* HERO — minHeight uses max() with a stable pixel fallback so the
+          section has a resolvable height during SSR (svh is 0 until the
+          client viewport is measured, which caused CLS 0.489 on mobile). */}
+      <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: p.heroBg, minHeight: 'max(560px, 75svh)' }}>
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to bottom, rgba(13,27,42,0.2) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.7) 100%)', zIndex: 1 }} />
         <Image src={`${STORAGE}/${p.heroImage}`} alt={`${p.title} — Something Blue Productions`} fill priority sizes="100vw" style={{ objectFit: 'cover', zIndex: 0 }} />
         <div className="gc-hero-content" style={{ position: 'relative', zIndex: 2 }}>
