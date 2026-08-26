@@ -121,7 +121,7 @@ const bespokeTabs: BespokeTab[] = [
       {
         name: 'Full Day',
         price: 'From £900',
-        priceSub: 'Photo £900 · Video £1,200 · Both £1,800',
+        priceSub: 'Photo £900 · Video £1,200 · Both £1,900',
         includes: ['Getting ready to first dance', 'Fully edited photos or film', 'Free engagement shoot', 'Choose photo, video or both'],
         description: 'Full day coverage from morning preparations right through to the evening.',
         popular: true,
