@@ -69,6 +69,19 @@ export default function AdminEnquiriesPage() {
     setEnquiries(prev => prev.map(e => ({ ...e, read: true })));
   }
 
+  async function deleteEnquiry(e: Enquiry) {
+    const label = e.name ? `“${e.name}”` : `enquiry #${e.id}`;
+    if (!window.confirm(`Delete ${label}? This cannot be undone.`)) return;
+    const res = await fetch(`/api/admin/enquiries?id=${e.id}`, { method: 'DELETE' });
+    if (!res.ok) {
+      const j = await res.json().catch(() => ({}));
+      window.alert(`Delete failed: ${j.error || res.status}`);
+      return;
+    }
+    setEnquiries(prev => prev.filter(x => x.id !== e.id));
+    if (selected?.id === e.id) setSelected(null);
+  }
+
   const filtered = filter === 'unread' ? enquiries.filter(e => !e.read) : enquiries;
   const unreadCount = enquiries.filter(e => !e.read).length;
 
@@ -86,6 +99,8 @@ export default function AdminEnquiriesPage() {
         .enq-btn { font-family: 'Carose', sans-serif; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.5rem 1rem; border: none; cursor: pointer; transition: opacity 0.2s; }
         .enq-btn-primary { background: #1B3A5C; color: #E8DDB5; }
         .enq-btn-ghost { background: rgba(168,202,236,0.08); color: #A8CAEC; border: 1px solid rgba(168,202,236,0.15); }
+        .enq-btn-danger { background: transparent; color: rgba(200,87,42,0.85); border: 1px solid rgba(200,87,42,0.35); }
+        .enq-btn-danger:hover { background: rgba(200,87,42,0.12); color: #C8572A; opacity: 1; }
         .enq-btn:hover { opacity: 0.8; }
         .filter-btn { font-family: 'Carose', sans-serif; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.4rem 0.9rem; border: 1px solid rgba(168,202,236,0.15); background: transparent; color: rgba(245,240,232,0.4); cursor: pointer; transition: all 0.2s; }
         .filter-btn.active { background: #1B3A5C; border-color: #1B3A5C; color: #E8DDB5; }
@@ -218,6 +233,7 @@ export default function AdminEnquiriesPage() {
                   {!selected.read && (
                     <button className="enq-btn enq-btn-ghost" onClick={() => markAsRead(selected.id)}>Mark as read</button>
                   )}
+                  <button className="enq-btn enq-btn-danger" onClick={() => deleteEnquiry(selected)} style={{ marginLeft: 'auto' }}>Delete</button>
                 </div>
               </>
             )}

@@ -50,3 +50,15 @@ export async function PATCH(req: NextRequest) {
 
   return NextResponse.json({ error: 'Invalid payload' }, { status: 400 });
 }
+
+export async function DELETE(req: NextRequest) {
+  const url = new URL(req.url);
+  const idParam = url.searchParams.get('id');
+  const id = Number(idParam);
+  if (!Number.isInteger(id) || id <= 0) {
+    return NextResponse.json({ error: 'id query param required' }, { status: 400 });
+  }
+  const { error } = await supabaseAdmin.from('enquiries').delete().eq('id', id);
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ ok: true, id });
+}
