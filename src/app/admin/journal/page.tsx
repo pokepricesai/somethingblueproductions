@@ -3,8 +3,6 @@
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 
-const supabaseUrl = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co';
-const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y';
 
 const CATEGORIES = ['Weddings', 'Families', 'Newborn', 'Maternity', 'Studio', 'Commercial', 'Locations'];
 
@@ -35,11 +33,9 @@ export default function AdminJournalPage() {
 
   async function fetchPosts() {
     setLoading(true);
-    const res = await fetch(`${supabaseUrl}/rest/v1/posts?select=*&order=published_at.desc`, {
-      headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` },
-    });
-    const data = await res.json();
-    setPosts(data || []);
+    const res = await fetch('/api/admin/posts', { cache: 'no-store' });
+    const j = await res.json().catch(() => ({}));
+    setPosts(j.posts || []);
     setLoading(false);
   }
 
@@ -70,40 +66,26 @@ export default function AdminJournalPage() {
   async function uploadImage(post: Post, file: File) {
     setUploadingId(post.id);
     try {
-      const ext = file.name.split('.').pop();
+      const ext = (file.name.split('.').pop() || 'jpg').replace(/[^a-zA-Z0-9]/g, '');
       const filename = `${post.slug}-${Date.now()}.${ext}`;
 
-      // Upload to Supabase storage
       const uploadRes = await fetch(
-        `${supabaseUrl}/storage/v1/object/journal-images/${filename}`,
+        `/api/admin/upload-image?bucket=journal-images&filename=${encodeURIComponent(filename)}`,
         {
           method: 'POST',
-          headers: {
-            'apikey': supabaseKey,
-            'Authorization': `Bearer ${supabaseKey}`,
-            'Content-Type': file.type,
-            'x-upsert': 'true',
-          },
+          headers: { 'Content-Type': file.type },
           body: file,
         }
       );
+      const uploadJson = await uploadRes.json().catch(() => ({}));
+      if (!uploadRes.ok) throw new Error(uploadJson.error || 'Upload failed');
+      const imageUrl = uploadJson.url as string;
 
-      if (!uploadRes.ok) throw new Error('Upload failed');
-
-      const imageUrl = `${supabaseUrl}/storage/v1/object/public/journal-images/${filename}`;
-
-      // Save URL to post
-      const updateRes = await fetch(`${supabaseUrl}/rest/v1/posts?id=eq.${post.id}`, {
+      const updateRes = await fetch('/api/admin/posts', {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'apikey': supabaseKey,
-          'Authorization': `Bearer ${supabaseKey}`,
-          'Prefer': 'return=minimal',
-        },
-        body: JSON.stringify({ image_url: imageUrl }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: post.id, patch: { image_url: imageUrl } }),
       });
-
       if (!updateRes.ok) throw new Error('Failed to save image URL');
       await fetchPosts();
     } catch (err) {
@@ -114,25 +96,17 @@ export default function AdminJournalPage() {
   }
 
   async function togglePublished(post: Post) {
-    await fetch(`${supabaseUrl}/rest/v1/posts?id=eq.${post.id}`, {
+    await fetch('/api/admin/posts', {
       method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'apikey': supabaseKey,
-        'Authorization': `Bearer ${supabaseKey}`,
-        'Prefer': 'return=minimal',
-      },
-      body: JSON.stringify({ published: !post.published }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id: post.id, patch: { published: !post.published } }),
     });
     await fetchPosts();
   }
 
   async function deletePost(post: Post) {
     if (!confirm(`Delete "${post.title}"?`)) return;
-    await fetch(`${supabaseUrl}/rest/v1/posts?id=eq.${post.id}`, {
-      method: 'DELETE',
-      headers: { 'apikey': supabaseKey, 'Authorization': `Bearer ${supabaseKey}` },
-    });
+    await fetch(`/api/admin/posts?id=${post.id}`, { method: 'DELETE' });
     await fetchPosts();
   }
 

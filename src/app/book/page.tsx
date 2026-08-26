@@ -3,12 +3,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  'https://knwyfoqmlwbxtfhvkbmc.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y'
-);
 
 const STORAGE = 'https://knwyfoqmlwbxtfhvkbmc.supabase.co/storage/v1/object/public/site-images';
 
@@ -93,18 +87,16 @@ export default function BookPage() {
       const daysInMonth: string[] = [];
       const cursor = new Date(year, month, 1);
       while (cursor.getMonth() === month) { daysInMonth.push(toUKDateStr(cursor)); cursor.setDate(cursor.getDate() + 1); }
-      const { data: defaults } = await supabase.from('availability_slots').select('day_of_week, slot_time').eq('is_active', true).is('specific_date', null);
-      const monthStart = `${year}-${String(month + 1).padStart(2, '0')}-01`;
-      const monthEnd = `${year}-${String(month + 1).padStart(2, '0')}-31`;
-      const { data: overrides } = await supabase.from('slot_overrides').select('slot_date, slot_time, type').gte('slot_date', monthStart).lte('slot_date', monthEnd);
-      const { data: bookings } = await supabase.from('bookings').select('slot_date, slot_time').gte('slot_date', monthStart).lte('slot_date', monthEnd).eq('status', 'confirmed');
+      const monthKey = `${year}-${String(month + 1).padStart(2, '0')}`;
+      const res = await fetch(`/api/availability?month=${monthKey}`, { cache: 'no-store' });
+      const { defaults, overrides, bookings } = await res.json();
       const cache: Record<string, boolean> = {};
       for (const dateStr of daysInMonth) {
         const dow = getUKDayOfWeek(new Date(dateStr + 'T12:00:00'));
-        const defaultTimes = new Set((defaults || []).filter(s => s.day_of_week === dow).map(s => s.slot_time));
-        const dayOverrides = (overrides || []).filter(o => o.slot_date === dateStr);
-        for (const o of dayOverrides) { if (o.type === 'blocked') defaultTimes.delete(o.slot_time); if (o.type === 'added') defaultTimes.add(o.slot_time); }
-        const bookedTimes = new Set((bookings || []).filter(b => b.slot_date === dateStr).map(b => b.slot_time));
+        const defaultTimes = new Set((defaults || []).filter((s: { day_of_week: string }) => s.day_of_week === dow).map((s: { slot_time: string }) => s.slot_time));
+        const dayOverrides = (overrides || []).filter((o: { slot_date: string }) => o.slot_date === dateStr);
+        for (const o of dayOverrides as { slot_time: string; type: string }[]) { if (o.type === 'blocked') defaultTimes.delete(o.slot_time); if (o.type === 'added') defaultTimes.add(o.slot_time); }
+        const bookedTimes = new Set((bookings || []).filter((b: { slot_date: string }) => b.slot_date === dateStr).map((b: { slot_time: string }) => b.slot_time));
         for (const t of bookedTimes) defaultTimes.delete(t);
         cache[dateStr] = defaultTimes.size > 0;
       }
@@ -115,33 +107,41 @@ export default function BookPage() {
 
   async function fetchSlots(date: string) {
     const dow = getUKDayOfWeek(new Date(date + 'T12:00:00'));
-    const { data: defaults } = await supabase.from('availability_slots').select('slot_time').eq('day_of_week', dow).eq('is_active', true).is('specific_date', null);
-    const { data: overrideData } = await supabase.from('slot_overrides').select('slot_time, type').eq('slot_date', date);
-    const { data: existing } = await supabase.from('bookings').select('slot_time').eq('slot_date', date).eq('status', 'confirmed');
-    const finalTimes = new Set((defaults || []).map((s: { slot_time: string }) => s.slot_time));
-    for (const o of (overrideData || [])) { if (o.type === 'blocked') finalTimes.delete(o.slot_time); if (o.type === 'added') finalTimes.add(o.slot_time); }
-    const bookedTimes = new Set((existing || []).map((b: { slot_time: string }) => b.slot_time));
+    const res = await fetch(`/api/availability?date=${date}`, { cache: 'no-store' });
+    const { defaults, overrides, bookings } = await res.json();
+    const dayDefaults = (defaults || []).filter((s: { day_of_week: string }) => s.day_of_week === dow);
+    const finalTimes = new Set(dayDefaults.map((s: { slot_time: string }) => s.slot_time));
+    for (const o of ((overrides || []) as { slot_time: string; type: string }[])) { if (o.type === 'blocked') finalTimes.delete(o.slot_time); if (o.type === 'added') finalTimes.add(o.slot_time); }
+    const bookedTimes = new Set(((bookings || []) as { slot_time: string }[]).map(b => b.slot_time));
     for (const t of bookedTimes) finalTimes.delete(t);
-    const sortedSlots = Array.from(finalTimes).sort().map((slot_time, id) => ({ id, slot_time, day_of_week: dow }));
+    const sortedSlots = (Array.from(finalTimes) as string[]).sort().map((slot_time, id) => ({ id, slot_time, day_of_week: dow }));
     setAvailableSlots(sortedSlots);
   }
 
   async function checkVoucher() {
     if (!booking.voucherCode) return;
     setVoucherChecking(true);
-    const { data } = await supabase.from('vouchers').select('*').eq('code', booking.voucherCode.toUpperCase()).eq('status', 'unused').single();
-    if (data && new Date(data.expires_at) > new Date()) { setBooking(prev => ({ ...prev, voucherValid: true, price: 0 })); setError(''); }
-    else { setBooking(prev => ({ ...prev, voucherValid: false })); setError('This voucher code is invalid or has already been used.'); }
+    const res = await fetch('/api/vouchers/validate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: booking.voucherCode }),
+    });
+    const j = await res.json().catch(() => ({}));
+    if (res.ok && j.voucher) { setBooking(prev => ({ ...prev, voucherValid: true, price: 0 })); setError(''); }
+    else { setBooking(prev => ({ ...prev, voucherValid: false })); setError(j.error || 'This voucher code is invalid or has already been used.'); }
     setVoucherChecking(false);
   }
 
   async function validateVoucherCode() {
     if (!redeemCode.trim()) return;
     setRedeemChecking(true); setRedeemError('');
-    const { data } = await supabase.from('vouchers').select('*').eq('code', redeemCode.trim().toUpperCase()).eq('status', 'unused').single();
-    if (data && new Date(data.expires_at) > new Date()) { setRedeemedVoucher(data); setRedeemStep('datetime'); }
-    else if (data && new Date(data.expires_at) <= new Date()) { setRedeemError('This voucher has expired. Please contact us at hello@something-blue-productions.com.'); }
-    else { setRedeemError('Voucher code not found or already used. Please check and try again.'); }
+    const res = await fetch('/api/vouchers/validate', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code: redeemCode }),
+    });
+    const j = await res.json().catch(() => ({}));
+    if (res.ok && j.voucher) { setRedeemedVoucher(j.voucher); setRedeemStep('datetime'); }
+    else if (res.status === 410) { setRedeemError('This voucher has expired. Please contact us at hello@something-blue-productions.com.'); }
+    else { setRedeemError(j.error || 'Voucher code not found or already used. Please check and try again.'); }
     setRedeemChecking(false);
   }
 
@@ -150,24 +150,25 @@ export default function BookPage() {
     setLoading(true);
     setError('');
     try {
-      // 1. Save booking to Supabase
-      const { error: dbError } = await supabase.from('bookings').insert({
-        name: redeemBooking.name,
-        email: redeemBooking.email,
-        phone: redeemBooking.phone,
-        service_type: redeemedVoucher.session_type,
-        people_count: redeemedVoucher.session_duration === 60 ? 3 : 1,
-        session_duration: redeemedVoucher.session_duration,
-        session_price: 0,
-        slot_date: redeemBooking.date,
-        slot_time: redeemBooking.time,
-        voucher_code: redeemedVoucher.code,
-        notes: redeemBooking.notes,
-        status: 'confirmed',
+      const res = await fetch('/api/bookings/redeem', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          voucherCode: redeemedVoucher.code,
+          booking: {
+            name: redeemBooking.name,
+            email: redeemBooking.email,
+            phone: redeemBooking.phone,
+            date: redeemBooking.date,
+            time: redeemBooking.time,
+            notes: redeemBooking.notes,
+          },
+        }),
       });
-      if (dbError) throw dbError;
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok) throw new Error(j.error || 'Booking failed');
 
-      // 3. Send confirmation emails
+      // Fire-and-forget confirmation email
       await fetch('/api/send-redeem-confirmation', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -193,16 +194,35 @@ export default function BookPage() {
     setLoading(true); setError('');
     try {
       if (booking.voucherValid) {
-        const { error: dbError } = await supabase.from('bookings').insert({
-          name: booking.name, email: booking.email, phone: booking.phone,
-          service_type: booking.service, people_count: booking.peopleCount,
-          session_duration: booking.duration, session_price: booking.price,
-          slot_date: booking.date, slot_time: booking.time,
-          voucher_code: booking.voucherCode, status: 'confirmed',
+        const res = await fetch('/api/bookings/voucher-covered', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            voucherCode: booking.voucherCode,
+            booking: {
+              name: booking.name, email: booking.email, phone: booking.phone,
+              service: booking.service, peopleCount: booking.peopleCount,
+              duration: booking.duration,
+              date: booking.date, time: booking.time,
+              notes: '',
+            },
+          }),
         });
-        if (dbError) throw dbError;
-        await supabase.from('vouchers').update({ status: 'used', redeemed_at: new Date().toISOString() }).eq('code', booking.voucherCode.toUpperCase());
-        await fetch('/api/send-booking-confirmation', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ booking }) });
+        const j = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(j.error || 'Booking failed');
+        await fetch('/api/send-booking-confirmation', {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            meta: {
+              name: booking.name, email: booking.email, phone: booking.phone,
+              service_type: booking.service, people_count: String(booking.peopleCount),
+              session_duration: String(booking.duration), session_price: '0',
+              slot_date: booking.date, slot_time: booking.time,
+              notes: '',
+            },
+            sessionId: `voucher-${booking.voucherCode}`,
+          }),
+        });
         setBookStep('confirm');
       } else {
         const res = await fetch('/api/create-booking-checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ booking }) });

@@ -1,12 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
-const supabase = createClient(
-  'https://knwyfoqmlwbxtfhvkbmc.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y'
-);
 
 interface Enquiry {
   id: number;
@@ -28,22 +22,28 @@ export default function AdminEnquiriesPage() {
   useEffect(() => { fetchEnquiries(); }, []);
 
   async function fetchEnquiries() {
-    const { data } = await supabase
-      .from('enquiries')
-      .select('*')
-      .order('created_at', { ascending: false });
-    setEnquiries(data || []);
+    const res = await fetch('/api/admin/enquiries', { cache: 'no-store' });
+    const j = await res.json().catch(() => ({}));
+    setEnquiries(j.enquiries || []);
     setLoading(false);
   }
 
   async function markAsRead(id: number) {
-    await supabase.from('enquiries').update({ read: true }).eq('id', id);
+    await fetch('/api/admin/enquiries', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, read: true }),
+    });
     setEnquiries(prev => prev.map(e => e.id === id ? { ...e, read: true } : e));
     if (selected?.id === id) setSelected(prev => prev ? { ...prev, read: true } : null);
   }
 
   async function markAllRead() {
-    await supabase.from('enquiries').update({ read: true }).eq('read', false);
+    await fetch('/api/admin/enquiries', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ read: true }),
+    });
     setEnquiries(prev => prev.map(e => ({ ...e, read: true })));
   }
 

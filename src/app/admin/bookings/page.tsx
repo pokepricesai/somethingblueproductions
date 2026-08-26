@@ -1,12 +1,19 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  'https://knwyfoqmlwbxtfhvkbmc.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtud3lmb3FtbHdieHRmaHZrYm1jIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM1MjMzMTUsImV4cCI6MjA4OTA5OTMxNX0.er5XEya3170rW6hHyuhCNEKlg2SEk9_YPSOi4nWHb7Y'
-);
+async function apiGet(path: string) {
+  const r = await fetch(path, { cache: 'no-store' });
+  return r.json();
+}
+async function apiSend(path: string, method: string, body?: unknown) {
+  const r = await fetch(path, {
+    method,
+    headers: body ? { 'Content-Type': 'application/json' } : undefined,
+    body: body ? JSON.stringify(body) : undefined,
+  });
+  return r.json();
+}
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -135,16 +142,16 @@ export default function AdminBookingsPage() {
 
   const fetchAll = useCallback(async () => {
     setLoading(true);
-    const [{ data: b }, { data: ds }, { data: ov }, { data: v }] = await Promise.all([
-      supabase.from('bookings').select('*').order('slot_date'),
-      supabase.from('availability_slots').select('*').is('specific_date', null),
-      supabase.from('slot_overrides').select('*'),
-      supabase.from('vouchers').select('*').order('created_at', { ascending: false }),
+    const [b, ds, ov, v] = await Promise.all([
+      apiGet('/api/admin/bookings'),
+      apiGet('/api/admin/availability-slots'),
+      apiGet('/api/admin/slot-overrides'),
+      apiGet('/api/admin/vouchers'),
     ]);
-    setBookings(b || []);
-    setDefaultSlots((ds || []).map(s => ({ id: s.id, day_of_week: s.day_of_week, slot_time: s.slot_time, is_active: s.is_active })));
-    setOverrides(ov || []);
-    setVouchers(v || []);
+    setBookings(b.bookings || []);
+    setDefaultSlots((ds.slots || []).map((s: DefaultSlot) => ({ id: s.id, day_of_week: s.day_of_week, slot_time: s.slot_time, is_active: s.is_active })));
+    setOverrides(ov.overrides || []);
+    setVouchers(v.vouchers || []);
     setLoading(false);
   }, []);
 
@@ -191,23 +198,17 @@ export default function AdminBookingsPage() {
     const existing = overrides.find(o => o.slot_date === dateStr && o.slot_time === time);
 
     if (status === 'available') {
-      // Block it
       if (existing) {
-        // Update override to blocked
-        await supabase.from('slot_overrides').update({ type: 'blocked' }).eq('id', existing.id);
+        await apiSend('/api/admin/slot-overrides', 'PATCH', { id: existing.id, type: 'blocked' });
       } else {
-        // Insert blocked override
-        await supabase.from('slot_overrides').insert({ slot_date: dateStr, slot_time: time, type: 'blocked' });
+        await apiSend('/api/admin/slot-overrides', 'POST', { slot_date: dateStr, slot_time: time, type: 'blocked' });
       }
       showMsg(`${formatTime(time)} on ${dateStr} blocked`);
     } else {
-      // Make available (empty or blocked)
       if (existing) {
-        // Update to added
-        await supabase.from('slot_overrides').update({ type: 'added' }).eq('id', existing.id);
+        await apiSend('/api/admin/slot-overrides', 'PATCH', { id: existing.id, type: 'added' });
       } else {
-        // Insert added override
-        await supabase.from('slot_overrides').insert({ slot_date: dateStr, slot_time: time, type: 'added' });
+        await apiSend('/api/admin/slot-overrides', 'POST', { slot_date: dateStr, slot_time: time, type: 'added' });
       }
       showMsg(`${formatTime(time)} on ${dateStr} added`);
     }
@@ -228,9 +229,9 @@ export default function AdminBookingsPage() {
     for (const time of timesToBlock) {
       const existing = overrides.find(o => o.slot_date === dateStr && o.slot_time === time);
       if (existing) {
-        await supabase.from('slot_overrides').update({ type: 'blocked' }).eq('id', existing.id);
+        await apiSend('/api/admin/slot-overrides', 'PATCH', { id: existing.id, type: 'blocked' });
       } else {
-        await supabase.from('slot_overrides').insert({ slot_date: dateStr, slot_time: time, type: 'blocked' });
+        await apiSend('/api/admin/slot-overrides', 'POST', { slot_date: dateStr, slot_time: time, type: 'blocked' });
       }
     }
 
@@ -240,7 +241,7 @@ export default function AdminBookingsPage() {
 
   async function toggleDefaultSlot(slot: DefaultSlot) {
     const newVal = !slot.is_active;
-    await supabase.from('availability_slots').update({ is_active: newVal }).eq('id', slot.id);
+    await apiSend('/api/admin/availability-slots', 'PATCH', { id: slot.id, is_active: newVal });
     setDefaultSlots(prev => prev.map(s => s.id === slot.id ? { ...s, is_active: newVal } : s));
     showMsg(`${slot.day_of_week} ${formatTime(slot.slot_time)} ${newVal ? 'enabled' : 'disabled'}`);
   }
@@ -248,12 +249,11 @@ export default function AdminBookingsPage() {
   async function addDefaultSlot() {
     if (!newSlotTime) return;
     const time = newSlotTime.length === 5 ? newSlotTime : newSlotTime + ':00';
-    const { error } = await supabase.from('availability_slots').insert({
+    const result = await apiSend('/api/admin/availability-slots', 'POST', {
       day_of_week: newSlotDay,
       slot_time: time,
-      is_active: true,
     });
-    if (error) { showMsg('Error — slot may already exist'); return; }
+    if (result.error) { showMsg('Error — slot may already exist'); return; }
     showMsg(`Added ${formatTime(time)} on ${newSlotDay}`);
     setNewSlotTime('');
     fetchAll();
@@ -261,14 +261,14 @@ export default function AdminBookingsPage() {
 
   async function deleteDefaultSlot(id: number) {
     if (!confirm('Delete this default slot?')) return;
-    await supabase.from('availability_slots').delete().eq('id', id);
+    await apiSend(`/api/admin/availability-slots?id=${id}`, 'DELETE');
     setDefaultSlots(prev => prev.filter(s => s.id !== id));
     showMsg('Slot deleted');
   }
 
   async function cancelBooking(id: number) {
     if (!confirm('Cancel this booking?')) return;
-    await supabase.from('bookings').update({ status: 'cancelled' }).eq('id', id);
+    await apiSend('/api/admin/bookings', 'PATCH', { id, status: 'cancelled' });
     setSelectedBooking(null);
     setBookings(prev => prev.map(b => b.id === id ? { ...b, status: 'cancelled' } : b));
     showMsg('Booking cancelled');
@@ -276,7 +276,7 @@ export default function AdminBookingsPage() {
 
   async function revokeVoucher(id: number) {
     if (!confirm('Revoke this voucher?')) return;
-    await supabase.from('vouchers').update({ status: 'revoked' }).eq('id', id);
+    await apiSend('/api/admin/vouchers', 'PATCH', { id, status: 'revoked' });
     setVouchers(prev => prev.map(v => v.id === id ? { ...v, status: 'revoked' } : v));
     showMsg('Voucher revoked');
   }
