@@ -26,6 +26,29 @@ export const dynamic = 'force-dynamic';
 
 export async function POST(req: NextRequest) {
   const secret = process.env.NOTIFY_TEST_SECRET;
+  const provided = req.headers.get('x-notify-test-secret');
+
+  // ── TEMPORARY DIAGNOSTIC (Phase B verification) ──────────────────────
+  // Enable with `?diag=1`. Returns ONLY presence / length / equality metadata.
+  // Never returns secret values, hashes, prefixes, suffixes, or characters.
+  // REMOVE THIS BLOCK once the 401 root cause is identified.
+  const url = new URL(req.url);
+  if (url.searchParams.get('diag') === '1') {
+    const envLen = typeof secret === 'string' ? secret.length : 0;
+    const hdrLen = typeof provided === 'string' ? provided.length : 0;
+    return NextResponse.json({
+      envSecretPresent: typeof secret === 'string' && secret.length > 0,
+      envSecretLength: envLen,
+      headerPresent: provided !== null,
+      headerLength: hdrLen,
+      lengthsMatch: envLen === hdrLen,
+      valuesMatch:
+        typeof secret === 'string' &&
+        provided !== null &&
+        secret === provided,
+    });
+  }
+
   if (!secret) {
     return NextResponse.json(
       { error: 'NOTIFY_TEST_SECRET not configured' },
@@ -33,7 +56,6 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const provided = req.headers.get('x-notify-test-secret');
   if (provided !== secret) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
