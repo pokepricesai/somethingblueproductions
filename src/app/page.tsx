@@ -90,8 +90,8 @@ export default function Home() {
         <Link href="/enquire" className="mobile-float-enquire">Enquire</Link>
       </div>
 
-      {/* ── HERO ── */}
-      <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#0d1b2a', minHeight: '100svh' }}>
+      {/* ── HERO — see gift-vouchers/_shared.tsx for CLS-fix rationale. ── */}
+      <section style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', overflow: 'hidden', backgroundColor: '#0d1b2a', minHeight: 'max(700px, 100svh)' }}>
         <div style={{ position: 'absolute', inset: 0, zIndex: 2, backgroundImage: 'linear-gradient(to bottom, rgba(13,27,42,0.3) 0%, rgba(13,27,42,0.05) 40%, rgba(13,27,42,0.75) 100%)' }} />
         <Img src={`${STORAGE}/hero-main.jpg`} alt="Something Blue Productions — wedding and family photography Cambridge" priority />
         <div className="home-hero-content" style={{ position: 'relative', zIndex: 3 }}>
