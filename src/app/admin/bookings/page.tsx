@@ -107,13 +107,16 @@ interface Voucher {
   code: string;
   occasion: string;
   session_type: string;
+  session_duration: number;
   buyer_name: string;
   buyer_email: string;
   recipient_name: string;
+  recipient_email: string | null;
   status: string;
   expires_at: string;
   created_at: string;
   session_price: number;
+  voucher_gift_sent_at: string | null;
 }
 
 type Tab = 'calendar' | 'bookings' | 'slots' | 'vouchers';
@@ -135,6 +138,8 @@ export default function AdminBookingsPage() {
   const [actionMsg, setActionMsg] = useState('');
   const [newSlotDay, setNewSlotDay] = useState('tuesday');
   const [newSlotTime, setNewSlotTime] = useState('');
+  const [sendingVoucher, setSendingVoucher] = useState<Voucher | null>(null);
+  const [sendingInFlight, setSendingInFlight] = useState(false);
 
   const weekDays = getWeekDays(weekStart);
 
@@ -279,6 +284,33 @@ export default function AdminBookingsPage() {
     await apiSend('/api/admin/vouchers', 'PATCH', { id, status: 'revoked' });
     setVouchers(prev => prev.map(v => v.id === id ? { ...v, status: 'revoked' } : v));
     showMsg('Voucher revoked');
+  }
+
+  async function sendVoucherToRecipient(voucher: Voucher, confirmResend: boolean) {
+    setSendingInFlight(true);
+    try {
+      const res = await fetch('/api/admin/vouchers/send-recipient', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ voucherId: voucher.id, confirmResend }),
+      });
+      const data = await res.json();
+      if (res.ok && data.ok) {
+        setVouchers(prev => prev.map(v =>
+          v.id === voucher.id ? { ...v, voucher_gift_sent_at: new Date().toISOString() } : v,
+        ));
+        showMsg(`Voucher email sent to ${voucher.recipient_email || voucher.buyer_email}`);
+        setSendingVoucher(null);
+      } else if (res.status === 409) {
+        showMsg('Already sent — use "Resend" to send again');
+      } else {
+        showMsg(`Send failed: ${data.error || 'unknown error'}`);
+      }
+    } catch (e) {
+      showMsg(`Send failed: ${e instanceof Error ? e.message : 'network error'}`);
+    } finally {
+      setSendingInFlight(false);
+    }
   }
 
   // ── Stats ──────────────────────────────────────────────────────────────────
@@ -607,26 +639,47 @@ export default function AdminBookingsPage() {
                 Gift vouchers — {vouchers.length} total · {vouchers.filter(v => v.status === 'unused').length} unredeemed
               </p>
               {vouchers.length === 0 && <p style={{ color: '#9E9282', fontSize: '0.82rem' }}>No vouchers yet.</p>}
-              {vouchers.map(v => (
-                <div key={v.id} className="adm-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.3rem' }}>
-                      <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', letterSpacing: '0.05em' }}>{v.code}</p>
-                      <span className={`badge badge-${v.status}`}>{v.status}</span>
+              {vouchers.map(v => {
+                const sent = !!v.voucher_gift_sent_at;
+                const canSend = v.status === 'unused' && !!(v.recipient_email && v.recipient_email.trim());
+                return (
+                  <div key={v.id} id={`voucher-${v.id}`} className="adm-card" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.3rem', flexWrap: 'wrap' }}>
+                        <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.9rem', color: '#1B3A5C', letterSpacing: '0.05em' }}>{v.code}</p>
+                        <span className={`badge badge-${v.status}`}>{v.status}</span>
+                        {sent && (
+                          <span className="badge" style={{ background: '#dcfce7', color: '#166534' }}>
+                            Gift sent {new Date(v.voucher_gift_sent_at!).toLocaleDateString('en-GB')}
+                          </span>
+                        )}
+                        {!sent && v.status === 'unused' && (
+                          <span className="badge" style={{ background: '#fef3c7', color: '#92400e' }}>Gift not sent</span>
+                        )}
+                      </div>
+                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9E9282' }}>
+                        {v.occasion} · {v.session_type} · From {v.buyer_name}{v.recipient_name ? ` → ${v.recipient_name}` : ''}
+                      </p>
+                      <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: '#9E9282', marginTop: '0.2rem' }}>
+                        Expires {new Date(v.expires_at).toLocaleDateString('en-GB')}
+                      </p>
                     </div>
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.75rem', color: '#9E9282' }}>
-                      {v.occasion} · {v.session_type} · From {v.buyer_name}{v.recipient_name ? ` → ${v.recipient_name}` : ''}
-                    </p>
-                    <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.7rem', color: '#9E9282', marginTop: '0.2rem' }}>
-                      Expires {new Date(v.expires_at).toLocaleDateString('en-GB')}
-                    </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                      <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#1B3A5C', fontWeight: 300 }}>£{v.session_price}</p>
+                      {canSend && (
+                        <button
+                          className="adm-btn adm-btn-primary"
+                          onClick={() => setSendingVoucher(v)}
+                          title={sent ? 'Already sent — click to view and resend' : 'Verify recipient details before sending'}
+                        >
+                          {sent ? 'Resend gift…' : 'Send gift voucher…'}
+                        </button>
+                      )}
+                      {v.status === 'unused' && <button className="adm-btn adm-btn-danger" onClick={() => revokeVoucher(v.id)}>Revoke</button>}
+                    </div>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                    <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '1rem', color: '#1B3A5C', fontWeight: 300 }}>£{v.session_price}</p>
-                    {v.status === 'unused' && <button className="adm-btn adm-btn-danger" onClick={() => revokeVoucher(v.id)}>Revoke</button>}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </>
           )}
         </div>
@@ -670,6 +723,67 @@ export default function AdminBookingsPage() {
                 <button className="adm-btn adm-btn-danger" onClick={() => cancelBooking(selectedBooking.id)}>Cancel booking</button>
               )}
               <button className="adm-btn adm-btn-ghost" onClick={() => setSelectedBooking(null)}>Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Voucher recipient-send verification modal (Model B) */}
+      {sendingVoucher && (
+        <div className="modal-overlay" onClick={() => !sendingInFlight && setSendingVoucher(null)}>
+          <div className="modal" onClick={e => e.stopPropagation()}>
+            <div style={{ marginBottom: '1rem' }}>
+              <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.6rem', letterSpacing: '0.15em', textTransform: 'uppercase', color: '#C8572A', marginBottom: '0.3rem' }}>
+                {sendingVoucher.voucher_gift_sent_at ? 'Resend gift voucher to recipient' : 'Send gift voucher to recipient'}
+              </p>
+              <h2 style={{ fontFamily: "'Carose', sans-serif", fontWeight: 300, fontSize: '1.15rem', color: '#1B3A5C', textTransform: 'none' }}>
+                Verify recipient details
+              </h2>
+              <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#5c5550', marginTop: '0.5rem', lineHeight: 1.6 }}>
+                This will send the gift voucher email to the recipient below. Please check the details before sending — the email will go out immediately.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.55rem', marginBottom: '1.25rem' }}>
+              {[
+                ['Voucher code', sendingVoucher.code],
+                ['Package', `${sendingVoucher.session_duration === 60 ? 'Family Session (60 min)' : 'Studio Session (30 min)'} · £${sendingVoucher.session_price}`],
+                ['Occasion', sendingVoucher.occasion],
+                ['Recipient name', sendingVoucher.recipient_name || '—'],
+                ['Recipient email', sendingVoucher.recipient_email || '—'],
+                ['From (purchaser)', `${sendingVoucher.buyer_name} · ${sendingVoucher.buyer_email}`],
+              ].map(([label, value]) => (
+                <div key={label} style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid #DDD5C0', paddingBottom: '0.4rem' }}>
+                  <p style={{ fontFamily: "'Carose', sans-serif", fontSize: '0.58rem', letterSpacing: '0.12em', textTransform: 'uppercase', color: '#9E9282', width: '110px', flexShrink: 0 }}>{label}</p>
+                  <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.82rem', color: '#2C2820', wordBreak: 'break-word' }}>{value}</p>
+                </div>
+              ))}
+            </div>
+
+            {sendingVoucher.voucher_gift_sent_at && (
+              <div style={{ background: '#fef3c7', border: '1px solid #f59e0b', padding: '0.75rem 1rem', marginBottom: '1rem' }}>
+                <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.78rem', color: '#92400e', margin: 0, lineHeight: 1.5 }}>
+                  ⚠ This gift was already sent on {new Date(sendingVoucher.voucher_gift_sent_at).toLocaleString('en-GB')}. Sending again will deliver a duplicate email to the recipient.
+                </p>
+              </div>
+            )}
+
+            <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <button
+                className="adm-btn adm-btn-primary"
+                disabled={sendingInFlight}
+                style={{ opacity: sendingInFlight ? 0.6 : 1 }}
+                onClick={() => sendVoucherToRecipient(sendingVoucher, !!sendingVoucher.voucher_gift_sent_at)}
+              >
+                {sendingInFlight ? 'Sending…' : sendingVoucher.voucher_gift_sent_at ? 'Confirm resend' : 'Send now'}
+              </button>
+              <button
+                className="adm-btn adm-btn-ghost"
+                disabled={sendingInFlight}
+                onClick={() => setSendingVoucher(null)}
+              >
+                Cancel
+              </button>
             </div>
           </div>
         </div>

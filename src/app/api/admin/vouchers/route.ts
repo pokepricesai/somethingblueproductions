@@ -5,6 +5,9 @@ export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
 export async function GET() {
+  // Selecting * so voucher_gift_sent_at (added in phase-b2 migration) flows
+  // through automatically once the DB column exists. If the migration hasn't
+  // been applied yet the field is simply absent from each row.
   const { data, error } = await supabaseAdmin
     .from('vouchers')
     .select('*')

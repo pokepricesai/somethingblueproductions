@@ -297,6 +297,267 @@ export function composeBookingConfirmation(b: BookingData): Message {
   };
 }
 
+// ── Gift voucher — buyer confirmation + admin sale alert ─────────────
+
+export interface VoucherData {
+  id: number;
+  code: string;
+  occasion: string;
+  session_type: string;             // 'family' | 'studio'
+  session_duration: number;         // 30 | 60
+  session_price: number;            // GBP
+  buyer_name: string;
+  buyer_email: string;
+  recipient_name?: string | null;
+  recipient_email?: string | null;
+  message?: string | null;
+  created_at?: string | null;
+}
+
+function voucherSessionLabel(v: VoucherData): string {
+  return v.session_duration === 60
+    ? 'Family Session (60 min · 10–20 images)'
+    : 'Studio Session (30 min · 5–10 images)';
+}
+
+function formatVoucherTimestamp(created_at?: string | null): string {
+  const d = created_at ? new Date(created_at) : new Date();
+  return d.toLocaleString('en-GB', {
+    day: 'numeric', month: 'long', year: 'numeric',
+    hour: '2-digit', minute: '2-digit',
+    timeZone: 'Europe/London',
+  });
+}
+
+/**
+ * Admin sale alert (Model B): fires immediately after a successful voucher
+ * purchase. Contains everything Samantha needs to verify the sale and manually
+ * send the recipient voucher from the admin panel.
+ */
+export function composeVoucherSoldAlert(v: VoucherData): Message {
+  const sessionLabel = voucherSessionLabel(v);
+  const purchasedAt = formatVoucherTimestamp(v.created_at);
+  const adminUrl = `${ADMIN_URL_BASE}/admin/bookings?tab=vouchers#voucher-${v.id}`;
+
+  const html = `<!DOCTYPE html>
+<html>
+<body style="margin:0;padding:20px;background:#F5F0E8;font-family:Georgia,serif;">
+  <div style="max-width:560px;margin:0 auto;background:#fff;padding:32px;border:1px solid #DDD5C0;">
+    <p style="font-family:Georgia,serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#C8572A;margin:0 0 8px;">New gift voucher sale</p>
+    <h2 style="font-family:Georgia,serif;font-weight:300;font-size:24px;color:#1B3A5C;margin:0 0 20px;">${escapeHtml(v.buyer_name)}</h2>
+    <table style="width:100%;border-collapse:collapse;">
+      <tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:8px 0;border-bottom:1px solid #F5F0E8;width:120px;">Package</td><td style="font-family:Georgia,serif;font-size:14px;color:#2C2820;padding:8px 0;border-bottom:1px solid #F5F0E8;">${escapeHtml(sessionLabel)} — £${v.session_price}</td></tr>
+      <tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:8px 0;border-bottom:1px solid #F5F0E8;">Occasion</td><td style="font-family:Georgia,serif;font-size:14px;color:#2C2820;padding:8px 0;border-bottom:1px solid #F5F0E8;">${escapeHtml(v.occasion)}</td></tr>
+      <tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:8px 0;border-bottom:1px solid #F5F0E8;">Voucher code</td><td style="font-family:'Courier New',monospace;font-size:14px;color:#1B3A5C;font-weight:bold;letter-spacing:2px;padding:8px 0;border-bottom:1px solid #F5F0E8;">${escapeHtml(v.code)}</td></tr>
+      <tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:8px 0;border-bottom:1px solid #F5F0E8;">Purchased</td><td style="font-family:Georgia,serif;font-size:14px;color:#2C2820;padding:8px 0;border-bottom:1px solid #F5F0E8;">${escapeHtml(purchasedAt)}</td></tr>
+      <tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:8px 0;border-bottom:1px solid #F5F0E8;">Purchaser</td><td style="font-family:Georgia,serif;font-size:14px;color:#2C2820;padding:8px 0;border-bottom:1px solid #F5F0E8;">${escapeHtml(v.buyer_name)} · <a href="mailto:${escapeHtml(v.buyer_email)}" style="color:#1B3A5C;">${escapeHtml(v.buyer_email)}</a></td></tr>
+      <tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:8px 0;border-bottom:1px solid #F5F0E8;">Recipient</td><td style="font-family:Georgia,serif;font-size:14px;color:#2C2820;padding:8px 0;border-bottom:1px solid #F5F0E8;">${escapeHtml(v.recipient_name || '—')}${v.recipient_email ? ` · <a href="mailto:${escapeHtml(v.recipient_email)}" style="color:#1B3A5C;">${escapeHtml(v.recipient_email)}</a>` : ''}</td></tr>
+      ${v.message ? `<tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:8px 0;vertical-align:top;">Message</td><td style="font-family:Georgia,serif;font-size:14px;color:#2C2820;padding:8px 0;font-style:italic;white-space:pre-wrap;">"${escapeHtml(v.message)}"</td></tr>` : ''}
+    </table>
+    <div style="background:#F5F0E8;border-left:3px solid #C8572A;padding:14px 18px;margin:24px 0;">
+      <p style="font-family:Georgia,serif;font-size:13px;color:#5c5550;margin:0;line-height:1.6;">The recipient has <strong>not</strong> been emailed. Use the admin panel to verify recipient details before sending the gift voucher email.</p>
+    </div>
+    <div style="margin-top:24px;">
+      <a href="${adminUrl}" style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;background:#1B3A5C;color:#E8DDB5;padding:12px 20px;text-decoration:none;display:inline-block;">Open voucher in admin</a>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const text = [
+    `NEW GIFT VOUCHER SALE`,
+    ``,
+    `Package: ${sessionLabel} — £${v.session_price}`,
+    `Occasion: ${v.occasion}`,
+    `Voucher code: ${v.code}`,
+    `Purchased: ${purchasedAt}`,
+    ``,
+    `Purchaser: ${v.buyer_name} <${v.buyer_email}>`,
+    `Recipient: ${v.recipient_name || '—'}${v.recipient_email ? ` <${v.recipient_email}>` : ''}`,
+    v.message ? `Personal message: "${v.message}"` : '',
+    ``,
+    `The recipient has NOT been emailed automatically.`,
+    `Send the gift voucher manually from admin: ${adminUrl}`,
+  ].filter(Boolean).join('\n');
+
+  return {
+    subject: `New gift voucher sold — ${v.code} · £${v.session_price}`,
+    html,
+    text,
+    fromName: 'Something Blue Bookings',
+  };
+}
+
+/**
+ * Buyer confirmation (Model B): sent to the purchaser after their payment
+ * clears. States plainly that Something Blue will arrange the gift voucher
+ * delivery — makes no automated promise about timing.
+ */
+export function composeVoucherPurchaseConfirmation(v: VoucherData): Message {
+  const sessionLabel = voucherSessionLabel(v);
+  const firstName = v.buyer_name.split(' ')[0] || v.buyer_name;
+
+  const html = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#F5F0E8;font-family:'Georgia',serif;">
+  <div style="max-width:600px;margin:0 auto;background:#ffffff;">
+    <div style="background:#0d1b2a;padding:40px 40px 32px;text-align:center;">
+      <p style="font-family:Georgia,serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#A8CAEC;margin:0 0 8px;">Something Blue Productions</p>
+      <h1 style="font-family:Georgia,serif;font-weight:300;font-size:26px;color:#E8DDB5;margin:0 0 6px;">Payment received.</h1>
+      <p style="font-family:Georgia,serif;font-size:13px;color:rgba(232,221,181,0.7);margin:0;">Thank you, ${escapeHtml(firstName)}.</p>
+    </div>
+
+    <div style="padding:32px 40px;">
+      <p style="font-family:Georgia,serif;font-size:15px;color:#2C2820;line-height:1.7;margin:0 0 20px;">Your gift voucher purchase is confirmed. Here are the details for your records:</p>
+
+      <div style="background:#F5F0E8;border-left:3px solid #1B3A5C;padding:20px 24px;margin-bottom:24px;">
+        <table style="width:100%;border-collapse:collapse;">
+          <tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:6px 0;width:110px;">Package</td><td style="font-family:Georgia,serif;font-size:14px;color:#1B3A5C;padding:6px 0;">${escapeHtml(sessionLabel)}</td></tr>
+          <tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:6px 0;">Paid</td><td style="font-family:Georgia,serif;font-size:14px;color:#1B3A5C;padding:6px 0;">£${v.session_price}</td></tr>
+          <tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:6px 0;">Voucher code</td><td style="font-family:'Courier New',monospace;font-size:14px;color:#1B3A5C;font-weight:bold;letter-spacing:2px;padding:6px 0;">${escapeHtml(v.code)}</td></tr>
+          <tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:6px 0;">Occasion</td><td style="font-family:Georgia,serif;font-size:14px;color:#1B3A5C;padding:6px 0;">${escapeHtml(v.occasion)}</td></tr>
+          ${v.recipient_name ? `<tr><td style="font-family:Georgia,serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#9E9282;padding:6px 0;">Recipient</td><td style="font-family:Georgia,serif;font-size:14px;color:#1B3A5C;padding:6px 0;">${escapeHtml(v.recipient_name)}</td></tr>` : ''}
+        </table>
+      </div>
+
+      <p style="font-family:Georgia,serif;font-size:15px;color:#2C2820;line-height:1.7;margin:0 0 16px;">Something Blue will arrange delivery of the gift voucher${v.recipient_name ? ` to ${escapeHtml(v.recipient_name)}` : ''}. If you'd like to add anything, change the recipient details, or ask us to hold the voucher until a specific date, just reply to this email.</p>
+
+      <p style="font-family:Georgia,serif;font-size:15px;color:#2C2820;line-height:1.7;margin:0 0 20px;">If you'd rather chat directly, you're welcome to reply to this email or call/WhatsApp us on 07765 253340.</p>
+
+      <p style="font-family:Georgia,serif;font-size:13px;color:#9E9282;line-height:1.7;margin:20px 0 0;">— Something Blue Productions<br/>Papworth Everard, Cambridgeshire</p>
+    </div>
+
+    <div style="background:#0d1b2a;padding:20px 40px;text-align:center;">
+      <p style="font-family:Georgia,serif;font-size:12px;color:rgba(245,240,232,0.4);margin:0;">hello@something-blue-productions.com · something-blue-productions.com</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const text = [
+    `Hi ${firstName},`,
+    ``,
+    `Payment received — thank you. Your gift voucher purchase is confirmed.`,
+    ``,
+    `Package: ${sessionLabel}`,
+    `Paid: £${v.session_price}`,
+    `Voucher code: ${v.code}`,
+    `Occasion: ${v.occasion}`,
+    v.recipient_name ? `Recipient: ${v.recipient_name}` : '',
+    ``,
+    `Something Blue will arrange delivery of the gift voucher${v.recipient_name ? ` to ${v.recipient_name}` : ''}.`,
+    `If you'd like to change any details, hold the voucher for a specific date, or ask any questions — just reply to this email.`,
+    ``,
+    `Or call/WhatsApp us on 07765 253340.`,
+    ``,
+    `— Something Blue Productions`,
+    `Papworth Everard, Cambridgeshire`,
+    `hello@something-blue-productions.com`,
+  ].filter(Boolean).join('\n');
+
+  return {
+    subject: `Gift voucher purchase confirmed — ${v.code}`,
+    html,
+    text,
+    toEmail: v.buyer_email,
+    toName: v.buyer_name,
+    fromName: 'Something Blue Productions',
+  };
+}
+
+/**
+ * Bespoke recipient gift email — SENT MANUALLY from the admin panel only.
+ * Not fired by the Stripe webhook. This keeps the attractive voucher design
+ * while gating delivery behind explicit admin verification (Model B).
+ */
+export function composeVoucherGiftEmail(v: VoucherData): Message {
+  const sessionLabel = voucherSessionLabel(v);
+  const recipientName = (v.recipient_name && v.recipient_name.trim())
+    ? v.recipient_name.trim()
+    : v.buyer_name;
+  const recipientEmail = (v.recipient_email && v.recipient_email.trim())
+    ? v.recipient_email.trim()
+    : v.buyer_email;
+
+  const html = `<!DOCTYPE html>
+<html>
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#F5F0E8;font-family:'Georgia',serif;">
+  <div style="max-width:600px;margin:0 auto;background:#ffffff;">
+    <div style="background:#0d1b2a;padding:40px;text-align:center;">
+      <p style="font-family:Georgia,serif;font-size:11px;letter-spacing:4px;text-transform:uppercase;color:#A8CAEC;margin:0 0 8px;">Something Blue Productions</p>
+      <h1 style="font-family:Georgia,serif;font-weight:300;font-size:28px;color:#E8DDB5;margin:0 0 8px;">A gift for you.</h1>
+      <p style="font-family:Georgia,serif;font-size:14px;color:rgba(232,221,181,0.6);margin:0;">${escapeHtml(v.occasion)}</p>
+    </div>
+
+    ${v.message ? `
+    <div style="background:#F5F0E8;padding:32px 40px;border-bottom:1px solid #DDD5C0;">
+      <p style="font-family:Georgia,serif;font-size:15px;color:#5c5550;line-height:1.8;font-style:italic;margin:0;">"${escapeHtml(v.message)}"</p>
+      <p style="font-family:Georgia,serif;font-size:13px;color:#9E9282;margin:12px 0 0;">— ${escapeHtml(v.buyer_name)}</p>
+    </div>` : ''}
+
+    <div style="padding:40px;">
+      <p style="font-family:Georgia,serif;font-size:16px;color:#2C2820;line-height:1.7;margin:0 0 24px;">Dear ${escapeHtml(recipientName)},</p>
+      <p style="font-family:Georgia,serif;font-size:16px;color:#2C2820;line-height:1.7;margin:0 0 32px;">You've been gifted a photography session at Something Blue Productions studio in Papworth Everard, Cambridgeshire. Choose your own date and time when you're ready to book.</p>
+
+      <div style="background:#0d1b2a;padding:32px;margin-bottom:32px;text-align:center;">
+        <p style="font-family:Georgia,serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#A8CAEC;margin:0 0 16px;">Gift Voucher</p>
+        <p style="font-family:'Courier New',monospace;font-size:24px;font-weight:bold;color:#E8DDB5;letter-spacing:4px;margin:0 0 16px;">${escapeHtml(v.code)}</p>
+        <p style="font-family:Georgia,serif;font-size:13px;color:rgba(232,221,181,0.6);margin:0 0 8px;">${escapeHtml(sessionLabel)}</p>
+        <p style="font-family:Georgia,serif;font-size:12px;color:rgba(232,221,181,0.4);margin:0;">Valid for 12 months · All images included</p>
+      </div>
+
+      <h2 style="font-family:Georgia,serif;font-weight:300;font-size:20px;color:#1B3A5C;margin:0 0 16px;">How to redeem</h2>
+      <p style="font-family:Georgia,serif;font-size:15px;color:#5c5550;line-height:1.8;margin:0 0 8px;">1. Visit our booking page</p>
+      <p style="font-family:Georgia,serif;font-size:15px;color:#5c5550;line-height:1.8;margin:0 0 8px;">2. Select <strong>Redeem a gift voucher</strong></p>
+      <p style="font-family:Georgia,serif;font-size:15px;color:#5c5550;line-height:1.8;margin:0 0 32px;">3. Enter your code <strong>${escapeHtml(v.code)}</strong> and choose your date</p>
+
+      <div style="text-align:center;margin:40px 0;">
+        <a href="${ADMIN_URL_BASE}/book" style="font-family:Georgia,serif;font-size:11px;letter-spacing:3px;text-transform:uppercase;background:#1B3A5C;color:#E8DDB5;padding:16px 32px;text-decoration:none;display:inline-block;">Book your session</a>
+      </div>
+
+      <p style="font-family:Georgia,serif;font-size:13px;color:#9E9282;line-height:1.7;margin:0;">Any questions? Email us at <a href="mailto:hello@something-blue-productions.com" style="color:#1B3A5C;">hello@something-blue-productions.com</a></p>
+    </div>
+
+    <div style="background:#0d1b2a;padding:24px 40px;text-align:center;">
+      <p style="font-family:Georgia,serif;font-size:12px;color:rgba(245,240,232,0.4);margin:0;">Something Blue Productions · Papworth Everard, Cambridgeshire</p>
+    </div>
+  </div>
+</body>
+</html>`;
+
+  const text = [
+    `A gift for you — ${v.occasion}`,
+    ``,
+    v.message ? `"${v.message}" — ${v.buyer_name}` : '',
+    v.message ? `` : '',
+    `Dear ${recipientName},`,
+    ``,
+    `You've been gifted a photography session at Something Blue Productions studio in Papworth Everard, Cambridgeshire. Choose your own date and time when you're ready to book.`,
+    ``,
+    `Voucher code: ${v.code}`,
+    `Package: ${sessionLabel}`,
+    `Valid: 12 months · All images included`,
+    ``,
+    `How to redeem:`,
+    `1. Visit ${ADMIN_URL_BASE}/book`,
+    `2. Select "Redeem a gift voucher"`,
+    `3. Enter code ${v.code} and choose your date`,
+    ``,
+    `Any questions? hello@something-blue-productions.com`,
+  ].filter(x => x !== null && x !== undefined).join('\n');
+
+  return {
+    subject: `Your gift voucher — Something Blue Productions`,
+    html,
+    text,
+    toEmail: recipientEmail,
+    toName: recipientName,
+    fromName: 'Something Blue Productions',
+  };
+}
+
 // ── Test alert ───────────────────────────────────────────────────────
 
 export function composeTestAlert(kind: 'enquiry' | 'booking'): Message {

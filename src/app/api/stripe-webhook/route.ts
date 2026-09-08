@@ -2,7 +2,14 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { supabaseAdmin } from '@/lib/supabase-admin';
 import { notify, RECIPIENTS } from '@/lib/notify';
-import { composeBookingAlert, composeBookingConfirmation, type BookingData } from '@/lib/notify-templates';
+import {
+  composeBookingAlert,
+  composeBookingConfirmation,
+  composeVoucherPurchaseConfirmation,
+  composeVoucherSoldAlert,
+  type BookingData,
+  type VoucherData,
+} from '@/lib/notify-templates';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -93,6 +100,10 @@ export async function POST(req: NextRequest) {
       ]);
 
     } else if (meta.type === 'gift') {
+      // Model B: persist voucher FIRST, then fire independent notifications.
+      // We do NOT email the recipient automatically — that is a manual admin
+      // action from /admin/bookings. Notification failures never affect the
+      // saved voucher row, and never affect Stripe's view of the webhook.
       const code = generateVoucherCode();
 
       const { data: inserted, error: vErr } = await supabaseAdmin
@@ -110,7 +121,7 @@ export async function POST(req: NextRequest) {
           stripe_payment_id: session.id,
           status: 'unused',
         })
-        .select('id')
+        .select('id, created_at')
         .single();
 
       if (vErr) {
@@ -118,30 +129,40 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: 'Voucher insert failed' }, { status: 500 });
       }
 
-      // Voucher-sold flow keeps the existing dedicated email route (voucher +
-      // recipient email requires bespoke template). Wrap with notify() for
-      // logging consistency.
-      const voucherEmailRes = await fetch(`${process.env.NEXT_PUBLIC_SITE_URL}/api/send-voucher-email`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ meta, code }),
-      });
-      // Log a single summary row for observability.
-      try {
-        await supabaseAdmin.from('notification_log').insert({
-          event_type: 'voucher_sold',
-          entity_type: 'voucher',
-          entity_id: inserted?.id ?? null,
-          channel: 'email',
-          recipient_type: 'customer',
-          ok: voucherEmailRes.ok,
-          status_code: voucherEmailRes.status,
-          provider_ref: null,
-          error: voucherEmailRes.ok ? null : `send-voucher-email returned ${voucherEmailRes.status}`,
-        });
-      } catch (logErr) {
-        console.error('[stripe-webhook] notification_log insert failed', logErr);
-      }
+      const voucher: VoucherData = {
+        id: inserted.id,
+        code,
+        occasion: meta.occasion,
+        session_type: meta.service_type,
+        session_duration: parseInt(meta.duration),
+        session_price: parseInt(meta.price),
+        buyer_name: meta.buyer_name,
+        buyer_email: meta.buyer_email,
+        recipient_name: meta.recipient_name || null,
+        recipient_email: meta.recipient_email || null,
+        message: meta.message || null,
+        created_at: inserted.created_at,
+      };
+
+      const adminMsg = composeVoucherSoldAlert(voucher);
+      adminMsg.toEmail = RECIPIENTS.admin.email;
+      adminMsg.toName = RECIPIENTS.admin.name;
+      const buyerMsg = composeVoucherPurchaseConfirmation(voucher);
+
+      // Independent Promise.all — one channel/notify failing must not block
+      // the other. notify() never throws; each call writes its own log rows.
+      await Promise.all([
+        notify(
+          { eventType: 'voucher_sold', entityType: 'voucher', entityId: inserted.id, recipientType: 'admin' },
+          adminMsg,
+          ['email', 'whatsapp'],
+        ),
+        notify(
+          { eventType: 'voucher_sold', entityType: 'voucher', entityId: inserted.id, recipientType: 'customer' },
+          buyerMsg,
+          ['email'],
+        ),
+      ]);
     }
   }
 
